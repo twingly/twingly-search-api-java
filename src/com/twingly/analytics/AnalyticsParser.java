@@ -96,6 +96,8 @@ class AnalyticsParser extends DefaultHandler {
 			entries.trimToSize();
 		else if (localName.equals("link"))
 			currentEntry.addLink(s);
+		else if (localName.equals("tag"))
+			currentEntry.addTag(s);
 		else if (localName.equals("avatarUrl"))
 			currentEntry.setAvatar(s);
 		else if (localName.equals("operationResult") && failed)

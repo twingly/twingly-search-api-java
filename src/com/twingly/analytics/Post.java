@@ -21,6 +21,7 @@ public class Post {
 	private Date date;
 	private String blogName;
 	private Collection<String> links;
+	private Collection<String> tags;
 	private int authority;
 
 	/**
@@ -71,12 +72,30 @@ public class Post {
 
 	/**
 	 * Adds an out link to this post
-	 * @param links The link (url)
+	 * @param link The link (url)
 	 */
 	void addLink(String link) {
 		if (links == null)
 			links = new ArrayList<String>();
 		links.add(link);
+	}
+
+	/**
+	 * Gets the tags from this post
+	 * @return A list of tags
+	 */
+	public Collection<String> getTags() {
+		return tags;
+	}
+
+	/**
+	 * Adds a tag to this post
+	 * @param tag The tag
+	 */
+	void addTag(String tag) {
+		if (tags == null)
+			tags = new ArrayList<String>();
+		tags.add(tag);
 	}
 
 	/**
