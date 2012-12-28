@@ -10,7 +10,6 @@ To use the API you need an API key. To obtain an API key, send an email to info@
 <pre>
  Query q = new Query(yourApiKey);                // create a request object using your api key
  q.setDocumentLang("en");                        // only search for posts in english
- q.setApproved(true);                            // only match posts marked as approved
  Result result = q.makeRequest("spotify");       // find posts containing the word spotify
  for (Post p : result.getPosts())
      System.out.println(p.getUrl());             // print the url for each post
