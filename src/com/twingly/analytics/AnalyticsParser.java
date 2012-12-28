@@ -121,11 +121,11 @@ class AnalyticsParser extends DefaultHandler {
 
 	@Override
 	public void startElement(String uri, String localName, String name, Attributes attributes) throws SAXException {
-		if (localName.equals("post"))
+		if (localName.equals("post")) {
 			currentEntry = new Post();
-		else if (localName.equals("TermSearch"))
+		} else if (localName.equals("TermSearch")) {
 			matchesReturned = Integer.parseInt(attributes.getValue("numberOfDocuments"));
-		else if (localName.equals("twinglydata")) {
+		} else if (localName.equals("twinglydata")) {
 			matchesReturned = Integer.parseInt(attributes.getValue("numberOfMatchesReturned"));
 			matchesTotal = Integer.parseInt(attributes.getValue("numberOfMatchesTotal"));
 			entries.ensureCapacity(matchesReturned);
