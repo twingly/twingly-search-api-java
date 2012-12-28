@@ -5,7 +5,7 @@ Java API for Twingly Analytics
 
 To use the API you need an API key. To obtain an API key, send an email to info@twingly.com 
 
-# Example usage
+## Example usage
 
 <pre>
  Query q = new Query(yourApiKey);                // create a request object using your api key
