@@ -1,6 +1,6 @@
 # twingly-analytics-api-java
 
-Java API for Twingly Analytics
+Java API for [Twingly Analytics](http://developer.twingly.com/resources/analytics/).
 
 To use the API you need an API key. To obtain an API key, contact us att sales@twingly.com.
 
