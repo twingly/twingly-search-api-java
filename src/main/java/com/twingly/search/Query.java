@@ -1,231 +1,111 @@
 package com.twingly.search;
 
-import java.io.IOException;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBElement;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.transform.stream.StreamSource;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
-import org.xml.sax.helpers.XMLReaderFactory;
-
-/**
- * A class used to make one or more requests to Twingly's REST API.
- * To use the API you need an API key. To obtain an API key, send an email to info@twingly.com
- * <br>
- * Example usage:
- * <pre>
- * Query q = new Query(yourApiKey);                // create a request object using your api key
- * q.setDocumentLang("en");                        // only search for posts in english
- * Result result = q.makeRequest("spotify");       // find posts containing the word spotify
- * for (Post p : result.getPosts())
- *     System.out.println(p.getUrl());             // print the url for each post
- * </pre> 
- * Later you can repeat the search for any new posts that have come in since your last request:
- * <pre>
- * q.setStartTime(result.getNewestPost());         // only search for posts newer than the last result
- * result = q.makeRequest("spotify");              // request new posts containing the word spotify
- *  
- * </pre>
- *
- * A Query object can be reused for several requests
- * 
- * @author marcus@twingly.com
- *
- */
 public class Query {
+    private static final String BASE_URL = "https://api.twingly.com";
+    private static final String SEARCH_PATH = "/analytics/Analytics.ashx";
+    private static final char AND = '&';
+    private final String apiKey;
+    private final SimpleDateFormat df = new SimpleDateFormat(Constants.DATE_FORMAT);
+    private JAXBContext jaxbContext;
 
-	/**
-	 * Enum for the possible search types
-	 * @author marcus@twingly.com
-	 */
-	public enum SearchType {
-		BLOGS,
-		MICROBLOGS
-	}
+    public Query(String apiKey) {
+        this.apiKey = apiKey;
+    }
 
-	private final String apiKey;
+    public String buildRequestQuery(String searchPattern, Language documentLanguage, Date startTime, Date endTime) {
 
-	private String documentLang;
+        StringBuilder sb = new StringBuilder();
+        sb.append(BASE_URL);
+        sb.append(SEARCH_PATH);
+        sb.append("?key=").append(apiKey);
+        sb.append(AND).append("xmloutputversion=2");
 
-	private Date startTime;
+        sb.append(AND).append("searchpattern=").append(urlEncode(searchPattern));
 
-	private Date endTime;
+        // add start time if supplied
+        if (startTime != null) {
+            sb.append(AND).append("ts=").append(urlEncode(df.format(startTime)));
+        }
 
-	private boolean approved;
+        // add end time if supplied
+        if (endTime != null) {
+            sb.append(AND).append("tsTo=").append(urlEncode(df.format(endTime)));
+        }
 
-	private SearchType searchType = SearchType.BLOGS;
+        // add document language if supplied
+        if (documentLanguage != null) {
+            sb.append(AND).append("documentlang=").append(documentLanguage.toStringRepresentation());
+        }
+        return sb.toString();
+    }
 
-	private final XMLReader parser;
+    private String urlEncode(String s) {
+        try {
+            return URLEncoder.encode(s, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            // This is impossible, UTF-8 is always supported according to the java standard
+            throw new RuntimeException("It's quite impossible, but there's no UTF-8 encoding in your JVM");
+        }
+    }
 
-	private final SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    public Result makeRequest(String searchPattern, Language documentLanguage, Date startTime, Date endTime) {
+        String query = buildRequestQuery(searchPattern, documentLanguage, startTime, endTime);
+        return makeRequestInternal(query);
+    }
 
-	/**
-	 * Creates a query object
-	 * 
-	 * @param apiKey The API key
-	 * @throws SAXException If the XML parser couldn't be initialized
-	 */
-	public Query(String apiKey) throws SAXException {
-		this.apiKey = apiKey;
-		this.parser = XMLReaderFactory.createXMLReader();
-	}
+    public Result makeRequest(String searchPattern, Language documentLanguage, Date startTime) {
+        String query = buildRequestQuery(searchPattern, documentLanguage, startTime, null);
+        return makeRequestInternal(query);
+    }
 
-	/**
-	 * Sets the language for the query. Only blogposts in the given language will be returned.
-	 * The format is a two letter ISO language code, for example 'en' for English, 'sv' for Swedish,
-	 * 'de' for German and so on.
-	 * @param lang The language code
-	 */
-	public void setDocumentLang(String lang) {
-		documentLang = lang;
-	}
+    public Result makeRequest(String searchPattern, Language documentLanguage) {
+        String query = buildRequestQuery(searchPattern, documentLanguage, null, null);
+        return makeRequestInternal(query);
+    }
 
-	/**
-	 * Gets the document language, or the empty string if none is set
-	 * @return The document language
-	 */
-	public String getDocumentLang() {
-		return (documentLang == null) ? "" : documentLang;
-	}
+    public Result makeRequest(String searchPattern) {
+        String query = buildRequestQuery(searchPattern, null, null, null);
+        return makeRequestInternal(query);
+    }
 
-	/**
-	 * Sets the start time for the query. Only blogposts with a date later than this date will be returned.
-	 * All dates are UTC.
-	 * @param startTime The start time
-	 */
-	public void setStartTime(Date startTime) {
-		this.startTime = startTime;
-	}
+    public Result query(String query) {
+        return makeRequestInternal(query);
+    }
 
-	/**
-	 * Gets the start time for the query. Only blogposts with a date later than this date will be returned.
-	 * All dates are UTC.
-	 * @return The start time
-	 */
-	public Date getStartTime() {
-		return startTime;
-	}
+    private Result makeRequestInternal(String query) {
+        try {
+            Unmarshaller jaxbUnmarshaller = getJAXBContext().createUnmarshaller();
+            StreamSource source = new StreamSource(query);
 
-	/**
-	 * Sets the end time for the query. Only blogposts with a date earlier than this date will be returned.
-	 * All dates are UTC.
-	 * @param endTime The start time
-	 */
-	public void setEndTime(Date endTime) {
-		this.endTime = endTime;
-	}
+            JAXBElement<Result> jaxbElement = jaxbUnmarshaller.unmarshal(source, Result.class);
+            return jaxbElement.getValue();
+        } catch (JAXBException e) {
+            throw new RuntimeException("Unable to process request");
+        }
+    }
 
-	/**
-	 * Gets the end time for the query. Only blogposts with a date earlier than this date will be returned.
-	 * All dates are UTC.
-	 */
-	public Date getEndTime() {
-		return endTime;
-	}
+    JAXBContext getJAXBContext() {
+        if (jaxbContext == null) {
+            try {
+                jaxbContext = JAXBContext.newInstance(Result.class);
+            } catch (JAXBException e) {
+                throw new RuntimeException("Cannot initialize JAXBContext for Result", e);
+            }
+        }
+        return jaxbContext;
+    }
 
-	/**
-	 * Sets the approved flag for the query. If it is true, only approved blogs will be returned, otherwise
-	 * both approved and unapproved blogs will be returned.
-	 * @param approved True if you only want approved blogposts in the search result
-	 */
-	public void setApproved(boolean approved) {
-		this.approved = approved;
-	}
-
-	/**
-	 * Returns the approved flag for this query as set by setApproved
-	 * @see #setApproved(boolean)
-	 * @return The approved flag
-	 */
-	public boolean isApproved() {
-		return approved;
-	}
-
-	/**
-	 * Returns the search type (blogs/microblogs)
-	 * @return The search type
-	 */
-	public SearchType getSearchType() {
-		return searchType;
-	}
-
-	/**
-	 * Sets the search type; if you want search results from blogs or microblogs
-	 * @param searchType The search type
-	 */
-	public void setSearchType(SearchType searchType) {
-		this.searchType = searchType;
-	}
-
-	private String buildRequestString(String search) {
-
-		StringBuilder sb = new StringBuilder();
-
-		// base URL, XML version, client type and the API key
-		sb.append("http://api.twingly.com/analytics/Analytics.ashx?xmloutputversion=1&clienttype=javaapi&key=");
-		sb.append(apiKey);
-
-		// the search pattern
-		sb.append("&searchpattern=");
-		sb.append(urlEncode(search));
-
-		// add start time if supplied
-		if (startTime != null) {
-			sb.append("&ts=");
-			sb.append(urlEncode(df.format(startTime)));
-		}
-
-		// add end time if supplied
-		if (endTime != null) {
-			sb.append("&tsTo=");
-			sb.append(urlEncode(df.format(endTime)));
-		}
-
-		// add document language if supplied
-		if (getDocumentLang().length() != 0) {
-			sb.append("&documentlang=");
-			sb.append(documentLang);
-		}
-
-		// add approved
-		sb.append("&approved=");
-		sb.append(approved ? "True" : "False");
-
-		// add search type
-		sb.append("&product=");
-		if (searchType.equals(SearchType.BLOGS))
-			sb.append("search");
-		else
-			sb.append("microblogsearch");
-
-		return sb.toString();
-	}
-
-	private String urlEncode(String s) {
-		try {
-			return URLEncoder.encode(s, "UTF-8");
-		} catch (UnsupportedEncodingException e) {
-			// This is impossible, UTF-8 is always supported according to the java standard
-			return null;
-		}
-	}
-
-	/**
-	 * Makes a request query to the REST API using the parameters you have previously set.
-	 * The search string can include additional modifiers such as link:nytimes.com - see
-	 * {@link <a href="http://twingly.com/help#search">Twingly Help</a>} for the syntax.
-	 * 
-	 * @param search The search string
-	 * @return The search result
-	 * @throws IOException In case of an IO error (error contacting the http server and so on)
-	 * @throws SAXException In case of malformed XML result
-	 */
-	public Result makeRequest(String search) throws IOException, SAXException {
-		AnalyticsParser handler = new AnalyticsParser();
-		parser.setContentHandler(handler);
-		parser.parse(buildRequestString(search));
-		return new Result(handler.getPosts(), handler.getMatchesReturned(), handler.getMatchesTotal());
-	}
+    private boolean isNotBlank(String value) {
+        return !(value == null || "".equals(value) || "".equals(value.trim()));
+    }
 }

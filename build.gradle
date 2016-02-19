@@ -1,7 +1,6 @@
 apply plugin: "idea"
 apply plugin: "java"
 ext {
-
     sourceLevel = 1.7
     targetLevel = sourceLevel
     sourceEncoding = "UTF-8"
@@ -11,8 +10,10 @@ ext {
     junitVersion = "4.12"
     cglibVersion = "3.2.0"
     objenesisVersion = "2.2"
+    jaxbVersion = "2.2.12"
 
     libs = [
+            jaxb     : "javax.xml.bind:jaxb-api:$jaxbVersion",
             junit    : "junit:junit:$junitVersion",
             groovy   : "org.codehaus.groovy:groovy-all:$groovyVersion",
             spock    : "org.spockframework:spock-core:$spockVersion",
@@ -29,8 +30,11 @@ tasks.withType(JavaCompile.class) {
     options.encoding = sourceEncoding
     options.compilerArgs = ["-Xmaxerrs", "20", "-Xmaxwarns", "0", "-Xlint:all"]
 }
-
+repositories {
+    mavenCentral()
+}
 dependencies {
+    compile libs.jaxb
     testCompile libs.junit
     testCompile libs.groovy
     testCompile libs.spock

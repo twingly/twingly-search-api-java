@@ -1,214 +1,166 @@
 package com.twingly.search;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.Date;
+import java.util.List;
 
 /**
- * A class representing a single blog post
- * 
- * @author marcus@twingly.com
- * @see Query The Query class documentation for an example on how to use this class
+ * A blog post
  */
+@XmlRootElement(name = "post")
 public class Post {
+    /**
+     * the post URL
+     */
+    private String url;
+    /**
+     * the post title
+     */
+    private String title;
+    /**
+     * the blog post text
+     */
+    private String summary;
+    /**
+     * ISO two letter language code for the language that the post was written in.
+     */
+    private String languageCode;
+    /**
+     * the time, in UTC, when the post was published
+     */
+    @XmlJavaTypeAdapter(DateAdapter.class)
+    private Date published;
+    /**
+     * the time, in UTC, when the post was indexed by Twingly
+     */
+    @XmlJavaTypeAdapter(DateAdapter.class)
+    private Date indexed;
+    /**
+     * the blog URL
+     */
+    private String blogUrl;
+    /**
+     * name of the blog
+     */
+    private String blogName;
+    /**
+     * the blog's authority/influence.
+     *
+     * @see "https://developer.twingly.com/resources/ranking/#authority"
+     */
+    private int authority;
+    /**
+     * blog_rank the rank of the blog, based on authority and language.
+     *
+     * @see "https://developer.twingly.com/resources/ranking/#blogrank"
+     */
+    private int blogRank;
+    @XmlElementWrapper(name = "tags")
+    @XmlElement(name = "tag")
+    private List<String> tags;
+    @XmlAttribute(name = "contentType")
+    private String contentType;
 
-	private String url;
-	private String blogUrl;
-	private String title;
-	private String summary;
-	private String languageCode;
-	private String avatar;
-	private Date date;
-	private String blogName;
-	private Collection<String> links;
-	private Collection<String> tags;
-	private int authority;
+    public Post() {
+    }
 
-	/**
-	 * Make the constructor invisible outside the package
-	 */
-	Post() {
-	}
+    public String getContentType() {
+        return contentType;
+    }
 
-	/**
-	 * Gets the URL of this post
-	 * @return The URL of this post
-	 */
-	public String getUrl() {
-		return url;
-	}
-	
-	/**
-	 * Sets the URL of this post
-	 * @param url
-	 */
-	void setUrl(String url) {
-		this.url = url;
-	}
-	
-	/**
-	 * Gets the URL of this blog
-	 * @return The URL of this blog
-	 */
-	public String getBlogUrl() {
-		return blogUrl;
-	}
-	
-	/**
-	 * Sets the URL of this blog
-	 * @param blogUrl
-	 */
-	void setBlogUrl(String blogUrl) {
-		this.blogUrl = blogUrl;
-	}
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
+    }
 
-	/**
-	 * Gets the links from this post
-	 * @return A list of links
-	 */
-	public Collection<String> getLinks() {
-		return links;
-	}
+    public String getUrl() {
+        return url;
+    }
 
-	/**
-	 * Adds an out link to this post
-	 * @param link The link (url)
-	 */
-	void addLink(String link) {
-		if (links == null)
-			links = new ArrayList<String>();
-		links.add(link);
-	}
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
-	/**
-	 * Gets the tags from this post
-	 * @return A list of tags
-	 */
-	public Collection<String> getTags() {
-		return tags;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	/**
-	 * Adds a tag to this post
-	 * @param tag The tag
-	 */
-	void addTag(String tag) {
-		if (tags == null)
-			tags = new ArrayList<String>();
-		tags.add(tag);
-	}
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-	/**
-	 * Gets the title of this blog post
-	 * @return The title of this blog post
-	 */
-	public String getTitle() {
-		return title;
-	}
-	
-	/**
-	 * Sets the title of this blog post
-	 * @param title The title of this blog post
-	 */
-	void setTitle(String title) {
-		this.title = title;
-	}
+    public String getSummary() {
+        return summary;
+    }
 
-	/**
-	 * Gets the text content of this post
-	 * @return The content of this post
-	 */
-	public String getPostContent() {
-		return summary;
-	}
+    public void setSummary(String summary) {
+        this.summary = summary;
+    }
 
-	/**
-	 * Sets the post content of this post
-	 * @param content The content
-	 */
-	void setPostContent(String content) {
-		this.summary = content;
-	}
+    public String getLanguageCode() {
+        return languageCode;
+    }
 
-	/**
-	 * Gets the language code of this post
-	 * @return The language code of this post
-	 */
-	public String getLanguageCode() {
-		return languageCode;
-	}
+    public void setLanguageCode(String languageCode) {
+        this.languageCode = languageCode;
+    }
 
-	/**
-	 * Sets the language code of this post
-	 * @param languageCode The language code of this post
-	 */
-	void setLanguageCode(String languageCode) {
-		this.languageCode = languageCode;
-	}
+    public Date getPublished() {
+        return published;
+    }
 
-	/**
-	 * Gets the URL of the avatar associated with the post, or null if unknown
-	 * @return The URL of the avatar
-	 */
-	public String getAvatar() {
-		return avatar;
-	}
+    public void setPublished(Date published) {
+        this.published = published;
+    }
 
-	/**
-	 * Sets the URL of the avatar associated with the post, or null if unknown
-	 * @param avatar The URL of the avatar
-	 */
-	void setAvatar(String avatar) {
-		this.avatar = avatar;
-	}
+    public Date getIndexed() {
+        return indexed;
+    }
 
-	/**
-	 * Gets the time and date of this post
-	 * All dates are UTC
-	 * @return The publish date of this post
-	 */
-	public Date getDate() {
-		return date;
-	}
-	
-	/**
-	 * Sets the time and date of this post
-	 * All dates are UTC
-	 * @param date The date of this post
-	 */
-	void setDate(Date date) {
-		this.date = date;
-	}
-	
-	/**
-	 * Gets the name of this blog
-	 * @return The name of this blog
-	 */
-	public String getBlogName() {
-		return blogName;
-	}
-	
-	/**
-	 * Sets the name of this blog
-	 * @param blogName The name of this blog
-	 */
-	void setBlogName(String blogName) {
-		this.blogName = blogName;
-	}
-	
-	/**
-	 * Gets the authority associated with this blog
-	 * @return The authority
-	 */
-	public int getAuthority() {
-		return authority;
-	}
-	
-	/**
-	 * Sets the authority value for this blog
-	 * @param authority The authority
-	 */
-	void setAuthority(int authority) {
-		this.authority = authority;
-	}
+    public void setIndexed(Date indexed) {
+        this.indexed = indexed;
+    }
+
+    public String getBlogUrl() {
+        return blogUrl;
+    }
+
+    public void setBlogUrl(String blogUrl) {
+        this.blogUrl = blogUrl;
+    }
+
+    public String getBlogName() {
+        return blogName;
+    }
+
+    public void setBlogName(String blogName) {
+        this.blogName = blogName;
+    }
+
+    public int getAuthority() {
+        return authority;
+    }
+
+    public void setAuthority(int authority) {
+        this.authority = authority;
+    }
+
+    public int getBlogRank() {
+        return blogRank;
+    }
+
+    public void setBlogRank(int blogRank) {
+        this.blogRank = blogRank;
+    }
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
+    }
 }
