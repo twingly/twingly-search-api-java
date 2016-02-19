@@ -1,3 +1,39 @@
-apply plugin: 'idea'
+apply plugin: "idea"
+apply plugin: "java"
+ext {
 
-apply plugin: 'java'
+    sourceLevel = 1.7
+    targetLevel = sourceLevel
+    sourceEncoding = "UTF-8"
+//testing
+    spockVersion = "1.0-groovy-2.4"
+    groovyVersion = "2.4.5"
+    junitVersion = "4.12"
+    cglibVersion = "3.2.0"
+    objenesisVersion = "2.2"
+
+    libs = [
+            junit    : "junit:junit:$junitVersion",
+            groovy   : "org.codehaus.groovy:groovy-all:$groovyVersion",
+            spock    : "org.spockframework:spock-core:$spockVersion",
+            cglib    : "cglib:cglib-nodep:$cglibVersion",
+            objenesis: "org.objenesis:objenesis:$objenesisVersion"
+    ]
+}
+
+tasks.withType(JavaCompile.class) {
+    sourceCompatibility = sourceLevel
+    targetCompatibility = targetLevel
+    options.deprecation = false
+    options.warnings = false
+    options.encoding = sourceEncoding
+    options.compilerArgs = ["-Xmaxerrs", "20", "-Xmaxwarns", "0", "-Xlint:all"]
+}
+
+dependencies {
+    testCompile libs.junit
+    testCompile libs.groovy
+    testCompile libs.spock
+    testRuntime libs.cglib
+    testRuntime libs.objenesis
+}
