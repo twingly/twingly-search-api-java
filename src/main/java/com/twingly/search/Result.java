@@ -11,7 +11,6 @@ import java.util.List;
 @XmlRootElement(name = "twinglydata")
 public class Result {
 
-
     /**
      * number of Posts the Query returned.
      */
@@ -35,6 +34,9 @@ public class Result {
     @XmlElement(name = "post")
     private List<Post> posts;
 
+    /**
+     * Instantiates a new Result.
+     */
     public Result() {
 
     }
@@ -42,7 +44,10 @@ public class Result {
     /**
      * Constructs a result from a list of posts. The constructor is not visible outside the package.
      *
-     * @param posts A list of Post objects
+     * @param posts                   A list of Post objects
+     * @param numberOfMatchesReturned the number of matches returned
+     * @param numberOfMatchesTotal    the number of matches total
+     * @param secondsElapsed          the seconds elapsed
      */
     Result(List<Post> posts, int numberOfMatchesReturned, int numberOfMatchesTotal, double secondsElapsed) {
         this.posts = posts;
@@ -60,6 +65,11 @@ public class Result {
         return posts;
     }
 
+    /**
+     * Sets posts.
+     *
+     * @param posts the posts
+     */
     public void setPosts(List<Post> posts) {
         this.posts = posts;
     }
@@ -73,6 +83,11 @@ public class Result {
         return numberOfMatchesReturned;
     }
 
+    /**
+     * Sets number of matches returned.
+     *
+     * @param numberOfMatchesReturned the number of matches returned
+     */
     public void setNumberOfMatchesReturned(int numberOfMatchesReturned) {
         this.numberOfMatchesReturned = numberOfMatchesReturned;
     }
@@ -86,6 +101,11 @@ public class Result {
         return numberOfMatchesTotal;
     }
 
+    /**
+     * Sets number of matches total.
+     *
+     * @param numberOfMatchesTotal the number of matches total
+     */
     public void setNumberOfMatchesTotal(int numberOfMatchesTotal) {
         this.numberOfMatchesTotal = numberOfMatchesTotal;
     }
@@ -99,6 +119,11 @@ public class Result {
         return secondsElapsed;
     }
 
+    /**
+     * Sets seconds elapsed.
+     *
+     * @param secondsElapsed the seconds elapsed
+     */
     public void setSecondsElapsed(double secondsElapsed) {
         this.secondsElapsed = secondsElapsed;
     }

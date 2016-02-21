@@ -1,5 +1,6 @@
 apply plugin: "idea"
 apply plugin: "java"
+version = "0.0.1"
 ext {
     sourceLevel = 1.7
     targetLevel = sourceLevel
@@ -20,16 +21,13 @@ ext {
             cglib    : "cglib:cglib-nodep:$cglibVersion",
             objenesis: "org.objenesis:objenesis:$objenesisVersion"
     ]
+
+    sharedManifest = manifest {
+        attributes("Implementation-Title": 'Twingly Search API Java',
+                "Implementation-Version": version)
+    }
 }
 
-tasks.withType(JavaCompile.class) {
-    sourceCompatibility = sourceLevel
-    targetCompatibility = targetLevel
-    options.deprecation = false
-    options.warnings = false
-    options.encoding = sourceEncoding
-    options.compilerArgs = ["-Xmaxerrs", "20", "-Xmaxwarns", "0", "-Xlint:all"]
-}
 repositories {
     mavenCentral()
 }
@@ -40,4 +38,29 @@ dependencies {
     testCompile libs.spock
     testRuntime libs.cglib
     testRuntime libs.objenesis
+}
+//create a single Jar with all dependencies
+task fatJar(type: Jar) {
+    manifest = project.manifest {
+        from sharedManifest
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
+task myJavadocs(type: Javadoc) {
+    source = sourceSets.main.allJava
+    options.memberLevel = JavadocMemberLevel.PROTECTED
+    classpath = configurations.compile
+    destinationDir = file("./doc/")
+}
+
+tasks.withType(JavaCompile.class) {
+    sourceCompatibility = sourceLevel
+    targetCompatibility = targetLevel
+    options.deprecation = false
+    options.warnings = false
+    options.encoding = sourceEncoding
+    options.compilerArgs = ["-Xmaxerrs", "20", "-Xmaxwarns", "0", "-Xlint:all"]
 }

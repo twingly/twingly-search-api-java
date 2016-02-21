@@ -10,6 +10,9 @@ import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * The type Query.
+ */
 public class Query {
     private static final String BASE_URL = "https://api.twingly.com";
     private static final String SEARCH_PATH = "/analytics/Analytics.ashx";
@@ -18,10 +21,24 @@ public class Query {
     private final SimpleDateFormat df = new SimpleDateFormat(Constants.DATE_FORMAT);
     private JAXBContext jaxbContext;
 
+    /**
+     * Instantiates a new Query.
+     *
+     * @param apiKey the api key
+     */
     public Query(String apiKey) {
         this.apiKey = apiKey;
     }
 
+    /**
+     * Build request query string.
+     *
+     * @param searchPattern    the search pattern
+     * @param documentLanguage the document language
+     * @param startTime        the start time
+     * @param endTime          the end time
+     * @return the ready-to-use Query
+     */
     public String buildRequestQuery(String searchPattern, Language documentLanguage, Date startTime, Date endTime) {
 
         StringBuilder sb = new StringBuilder();
@@ -58,26 +75,62 @@ public class Query {
         }
     }
 
+    /**
+     * Make request result.
+     *
+     * @param searchPattern    the search pattern
+     * @param documentLanguage the document language
+     * @param startTime        the start time
+     * @param endTime          the end time
+     * @return the result
+     */
     public Result makeRequest(String searchPattern, Language documentLanguage, Date startTime, Date endTime) {
         String query = buildRequestQuery(searchPattern, documentLanguage, startTime, endTime);
         return makeRequestInternal(query);
     }
 
+    /**
+     * Make request result.
+     *
+     * @param searchPattern    the search pattern
+     * @param documentLanguage the document language
+     * @param startTime        the start time
+     * @return the result
+     */
     public Result makeRequest(String searchPattern, Language documentLanguage, Date startTime) {
         String query = buildRequestQuery(searchPattern, documentLanguage, startTime, null);
         return makeRequestInternal(query);
     }
 
+    /**
+     * Make request result.
+     *
+     * @param searchPattern    the search pattern
+     * @param documentLanguage the document language
+     * @return the result
+     */
     public Result makeRequest(String searchPattern, Language documentLanguage) {
         String query = buildRequestQuery(searchPattern, documentLanguage, null, null);
         return makeRequestInternal(query);
     }
 
+    /**
+     * Make request result.
+     *
+     * @param searchPattern the search pattern
+     * @return the result
+     */
     public Result makeRequest(String searchPattern) {
         String query = buildRequestQuery(searchPattern, null, null, null);
         return makeRequestInternal(query);
     }
 
+    /**
+     * Query result.
+     *
+     * @param query the query
+     * @return the result
+     */
     public Result query(String query) {
         return makeRequestInternal(query);
     }
@@ -86,7 +139,6 @@ public class Query {
         try {
             Unmarshaller jaxbUnmarshaller = getJAXBContext().createUnmarshaller();
             StreamSource source = new StreamSource(query);
-
             JAXBElement<Result> jaxbElement = jaxbUnmarshaller.unmarshal(source, Result.class);
             return jaxbElement.getValue();
         } catch (JAXBException e) {
@@ -94,6 +146,11 @@ public class Query {
         }
     }
 
+    /**
+     * Gets jaxb context.
+     *
+     * @return the jaxb context
+     */
     JAXBContext getJAXBContext() {
         if (jaxbContext == null) {
             try {
@@ -103,9 +160,5 @@ public class Query {
             }
         }
         return jaxbContext;
-    }
-
-    private boolean isNotBlank(String value) {
-        return !(value == null || "".equals(value) || "".equals(value.trim()));
     }
 }
