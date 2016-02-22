@@ -22,6 +22,8 @@ ext {
             objenesis: "org.objenesis:objenesis:$objenesisVersion"
     ]
 
+    javadocFolder = "doc"
+
     sharedManifest = manifest {
         attributes("Implementation-Title": 'Twingly Search API Java',
                 "Implementation-Version": version)
@@ -40,7 +42,7 @@ dependencies {
     testRuntime libs.objenesis
 }
 //create a single Jar with all dependencies
-task fatJar(type: Jar) {
+task generateOneJar(type: Jar) {
     manifest = project.manifest {
         from sharedManifest
     }
@@ -49,11 +51,11 @@ task fatJar(type: Jar) {
     with jar
 }
 
-task myJavadocs(type: Javadoc) {
+task generateJavadocs(type: Javadoc) {
     source = sourceSets.main.allJava
     options.memberLevel = JavadocMemberLevel.PROTECTED
     classpath = configurations.compile
-    destinationDir = file("./doc/")
+    destinationDir = file(javadocFolder)
 }
 
 tasks.withType(JavaCompile.class) {
