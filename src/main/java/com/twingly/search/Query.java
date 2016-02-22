@@ -1,11 +1,19 @@
 package com.twingly.search;
 
+import com.twingly.search.exception.BlogStream;
+import com.twingly.search.exception.OperationResult;
+import com.twingly.search.exception.TwinglyException;
+
 import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBElement;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-import javax.xml.transform.stream.StreamSource;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -17,8 +25,11 @@ public class Query {
     private static final String BASE_URL = "https://api.twingly.com";
     private static final String SEARCH_PATH = "/analytics/Analytics.ashx";
     private static final char AND = '&';
+    private static final String USER_AGENT_PROPERTY = "User-Agent";
+    private static final String DEFAULT_USER_AGENT = "Twingly Search Java Client/" + Constants.VERSION;
     private final String apiKey;
     private final SimpleDateFormat df = new SimpleDateFormat(Constants.DATE_FORMAT);
+    private String userAgent = DEFAULT_USER_AGENT;
     private JAXBContext jaxbContext;
 
     /**
@@ -28,6 +39,14 @@ public class Query {
      */
     public Query(String apiKey) {
         this.apiKey = apiKey;
+    }
+
+    public String getUserAgent() {
+        return userAgent;
+    }
+
+    public void setUserAgent(String userAgent) {
+        this.userAgent = userAgent;
     }
 
     /**
@@ -71,7 +90,7 @@ public class Query {
             return URLEncoder.encode(s, "UTF-8");
         } catch (UnsupportedEncodingException e) {
             // This is impossible, UTF-8 is always supported according to the java standard
-            throw new RuntimeException("It's quite impossible, but there's no UTF-8 encoding in your JVM");
+            throw new TwinglyException("It's quite impossible, but there's no UTF-8 encoding in your JVM", e);
         }
     }
 
@@ -138,11 +157,31 @@ public class Query {
     private Result makeRequestInternal(String query) {
         try {
             Unmarshaller jaxbUnmarshaller = getJAXBContext().createUnmarshaller();
-            StreamSource source = new StreamSource(query);
-            JAXBElement<Result> jaxbElement = jaxbUnmarshaller.unmarshal(source, Result.class);
-            return jaxbElement.getValue();
+
+            URL url = getUrl(query);
+            URLConnection connection = url.openConnection();
+            connection.setRequestProperty(USER_AGENT_PROPERTY, userAgent);
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+                Object result = jaxbUnmarshaller.unmarshal(br);
+                if (result instanceof Result) {
+                    return (Result) result;
+                } else if (result instanceof BlogStream) {
+                    throw new TwinglyException((BlogStream) result);
+                }
+                throw new TwinglyException("Unprocessed exception");
+            }
         } catch (JAXBException e) {
-            throw new RuntimeException("Unable to process request");
+            throw new TwinglyException("Unable to process request", e);
+        } catch (IOException e) {
+            throw new TwinglyException("IO exception", e);
+        }
+    }
+
+    URL getUrl(String query) {
+        try {
+            return new URL(query);
+        } catch (MalformedURLException e) {
+            throw new TwinglyException("Malformed query", e);
         }
     }
 
@@ -154,9 +193,9 @@ public class Query {
     JAXBContext getJAXBContext() {
         if (jaxbContext == null) {
             try {
-                jaxbContext = JAXBContext.newInstance(Result.class);
+                jaxbContext = JAXBContext.newInstance(Result.class, Post.class, OperationResult.class, BlogStream.class);
             } catch (JAXBException e) {
-                throw new RuntimeException("Cannot initialize JAXBContext for Result", e);
+                throw new TwinglyException("Cannot initialize JAXBContext for Result", e);
             }
         }
         return jaxbContext;
