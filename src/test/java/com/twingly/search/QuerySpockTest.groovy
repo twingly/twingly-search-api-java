@@ -3,43 +3,32 @@ package com.twingly.search
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import javax.xml.bind.JAXBContext
-import javax.xml.bind.Unmarshaller
 import java.text.SimpleDateFormat
 
 class QuerySpockTest extends Specification {
     def sdf = new SimpleDateFormat(Constants.DATE_FORMAT)
-    def jaxbContext = Mock(JAXBContext)
-    def unmarschaller = Mock(Unmarshaller)
-    def urlStreamHandler
-    def urlConnection = Mock(URLConnection)
-    def inputStream = Mock(InputStream)
+    def client = Mock(Client)
 
-    def setup() {
-        jaxbContext.createUnmarshaller() >> unmarschaller
-        urlStreamHandler = new URLStreamHandler() {
-            @Override
-            protected URLConnection openConnection(URL u) throws IOException {
-                urlConnection
-            }
-        }
-        urlConnection.getInputStream() >> inputStream
+    def "should create client"() {
+        given:
+        def apiKey = "key"
+        def query = new Query(apiKey)
+        when:
+        def result = query.getClient()
+        then:
+        result != null
     }
 
     def "should make request with query"() {
         given:
         def apiKey = "apiKey"
-        def queryString = "http://example.com/"
-        def url = new URL("foo", "bar", 99, "foo", urlStreamHandler)
+        def queryString = "http://twingly.com/"
         def query = Spy(Query, constructorArgs: [apiKey])
-        def expectedValue = Mock(Result)
         when:
         def result = query.query(queryString)
         then:
-        1 * query.getJAXBContext() >> jaxbContext
-        1 * query.getUrl(queryString) >> url
-        1 * unmarschaller.unmarshal(_ as BufferedReader) >> expectedValue
-        result == expectedValue
+        1 * query.getClient() >> client
+        1 * client.makeRequest(_ as String)
     }
 
 
@@ -50,17 +39,13 @@ class QuerySpockTest extends Specification {
         def language = Language.English
         def startDate = sdf.parse("2016-02-18 00:00:00")
         def endDate = sdf.parse("2016-03-18 00:00:00")
-        def url = new URL("foo", "bar", 99, "foo", urlStreamHandler)
         def query = Spy(Query, constructorArgs: [apiKey])
-        def expectedValue = Mock(Result)
         when:
         def result = query.makeRequest(searchPattern, language, startDate, endDate)
         then:
-        1 * query.buildRequestQuery(searchPattern, language, startDate, endDate)
-        1 * query.getJAXBContext() >> jaxbContext
-        1 * query.getUrl(_ as String) >> url
-        1 * unmarschaller.unmarshal(_ as BufferedReader) >> expectedValue
-        result == expectedValue
+        1 * query.buildRequestQuery(searchPattern, language.getIsoCode(), startDate, endDate)
+        1 * query.getClient() >> client
+        1 * client.makeRequest(_ as String)
     }
 
     def "should make request with searchPattern, language and startDate"() {
@@ -69,18 +54,13 @@ class QuerySpockTest extends Specification {
         def searchPattern = "searchPattern"
         def language = Language.English
         def startDate = sdf.parse("2016-02-18 00:00:00")
-        def url = new URL("foo", "bar", 99, "foo", urlStreamHandler)
         def query = Spy(Query, constructorArgs: [apiKey])
-        def expectedValue = Mock(Result)
         when:
         def result = query.makeRequest(searchPattern, language, startDate)
         then:
-        1 * query.buildRequestQuery(searchPattern, language, startDate, null)
-        1 * query.getJAXBContext() >> jaxbContext
-        1 * query.getUrl(_ as String) >> url
-        1 * unmarschaller.unmarshal(_ as BufferedReader) >> expectedValue
-
-        result == expectedValue
+        1 * query.buildRequestQuery(searchPattern, language.getIsoCode(), startDate, null)
+        1 * query.getClient() >> client
+        1 * client.makeRequest(_ as String)
     }
 
     def "should make request with searchPattern and language"() {
@@ -89,33 +69,25 @@ class QuerySpockTest extends Specification {
         def searchPattern = "searchPattern"
         def language = Language.English
         def query = Spy(Query, constructorArgs: [apiKey])
-        def url = new URL("foo", "bar", 99, "foo", urlStreamHandler)
-        def expectedValue = Mock(Result)
         when:
         def result = query.makeRequest(searchPattern, language)
         then:
-        1 * query.buildRequestQuery(searchPattern, language, null, null)
-        1 * query.getJAXBContext() >> jaxbContext
-        1 * query.getUrl(_ as String) >> url
-        1 * unmarschaller.unmarshal(_ as BufferedReader) >> expectedValue
-        result == expectedValue
+        1 * query.buildRequestQuery(searchPattern, language.getIsoCode(), null, null)
+        1 * query.getClient() >> client
+        1 * client.makeRequest(_ as String)
     }
 
     def "should make request with searchPattern"() {
         given:
         def apiKey = "apiKey"
         def searchPattern = "searchPattern"
-        def url = new URL("foo", "bar", 99, "foo", urlStreamHandler)
         def query = Spy(Query, constructorArgs: [apiKey])
-        def expectedValue = Mock(Result)
         when:
         def result = query.makeRequest(searchPattern)
         then:
         1 * query.buildRequestQuery(searchPattern, null, null, null)
-        1 * query.getJAXBContext() >> jaxbContext
-        1 * query.getUrl(_ as String) >> url
-        1 * unmarschaller.unmarshal(_ as BufferedReader) >> expectedValue
-        result == expectedValue
+        1 * query.getClient() >> client
+        1 * client.makeRequest(_ as String)
     }
 
     @Unroll
@@ -125,7 +97,7 @@ class QuerySpockTest extends Specification {
         def st = startDate != null ? sdf.parse(startDate) : null
         def stTo = endDate != null ? sdf.parse(endDate) : null
         when:
-        def actual = query.buildRequestQuery(searchPattern, language, st, stTo)
+        def actual = query.buildRequestQuery(searchPattern, language?.getIsoCode(), st, stTo)
         then:
         actual == expected
         where:

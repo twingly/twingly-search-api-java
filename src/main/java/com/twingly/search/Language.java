@@ -240,26 +240,26 @@ public enum Language {
     }
 
     /**
-     * From string representation language.
+     * Create language enum from iso code representation.
      *
      * @param isoCode the iso code
-     * @return the language
+     * @return the language with given ISO code or null, if no language for ISO code was found
      */
-    public static Language fromStringRepresentation(String isoCode) {
+    public static Language fromIsoCode(String isoCode) {
         for (Language language : values()) {
             if (language.isoCode.equalsIgnoreCase(isoCode)) {
                 return language;
             }
         }
-        throw new IllegalArgumentException(String.format("Language with ISO code=%s is not currently supported.", isoCode));
+        return null;
     }
 
     /**
-     * To string representation string.
+     * Gets iso code.
      *
-     * @return the string
+     * @return the iso code
      */
-    public String toStringRepresentation() {
+    public String getIsoCode() {
         return isoCode;
     }
 }

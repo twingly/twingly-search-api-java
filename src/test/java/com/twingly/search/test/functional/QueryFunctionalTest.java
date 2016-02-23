@@ -1,4 +1,9 @@
-package com.twingly.search;
+package com.twingly.search.test.functional;
+
+import com.twingly.search.Constants;
+import com.twingly.search.Language;
+import com.twingly.search.Query;
+import com.twingly.search.Result;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

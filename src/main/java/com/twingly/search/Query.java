@@ -1,19 +1,8 @@
 package com.twingly.search;
 
-import com.twingly.search.exception.BlogStream;
-import com.twingly.search.exception.OperationResult;
 import com.twingly.search.exception.TwinglyException;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -25,12 +14,10 @@ public class Query {
     private static final String BASE_URL = "https://api.twingly.com";
     private static final String SEARCH_PATH = "/analytics/Analytics.ashx";
     private static final char AND = '&';
-    private static final String USER_AGENT_PROPERTY = "User-Agent";
-    private static final String DEFAULT_USER_AGENT = "Twingly Search Java Client/" + Constants.VERSION;
     private final String apiKey;
     private final SimpleDateFormat df = new SimpleDateFormat(Constants.DATE_FORMAT);
-    private String userAgent = DEFAULT_USER_AGENT;
-    private JAXBContext jaxbContext;
+    private Client client;
+
 
     /**
      * Instantiates a new Query.
@@ -41,13 +28,6 @@ public class Query {
         this.apiKey = apiKey;
     }
 
-    public String getUserAgent() {
-        return userAgent;
-    }
-
-    public void setUserAgent(String userAgent) {
-        this.userAgent = userAgent;
-    }
 
     /**
      * Build request query string.
@@ -58,7 +38,7 @@ public class Query {
      * @param endTime          the end time
      * @return the ready-to-use Query
      */
-    public String buildRequestQuery(String searchPattern, Language documentLanguage, Date startTime, Date endTime) {
+    public String buildRequestQuery(String searchPattern, String documentLanguage, Date startTime, Date endTime) {
 
         StringBuilder sb = new StringBuilder();
         sb.append(BASE_URL);
@@ -80,7 +60,7 @@ public class Query {
 
         // add document language if supplied
         if (documentLanguage != null) {
-            sb.append(AND).append("documentlang=").append(documentLanguage.toStringRepresentation());
+            sb.append(AND).append("documentlang=").append(documentLanguage);
         }
         return sb.toString();
     }
@@ -104,8 +84,8 @@ public class Query {
      * @return the result
      */
     public Result makeRequest(String searchPattern, Language documentLanguage, Date startTime, Date endTime) {
-        String query = buildRequestQuery(searchPattern, documentLanguage, startTime, endTime);
-        return makeRequestInternal(query);
+        String query = buildRequestQuery(searchPattern, documentLanguage.getIsoCode(), startTime, endTime);
+        return getClient().makeRequest(query);
     }
 
     /**
@@ -117,8 +97,8 @@ public class Query {
      * @return the result
      */
     public Result makeRequest(String searchPattern, Language documentLanguage, Date startTime) {
-        String query = buildRequestQuery(searchPattern, documentLanguage, startTime, null);
-        return makeRequestInternal(query);
+        String query = buildRequestQuery(searchPattern, documentLanguage.getIsoCode(), startTime, null);
+        return getClient().makeRequest(query);
     }
 
     /**
@@ -129,8 +109,8 @@ public class Query {
      * @return the result
      */
     public Result makeRequest(String searchPattern, Language documentLanguage) {
-        String query = buildRequestQuery(searchPattern, documentLanguage, null, null);
-        return makeRequestInternal(query);
+        String query = buildRequestQuery(searchPattern, documentLanguage.getIsoCode(), null, null);
+        return getClient().makeRequest(query);
     }
 
     /**
@@ -141,7 +121,7 @@ public class Query {
      */
     public Result makeRequest(String searchPattern) {
         String query = buildRequestQuery(searchPattern, null, null, null);
-        return makeRequestInternal(query);
+        return getClient().makeRequest(query);
     }
 
     /**
@@ -151,53 +131,13 @@ public class Query {
      * @return the result
      */
     public Result query(String query) {
-        return makeRequestInternal(query);
+        return getClient().makeRequest(query);
     }
 
-    private Result makeRequestInternal(String query) {
-        try {
-            Unmarshaller jaxbUnmarshaller = getJAXBContext().createUnmarshaller();
-
-            URL url = getUrl(query);
-            URLConnection connection = url.openConnection();
-            connection.setRequestProperty(USER_AGENT_PROPERTY, userAgent);
-            try (BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
-                Object result = jaxbUnmarshaller.unmarshal(br);
-                if (result instanceof Result) {
-                    return (Result) result;
-                } else if (result instanceof BlogStream) {
-                    throw new TwinglyException((BlogStream) result);
-                }
-                throw new TwinglyException("Unprocessed exception");
-            }
-        } catch (JAXBException e) {
-            throw new TwinglyException("Unable to process request", e);
-        } catch (IOException e) {
-            throw new TwinglyException("IO exception", e);
+    Client getClient() {
+        if (client == null) {
+            client = new Client();
         }
-    }
-
-    URL getUrl(String query) {
-        try {
-            return new URL(query);
-        } catch (MalformedURLException e) {
-            throw new TwinglyException("Malformed query", e);
-        }
-    }
-
-    /**
-     * Gets jaxb context.
-     *
-     * @return the jaxb context
-     */
-    JAXBContext getJAXBContext() {
-        if (jaxbContext == null) {
-            try {
-                jaxbContext = JAXBContext.newInstance(Result.class, Post.class, OperationResult.class, BlogStream.class);
-            } catch (JAXBException e) {
-                throw new TwinglyException("Cannot initialize JAXBContext for Result", e);
-            }
-        }
-        return jaxbContext;
+        return client;
     }
 }
