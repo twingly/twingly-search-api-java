@@ -1,4 +1,4 @@
-# twingly-search-api-java
+# twingly-search-api-java [![Build Status](https://travis-ci.org/xSAVIKx/twingly-search-api-java.svg?branch=master)](https://travis-ci.org/xSAVIKx/twingly-search-api-java)
 
 Java API for [Twingly Search](https://developer.twingly.com/resources/search/) (previously known as Twingly Analytics).
 
