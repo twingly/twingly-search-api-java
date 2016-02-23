@@ -15,7 +15,7 @@ import java.net.URL;
 import java.net.URLConnection;
 
 /**
- * Created by Iurii Sergiichuk on 23.02.2016.
+ * The type Client.
  */
 public class Client {
     private static final String USER_AGENT_PROPERTY = "User-Agent";
@@ -23,14 +23,30 @@ public class Client {
     private String userAgent = DEFAULT_USER_AGENT;
     private JAXBContext jaxbContext;
 
+    /**
+     * Gets user agent.
+     *
+     * @return the user agent
+     */
     public String getUserAgent() {
         return userAgent;
     }
 
+    /**
+     * Sets user agent.
+     *
+     * @param userAgent the user agent
+     */
     public void setUserAgent(String userAgent) {
         this.userAgent = userAgent;
     }
 
+    /**
+     * Make request for result.
+     *
+     * @param query the query
+     * @return the result
+     */
     public Result makeRequest(String query) {
         try {
             Unmarshaller jaxbUnmarshaller = getJAXBContext().createUnmarshaller();
@@ -54,6 +70,12 @@ public class Client {
         }
     }
 
+    /**
+     * Gets url from query string.
+     *
+     * @param query the query
+     * @return the url
+     */
     URL getUrl(String query) {
         try {
             return new URL(query);

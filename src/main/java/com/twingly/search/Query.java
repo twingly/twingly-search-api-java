@@ -11,13 +11,27 @@ import java.util.Date;
  * The type Query.
  */
 public class Query {
-    private static final String BASE_URL = "https://api.twingly.com";
+    private static final String BASE_URL = "http://api.twingly.com";
     private static final String SEARCH_PATH = "/analytics/Analytics.ashx";
     private static final char AND = '&';
     private final String apiKey;
     private final SimpleDateFormat df = new SimpleDateFormat(Constants.DATE_FORMAT);
     private Client client;
 
+    /**
+     * Default constructor that tries to instantiate Query object with
+     * API key from System environment variables
+     *
+     * @see Constants#TWINGLY_API_KEY_ENVIRONMENT_VARIABLE
+     */
+    public Query() {
+        this.apiKey = System.getProperty(Constants.TWINGLY_API_KEY_ENVIRONMENT_VARIABLE);
+        if (this.apiKey == null) {
+            throw new TwinglyException("Api key was not found in "
+                    + Constants.TWINGLY_API_KEY_ENVIRONMENT_VARIABLE +
+                    " environment variable, please set it.");
+        }
+    }
 
     /**
      * Instantiates a new Query.

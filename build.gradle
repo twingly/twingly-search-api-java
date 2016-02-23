@@ -1,25 +1,28 @@
 apply plugin: "idea"
 apply plugin: "java"
-version = "0.0.1"
+version = "0.0.2"
 ext {
     sourceLevel = 1.7
     targetLevel = sourceLevel
     sourceEncoding = "UTF-8"
 //testing
-    spockVersion = "1.0-groovy-2.4"
-    groovyVersion = "2.4.5"
+    spockVersion = "1.0-groovy-2.3"
+    groovyVersion = "2.3.3"
     junitVersion = "4.12"
     cglibVersion = "3.2.0"
     objenesisVersion = "2.2"
     jaxbVersion = "2.2.12"
+    betamaxVersion = "2.0-SNAPSHOT"
 
     libs = [
-            jaxb     : "javax.xml.bind:jaxb-api:$jaxbVersion",
-            junit    : "junit:junit:$junitVersion",
-            groovy   : "org.codehaus.groovy:groovy-all:$groovyVersion",
-            spock    : "org.spockframework:spock-core:$spockVersion",
-            cglib    : "cglib:cglib-nodep:$cglibVersion",
-            objenesis: "org.objenesis:objenesis:$objenesisVersion"
+            jaxb         : "javax.xml.bind:jaxb-api:$jaxbVersion",
+            junit        : "junit:junit:$junitVersion",
+            groovy       : "org.codehaus.groovy:groovy-all:$groovyVersion",
+            spock        : "org.spockframework:spock-core:$spockVersion",
+            cglib        : "cglib:cglib-nodep:$cglibVersion",
+            objenesis    : "org.objenesis:objenesis:$objenesisVersion",
+            betamax_proxy: "co.freeside.betamax:betamax-proxy:$betamaxVersion",
+            betamax_junit: "co.freeside.betamax:betamax-junit:$betamaxVersion"
     ]
 
     javadocFolder = "doc"
@@ -32,6 +35,9 @@ ext {
 
 repositories {
     mavenCentral()
+    jcenter()
+    mavenLocal()
+    maven { url "http://oss.jfrog.org/oss-snapshot-local/" }
 }
 dependencies {
     compile libs.jaxb
@@ -40,7 +46,8 @@ dependencies {
     testCompile libs.spock
     testRuntime libs.cglib
     testRuntime libs.objenesis
-    testCompile 'co.freeside:betamax:1.1.2'
+    testCompile libs.betamax_proxy
+    testCompile libs.betamax_junit
 }
 //create a single Jar with all dependencies
 task generateOneJar(type: Jar) {
