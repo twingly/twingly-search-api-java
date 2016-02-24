@@ -74,3 +74,9 @@ tasks.withType(JavaCompile.class) {
     options.encoding = sourceEncoding
     options.compilerArgs = ["-Xmaxerrs", "20", "-Xmaxwarns", "0", "-Xlint:all"]
 }
+
+test {
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
