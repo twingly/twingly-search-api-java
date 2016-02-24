@@ -1,9 +1,11 @@
 apply plugin: "idea"
 apply plugin: "java"
+apply plugin: "groovy"
 version = "0.0.2"
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
 ext {
-    sourceLevel = 1.7
-    targetLevel = sourceLevel
     sourceEncoding = "UTF-8"
 //testing
     spockVersion = "1.0-groovy-2.3"
@@ -49,6 +51,13 @@ dependencies {
     testCompile libs.betamax_proxy
     testCompile libs.betamax_junit
 }
+
+test {
+    testLogging.showStandardStreams = true
+    testLogging {
+        events "PASSED", "STARTED", "FAILED", "SKIPPED"
+    }
+}
 //create a single Jar with all dependencies
 task generateOneJar(type: Jar) {
     manifest = project.manifest {
@@ -67,16 +76,8 @@ task generateJavadocs(type: Javadoc) {
 }
 
 tasks.withType(JavaCompile.class) {
-    sourceCompatibility = sourceLevel
-    targetCompatibility = targetLevel
     options.deprecation = false
     options.warnings = false
     options.encoding = sourceEncoding
     options.compilerArgs = ["-Xmaxerrs", "20", "-Xmaxwarns", "0", "-Xlint:all"]
-}
-
-test {
-    testLogging {
-        events "passed", "skipped", "failed"
-    }
 }
