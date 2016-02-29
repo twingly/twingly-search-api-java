@@ -1,30 +1,27 @@
 apply plugin: "idea"
 apply plugin: "java"
 apply plugin: "groovy"
-version = "0.0.2"
+version = "0.0.3"
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
 ext {
     sourceEncoding = "UTF-8"
-//testing
     spockVersion = "1.0-groovy-2.3"
     groovyVersion = "2.3.3"
     junitVersion = "4.12"
     cglibVersion = "3.2.0"
     objenesisVersion = "2.2"
     jaxbVersion = "2.2.12"
-    betamaxVersion = "2.0-SNAPSHOT"
 
     libs = [
-            jaxb         : "javax.xml.bind:jaxb-api:$jaxbVersion",
-            junit        : "junit:junit:$junitVersion",
-            groovy       : "org.codehaus.groovy:groovy-all:$groovyVersion",
-            spock        : "org.spockframework:spock-core:$spockVersion",
-            cglib        : "cglib:cglib-nodep:$cglibVersion",
-            objenesis    : "org.objenesis:objenesis:$objenesisVersion",
-            betamax_proxy: "co.freeside.betamax:betamax-proxy:$betamaxVersion",
-            betamax_junit: "co.freeside.betamax:betamax-junit:$betamaxVersion"
+            jaxb     : "javax.xml.bind:jaxb-api:$jaxbVersion",
+            junit    : "junit:junit:$junitVersion",
+            groovy   : "org.codehaus.groovy:groovy-all:$groovyVersion",
+            spock    : "org.spockframework:spock-core:$spockVersion",
+            cglib    : "cglib:cglib-nodep:$cglibVersion",
+            objenesis: "org.objenesis:objenesis:$objenesisVersion"
+
     ]
 
     javadocFolder = "doc"
@@ -39,23 +36,21 @@ repositories {
     mavenCentral()
     jcenter()
     mavenLocal()
-    maven { url "http://oss.jfrog.org/oss-snapshot-local/" }
 }
 dependencies {
+    compile 'org.apache.httpcomponents:httpclient:4.5.1'
     compile libs.jaxb
     testCompile libs.junit
     testCompile libs.groovy
     testCompile libs.spock
     testRuntime libs.cglib
     testRuntime libs.objenesis
-    testCompile libs.betamax_proxy
-    testCompile libs.betamax_junit
 }
 
 test {
     testLogging.showStandardStreams = true
     testLogging {
-        events "PASSED", "STARTED", "FAILED", "SKIPPED"
+        events "PASSED", "FAILED", "SKIPPED"
     }
 }
 //create a single Jar with all dependencies

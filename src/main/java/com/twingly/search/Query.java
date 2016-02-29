@@ -1,5 +1,7 @@
 package com.twingly.search;
 
+import com.twingly.search.client.Client;
+import com.twingly.search.client.UrlConnectionClient;
 import com.twingly.search.exception.TwinglyException;
 
 import java.io.UnsupportedEncodingException;
@@ -11,7 +13,7 @@ import java.util.Date;
  * The type Query.
  */
 public class Query {
-    private static final String BASE_URL = "http://api.twingly.com";
+    private static final String BASE_URL = "https://api.twingly.com";
     private static final String SEARCH_PATH = "/analytics/Analytics.ashx";
     private static final char AND = '&';
     private final String apiKey;
@@ -20,11 +22,23 @@ public class Query {
 
     /**
      * Default constructor that tries to instantiate Query object with
-     * API key from System environment variables
+     * API key from System environment variables and uses {@link com.twingly.search.client.UrlConnectionClient}
      *
      * @see Constants#TWINGLY_API_KEY_ENVIRONMENT_VARIABLE
      */
     public Query() {
+        this(new UrlConnectionClient());
+    }
+
+    /**
+     * Constructor that tries to instantiate Query object with
+     * API key from System environment variables and uses given client
+     *
+     * @param client Client that should handle requests and responses
+     * @see Constants#TWINGLY_API_KEY_ENVIRONMENT_VARIABLE
+     */
+    public Query(Client client) {
+        this.client = client;
         this.apiKey = System.getProperty(Constants.TWINGLY_API_KEY_ENVIRONMENT_VARIABLE);
         if (this.apiKey == null) {
             throw new TwinglyException("Api key was not found in "
@@ -34,11 +48,13 @@ public class Query {
     }
 
     /**
-     * Instantiates a new Query.
+     * Constructor that uses given apiKey and client to make requests
      *
+     * @param client Client that should handle requests and responses
      * @param apiKey the api key
      */
-    public Query(String apiKey) {
+    public Query(Client client, String apiKey) {
+        this.client = client;
         this.apiKey = apiKey;
     }
 
@@ -99,7 +115,7 @@ public class Query {
      */
     public Result makeRequest(String searchPattern, Language documentLanguage, Date startTime, Date endTime) {
         String query = buildRequestQuery(searchPattern, documentLanguage.getIsoCode(), startTime, endTime);
-        return getClient().makeRequest(query);
+        return client.makeRequest(query);
     }
 
     /**
@@ -112,7 +128,7 @@ public class Query {
      */
     public Result makeRequest(String searchPattern, Language documentLanguage, Date startTime) {
         String query = buildRequestQuery(searchPattern, documentLanguage.getIsoCode(), startTime, null);
-        return getClient().makeRequest(query);
+        return client.makeRequest(query);
     }
 
     /**
@@ -124,7 +140,7 @@ public class Query {
      */
     public Result makeRequest(String searchPattern, Language documentLanguage) {
         String query = buildRequestQuery(searchPattern, documentLanguage.getIsoCode(), null, null);
-        return getClient().makeRequest(query);
+        return client.makeRequest(query);
     }
 
     /**
@@ -135,7 +151,7 @@ public class Query {
      */
     public Result makeRequest(String searchPattern) {
         String query = buildRequestQuery(searchPattern, null, null, null);
-        return getClient().makeRequest(query);
+        return client.makeRequest(query);
     }
 
     /**
@@ -145,13 +161,6 @@ public class Query {
      * @return the result
      */
     public Result query(String query) {
-        return getClient().makeRequest(query);
-    }
-
-    Client getClient() {
-        if (client == null) {
-            client = new Client();
-        }
-        return client;
+        return client.makeRequest(query);
     }
 }
