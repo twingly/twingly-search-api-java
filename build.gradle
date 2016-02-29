@@ -16,10 +16,10 @@ ext {
     junitVersion = "4.12"
     cglibVersion = "3.2.0"
     objenesisVersion = "2.2"
-    jaxbVersion = "2.2.12"
+    jaxbVersion = "2.2.11"
 
     libs = [
-            jaxb     : "javax.xml.bind:jaxb-api:$jaxbVersion",
+            jaxb     : "org.glassfish.jaxb:jaxb-runtime:$jaxbVersion",
             junit    : "junit:junit:$junitVersion",
             groovy   : "org.codehaus.groovy:groovy-all:$groovyVersion",
             spock    : "org.spockframework:spock-core:$spockVersion",
@@ -49,13 +49,6 @@ dependencies {
     testCompile libs.spock
     testRuntime libs.cglib
     testRuntime libs.objenesis
-}
-sourceSets {
-    test {
-        resources {
-            srcDir "src/test/resources"
-        }
-    }
 }
 test {
     testLogging.showStandardStreams = true
