@@ -5,9 +5,10 @@ import com.twingly.search.exception.TwinglyException
 import spock.lang.Specification
 
 import javax.xml.bind.UnmarshalException
+import java.nio.file.Paths
 
 class AbstractClientUnmarshallingSpockTest extends Specification {
-    def xmlFolder = "src\\test\\resources\\com\\twingly\\search\\client"
+    def packagePath = Paths.get("com", "twingly", "search", "client")
     AbstractClient client
 
     def "setup"() {
@@ -21,9 +22,10 @@ class AbstractClientUnmarshallingSpockTest extends Specification {
 
     def "should parse valid result result"() {
         given:
-        def filename = "valid_result.xml"
+        def filepath = packagePath.resolve("valid_result.xml")
+        def url = this.getClass().getClassLoader().getResource(filepath.toString())
         when:
-        def result = new File(xmlFolder, filename).withReader("UTF-8", {
+        def result = new File(url.toURI()).withReader("UTF-8", {
             r -> return client.unmarshalXmlForResult(r)
         })
         then:
@@ -35,9 +37,10 @@ class AbstractClientUnmarshallingSpockTest extends Specification {
 
     def "should parse valid non blog result result"() {
         given:
-        def filename = "valid_non_blog_result.xml"
+        def filepath = packagePath.resolve("valid_non_blog_result.xml")
+        def url = this.getClass().getClassLoader().getResource(filepath.toString())
         when:
-        def result = new File(xmlFolder, filename).withReader("UTF-8", {
+        def result = new File(url.toURI()).withReader("UTF-8", {
             r -> return client.unmarshalXmlForResult(r)
         })
         then:
@@ -60,9 +63,10 @@ class AbstractClientUnmarshallingSpockTest extends Specification {
 
     def "should throw exception for undefined error result"() {
         given:
-        def filename = "undefined_error_result.xml"
+        def filepath = packagePath.resolve("undefined_error_result.xml")
+        def url = this.getClass().getClassLoader().getResource(filepath.toString())
         when:
-        def result = new File(xmlFolder, filename).withReader("UTF-8", {
+        def result = new File(url.toURI()).withReader("UTF-8", {
             r -> return client.unmarshalXmlForResult(r)
         })
         then:
@@ -72,9 +76,10 @@ class AbstractClientUnmarshallingSpockTest extends Specification {
 
     def "should throw exception for unauthorized api key result"() {
         given:
-        def filename = "unauthorized_api_key_result.xml"
+        def filepath = packagePath.resolve("unauthorized_api_key_result.xml")
+        def url = this.getClass().getClassLoader().getResource(filepath.toString())
         when:
-        def result = new File(xmlFolder, filename).withReader("UTF-8", {
+        def result = new File(url.toURI()).withReader("UTF-8", {
             r -> return client.unmarshalXmlForResult(r)
         })
         then:
@@ -84,9 +89,10 @@ class AbstractClientUnmarshallingSpockTest extends Specification {
 
     def "should throw exception for service unavailable result"() {
         given:
-        def filename = "service_unavailable_result.xml"
+        def filepath = packagePath.resolve("service_unavailable_result.xml")
+        def url = this.getClass().getClassLoader().getResource(filepath.toString())
         when:
-        def result = new File(xmlFolder, filename).withReader("UTF-8", {
+        def result = new File(url.toURI()).withReader("UTF-8", {
             r -> return client.unmarshalXmlForResult(r)
         })
         then:
@@ -97,9 +103,10 @@ class AbstractClientUnmarshallingSpockTest extends Specification {
 
     def "should throw exception for non existent api key result"() {
         given:
-        def filename = "nonexistent_api_key_result.xml"
+        def filepath = packagePath.resolve("nonexistent_api_key_result.xml")
+        def url = this.getClass().getClassLoader().getResource(filepath.toString())
         when:
-        def result = new File(xmlFolder, filename).withReader("UTF-8", {
+        def result = new File(url.toURI()).withReader("UTF-8", {
             r -> return client.unmarshalXmlForResult(r)
         })
         then:
@@ -109,9 +116,10 @@ class AbstractClientUnmarshallingSpockTest extends Specification {
 
     def "should throw exception for non xml result"() {
         given:
-        def filename = "non_xml_result.xml"
+        def filepath = packagePath.resolve("non_xml_result.xml")
+        def url = this.getClass().getClassLoader().getResource(filepath.toString())
         when:
-        def result = new File(xmlFolder, filename).withReader("UTF-8", {
+        def result = new File(url.toURI()).withReader("UTF-8", {
             r -> return client.unmarshalXmlForResult(r)
         })
         then:
@@ -122,9 +130,10 @@ class AbstractClientUnmarshallingSpockTest extends Specification {
 
     def "should parse minimal valid result"() {
         given:
-        def filename = "minimal_valid_result.xml"
+        def filepath = packagePath.resolve("minimal_valid_result.xml")
+        def url = this.getClass().getClassLoader().getResource(filepath.toString())
         when:
-        def result = new File(xmlFolder, filename).withReader("UTF-8", {
+        def result = new File(url.toURI()).withReader("UTF-8", {
             r -> return client.unmarshalXmlForResult(r)
         })
         then:
