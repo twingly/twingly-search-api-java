@@ -50,13 +50,20 @@ dependencies {
     testRuntime libs.cglib
     testRuntime libs.objenesis
 }
-
+sourceSets {
+    test {
+        resources {
+            srcDir "src/test/resources"
+        }
+    }
+}
 test {
     testLogging.showStandardStreams = true
     testLogging {
         events "PASSED", "FAILED", "SKIPPED"
     }
 }
+
 
 javadoc {
     options.memberLevel = JavadocMemberLevel.PROTECTED
