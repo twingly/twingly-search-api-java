@@ -1,6 +1,10 @@
 apply plugin: "idea"
 apply plugin: "java"
 apply plugin: "groovy"
+apply plugin: "maven"
+apply plugin: "signing"
+
+group = "com.twingly"
 version = "0.0.3"
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
@@ -53,6 +57,11 @@ test {
         events "PASSED", "FAILED", "SKIPPED"
     }
 }
+
+javadoc {
+    options.memberLevel = JavadocMemberLevel.PROTECTED
+    classpath = configurations.compile
+}
 //create a single Jar with all dependencies
 task generateOneJar(type: Jar) {
     manifest = project.manifest {
@@ -63,11 +72,14 @@ task generateOneJar(type: Jar) {
     with jar
 }
 
-task generateJavadocs(type: Javadoc) {
-    source = sourceSets.main.allJava
-    options.memberLevel = JavadocMemberLevel.PROTECTED
-    classpath = configurations.compile
-    destinationDir = file(javadocFolder)
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from tasks.javadoc.destinationDir
+}
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allSource
+    classifier = 'sources'
 }
 
 tasks.withType(JavaCompile.class) {
@@ -75,4 +87,11 @@ tasks.withType(JavaCompile.class) {
     options.warnings = false
     options.encoding = sourceEncoding
     options.compilerArgs = ["-Xmaxerrs", "20", "-Xmaxwarns", "0", "-Xlint:all"]
+}
+
+artifacts {
+    archives jar
+
+    archives javadocJar
+    archives sourcesJar
 }

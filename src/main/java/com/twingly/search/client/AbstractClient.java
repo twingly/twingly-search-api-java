@@ -25,18 +25,14 @@ public abstract class AbstractClient implements Client {
     private JAXBContext jaxbContext;
 
     /**
-     * Gets user agent.
-     *
-     * @return the user agent
+     * {@inheritDoc}
      */
     public String getUserAgent() {
         return userAgent;
     }
 
     /**
-     * Sets user agent.
-     *
-     * @param userAgent the user agent
+     * {@inheritDoc}
      */
     public void setUserAgent(String userAgent) {
         this.userAgent = userAgent;

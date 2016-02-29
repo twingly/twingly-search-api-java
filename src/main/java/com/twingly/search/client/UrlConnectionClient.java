@@ -21,11 +21,9 @@ import java.net.URLConnection;
  */
 public class UrlConnectionClient extends AbstractClient {
     /**
-     * Make request for result.
-     *
-     * @param query the query
-     * @return the result
+     * {@inheritDoc}
      */
+    @Override
     public Result makeRequest(String query) {
         try {
             URL url = getUrl(query);

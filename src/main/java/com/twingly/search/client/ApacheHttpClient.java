@@ -22,6 +22,9 @@ import java.io.InputStreamReader;
 public class ApacheHttpClient extends AbstractClient {
     private HttpClient httpClient;
 
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Result makeRequest(String query) {
         try {

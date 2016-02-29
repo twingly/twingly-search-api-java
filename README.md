@@ -4,7 +4,7 @@ Java API for [Twingly Search](https://developer.twingly.com/resources/search/) (
 
 To use the API you need an API key. To obtain an API key, contact us at sales@twingly.com.
 
-### Example usage
+## Example usage
 
 ```Java
 // create Query object using your API key
@@ -35,24 +35,67 @@ query.makeRequest("spotify");
 
 A Query object can be reused for several requests
 
-#### Exception handling
+## Requirements
+
+* API key, contact [sales](mailto:sales@twingly.com) via [twingly.com](https://www.twingly.com/try-for-free/) to get one
+* Java:
+    * v 1.7
+    * v 1.8
+
+
+## Development
+
+### Tests
+
+Make sure you have all the dependencies
+```gradle
+gradlew assemble
+```
+Run the tests
+```
+gradlew check
+```
+
+### Exception handling
 
 For now, any exception is wrapped in TwinglyException class.
 
-#### JavaDoc generation
+### JavaDoc generation
 
-To generate java docs just run gradle task `generateJavadocs`:
+To generate java docs just run gradle task `javadoc`:
 ```
-gradle generateJavadocs
+gradle javadoc
 ```
-This will save javadocs in `doc` folder in project root folder.
+This will save javadocs in `docs` folder under build-folder.
 
-Location of java docs can be changed in `build.gradle` file by changing `ext->javadocFolder` property
 
-#### One-jar generation
+### One-jar generation
 
 To generate one fat jar library with all compile dependencies just run gradle task `generateOneJar`:
 ```
 gradle generateOneJar
 ```
 This will save JAR file with all needed dependencies in `build/libs/` with `-all` suffix. (like `twingly-search-api-java-all-0.0.1.jar`)
+
+## License
+
+The MIT License (MIT)
+
+Copyright (c) 2016 Twingly AB
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
