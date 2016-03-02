@@ -2,6 +2,7 @@ package com.twingly.search
 
 import com.twingly.search.client.Client
 import com.twingly.search.domain.Language
+import com.twingly.search.exception.QueryException
 import com.twingly.search.exception.TwinglySearchException
 import spock.lang.Specification
 import spock.lang.Unroll
@@ -11,6 +12,20 @@ import java.text.SimpleDateFormat
 class QuerySpockTest extends Specification {
     def sdf = new SimpleDateFormat(Constants.DATE_FORMAT)
     def client = Mock(Client)
+
+    @Unroll
+    def "Query should throw QueryException if search pattern is #exceptionCause"() {
+        given:
+        def query = new Query(client, "apiKey")
+        when:
+        query.buildRequestQuery(searchPattern, null, null, null)
+        then:
+        thrown(QueryException)
+        where:
+        searchPattern | exceptionCause
+        null          | "null"
+        ""            | "empty"
+    }
 
     def "creation of Query object without properly set env API key should through exception"() {
         when:

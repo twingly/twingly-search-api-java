@@ -4,6 +4,7 @@ import com.twingly.search.client.Client;
 import com.twingly.search.client.UrlConnectionClient;
 import com.twingly.search.domain.Language;
 import com.twingly.search.domain.Result;
+import com.twingly.search.exception.QueryException;
 import com.twingly.search.exception.TwinglySearchException;
 
 import java.io.UnsupportedEncodingException;
@@ -71,7 +72,9 @@ public class Query {
      * @return the ready-to-use Query
      */
     public String buildRequestQuery(String searchPattern, String documentLanguage, Date startTime, Date endTime) {
-
+        if (searchPattern == null || "".equalsIgnoreCase(searchPattern.trim())) {
+            throw new QueryException("Missing pattern");
+        }
         StringBuilder sb = new StringBuilder();
         sb.append(BASE_URL);
         sb.append(SEARCH_PATH);
