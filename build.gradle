@@ -5,7 +5,7 @@ apply plugin: "maven"
 apply plugin: "signing"
 
 group = "com.twingly"
-version = "0.0.3"
+version = "0.0.4"
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
@@ -42,7 +42,6 @@ repositories {
     mavenLocal()
 }
 dependencies {
-    compile 'org.apache.httpcomponents:httpclient:4.5.1'
     compile libs.jaxb
     testCompile libs.junit
     testCompile libs.groovy

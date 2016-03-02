@@ -7,7 +7,7 @@ public final class Constants {
     /**
      * The constant VERSION.
      */
-    public static final String VERSION = "0.0.2";
+    public static final String VERSION = "0.0.4";
     /**
      * The constant DATE_FORMAT.
      */
