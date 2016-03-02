@@ -64,7 +64,7 @@ For now, any exception is wrapped in TwinglyException class.
 
 To generate java docs just run gradle task `javadoc`:
 ```
-gradle javadoc
+gradlew javadoc
 ```
 This will save javadocs in `docs` folder under build-folder.
 
@@ -73,7 +73,7 @@ This will save javadocs in `docs` folder under build-folder.
 
 To generate one fat jar library with all compile dependencies just run gradle task `generateOneJar`:
 ```
-gradle generateOneJar
+gradlew generateOneJar
 ```
 This will save JAR file with all needed dependencies in `build/libs/` with `-all` suffix. (like `twingly-search-api-java-all-0.0.1.jar`)
 
@@ -81,7 +81,7 @@ This will save JAR file with all needed dependencies in `build/libs/` with `-all
 
 The MIT License (MIT)
 
-Copyright (c) 2016 Twingly AB
+Copyright (c) 2012-2016 Twingly AB
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
 this software and associated documentation files (the "Software"), to deal in
