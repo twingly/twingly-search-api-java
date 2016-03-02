@@ -1,4 +1,4 @@
-package com.twingly.search;
+package com.twingly.search.domain;
 
 /**
  * This enum contain all supported by Twingly languages

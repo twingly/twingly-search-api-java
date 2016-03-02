@@ -2,7 +2,9 @@ package com.twingly.search;
 
 import com.twingly.search.client.Client;
 import com.twingly.search.client.UrlConnectionClient;
-import com.twingly.search.exception.TwinglyException;
+import com.twingly.search.domain.Language;
+import com.twingly.search.domain.Result;
+import com.twingly.search.exception.TwinglySearchException;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -41,7 +43,7 @@ public class Query {
         this.client = client;
         this.apiKey = System.getProperty(Constants.TWINGLY_API_KEY_ENVIRONMENT_VARIABLE);
         if (this.apiKey == null) {
-            throw new TwinglyException("Api key was not found in "
+            throw new TwinglySearchException("Api key was not found in "
                     + Constants.TWINGLY_API_KEY_ENVIRONMENT_VARIABLE +
                     " environment variable, please set it.");
         }
@@ -100,7 +102,7 @@ public class Query {
             return URLEncoder.encode(s, "UTF-8");
         } catch (UnsupportedEncodingException e) {
             // This is impossible, UTF-8 is always supported according to the java standard
-            throw new TwinglyException("It's quite impossible, but there's no UTF-8 encoding in your JVM", e);
+            throw new TwinglySearchException("It's quite impossible, but there's no UTF-8 encoding in your JVM", e);
         }
     }
 

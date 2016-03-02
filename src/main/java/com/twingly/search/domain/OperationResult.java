@@ -1,4 +1,4 @@
-package com.twingly.search.exception;
+package com.twingly.search.domain;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlValue;
 @XmlRootElement(name = "operationResult")
 public class OperationResult {
     @XmlAttribute(name = "resultType")
-    private String resultType;
+    private OperationResultType resultType;
     @XmlValue
     private String message;
 
@@ -19,7 +19,7 @@ public class OperationResult {
      *
      * @return the result type
      */
-    public String getResultType() {
+    public OperationResultType getResultType() {
         return resultType;
     }
 
@@ -28,7 +28,7 @@ public class OperationResult {
      *
      * @param resultType the result type
      */
-    public void setResultType(String resultType) {
+    public void setResultType(OperationResultType resultType) {
         this.resultType = resultType;
     }
 

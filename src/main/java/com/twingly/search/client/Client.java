@@ -1,6 +1,7 @@
 package com.twingly.search.client;
 
-import com.twingly.search.Result;
+import com.twingly.search.domain.Result;
+import com.twingly.search.exception.TwinglySearchException;
 
 /**
  * Performs all network operations related to Query usage
@@ -27,7 +28,7 @@ public interface Client {
      *
      * @param query query string to perform request with
      * @return Result object
-     * @throws com.twingly.search.exception.TwinglyException if any exception happens
+     * @throws TwinglySearchException if any exception happens
      */
     public Result makeRequest(String query);
 }

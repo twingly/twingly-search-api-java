@@ -1,13 +1,15 @@
 package com.twingly.search.exception;
 
+import com.twingly.search.domain.BlogStream;
+
 /**
  * Custom runtime Twingly Exception
  */
-public class TwinglyException extends RuntimeException {
+public class TwinglySearchException extends RuntimeException {
     /**
      * Instantiates a new Twingly exception.
      */
-    public TwinglyException() {
+    public TwinglySearchException() {
         super();
     }
 
@@ -16,7 +18,7 @@ public class TwinglyException extends RuntimeException {
      *
      * @param blogStream the blog stream
      */
-    public TwinglyException(BlogStream blogStream) {
+    public TwinglySearchException(BlogStream blogStream) {
         this(String.format("resultType:%s, message:%s", blogStream.getOperationResult().getResultType(), blogStream.getOperationResult().getMessage()));
     }
 
@@ -25,7 +27,7 @@ public class TwinglyException extends RuntimeException {
      *
      * @param message the message
      */
-    public TwinglyException(String message) {
+    public TwinglySearchException(String message) {
         super(message);
     }
 
@@ -35,7 +37,7 @@ public class TwinglyException extends RuntimeException {
      * @param message the message
      * @param cause   the cause
      */
-    public TwinglyException(String message, Throwable cause) {
+    public TwinglySearchException(String message, Throwable cause) {
         super(message, cause);
     }
 
@@ -44,7 +46,7 @@ public class TwinglyException extends RuntimeException {
      *
      * @param cause the cause
      */
-    public TwinglyException(Throwable cause) {
+    public TwinglySearchException(Throwable cause) {
         super(cause);
     }
 
@@ -56,7 +58,7 @@ public class TwinglyException extends RuntimeException {
      * @param enableSuppression  the enable suppression
      * @param writableStackTrace the writable stack trace
      */
-    protected TwinglyException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+    protected TwinglySearchException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
     }
 }

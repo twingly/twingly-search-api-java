@@ -1,11 +1,8 @@
 package com.twingly.search.client;
 
 import com.twingly.search.Constants;
-import com.twingly.search.Post;
-import com.twingly.search.Result;
-import com.twingly.search.exception.BlogStream;
-import com.twingly.search.exception.OperationResult;
-import com.twingly.search.exception.TwinglyException;
+import com.twingly.search.domain.*;
+import com.twingly.search.exception.*;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -61,7 +58,7 @@ public class UrlConnectionClient implements Client {
             try {
                 jaxbContext = JAXBContext.newInstance(Result.class, Post.class, OperationResult.class, BlogStream.class);
             } catch (JAXBException e) {
-                throw new TwinglyException("Cannot initialize JAXBContext for Result", e);
+                throw new TwinglySearchException("Cannot initialize JAXBContext for Result", e);
             }
         }
         return jaxbContext;
@@ -80,11 +77,27 @@ public class UrlConnectionClient implements Client {
             if (result instanceof Result) {
                 return (Result) result;
             } else if (result instanceof BlogStream) {
-                throw new TwinglyException((BlogStream) result);
+                handleException((BlogStream) result);
             }
-            throw new TwinglyException("Unprocessed exception");
+            throw new TwinglySearchException("Unprocessed exception");
         } catch (JAXBException e) {
-            throw new TwinglyException("Unable to process request", e);
+            throw new TwinglySearchException("Unable to process request", e);
+        }
+    }
+
+    private void handleException(BlogStream blogStream) {
+        if (blogStream.getOperationResult() != null && blogStream.getOperationResult().getResultType() == OperationResultType.FAILURE) {
+            String message = blogStream.getOperationResult().getMessage();
+            if (OperationFailureMessages.API_KEY_DOESNT_EXIST.equalsIgnoreCase(message)) {
+                throw new TwinglySearchServerAPIKeyDoesNotExistException(blogStream);
+            }
+            if (OperationFailureMessages.UNAUTHORIZED_API_KEY.equalsIgnoreCase(message)) {
+                throw new TwinglySearchServerAPIKeyUnauthorizedException(blogStream);
+            }
+            if (OperationFailureMessages.SERVICE_UNAVAILABLE.equalsIgnoreCase(message)) {
+                throw new TwinglySearchServerServiceUnavailableException(blogStream);
+            }
+            throw new TwinglySearchServerException(blogStream);
         }
     }
 
@@ -101,7 +114,7 @@ public class UrlConnectionClient implements Client {
                 return unmarshalXmlForResult(br);
             }
         } catch (IOException e) {
-            throw new TwinglyException("IO exception", e);
+            throw new TwinglySearchException("IO exception", e);
         }
     }
 
@@ -115,7 +128,7 @@ public class UrlConnectionClient implements Client {
         try {
             return new URL(query);
         } catch (MalformedURLException e) {
-            throw new TwinglyException("Malformed query", e);
+            throw new TwinglySearchException("Malformed query", e);
         }
     }
 }

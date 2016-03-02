@@ -1,4 +1,4 @@
-package com.twingly.search;
+package com.twingly.search.domain;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;

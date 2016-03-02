@@ -1,7 +1,8 @@
 package com.twingly.search
 
 import com.twingly.search.client.Client
-import com.twingly.search.exception.TwinglyException
+import com.twingly.search.domain.Language
+import com.twingly.search.exception.TwinglySearchException
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -15,7 +16,7 @@ class QuerySpockTest extends Specification {
         when:
         new Query(client)
         then:
-        thrown(TwinglyException)
+        thrown(TwinglySearchException)
     }
 
     def "should create query with environment API key"() {

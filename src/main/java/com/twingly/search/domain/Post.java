@@ -1,4 +1,6 @@
-package com.twingly.search;
+package com.twingly.search.domain;
+
+import com.twingly.search.DateAdapter;
 
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;

@@ -1,4 +1,4 @@
-package com.twingly.search.exception;
+package com.twingly.search.domain;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;

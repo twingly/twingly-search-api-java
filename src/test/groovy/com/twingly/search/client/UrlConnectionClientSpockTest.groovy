@@ -1,10 +1,11 @@
 package com.twingly.search.client
 
 import com.twingly.search.Constants
-import com.twingly.search.Result
-import com.twingly.search.exception.BlogStream
-import com.twingly.search.exception.OperationResult
-import com.twingly.search.exception.TwinglyException
+import com.twingly.search.domain.BlogStream
+import com.twingly.search.domain.OperationFailureMessages
+import com.twingly.search.domain.OperationResult
+import com.twingly.search.domain.Result
+import com.twingly.search.exception.*
 import spock.lang.Specification
 
 import javax.xml.bind.JAXBContext
@@ -86,8 +87,8 @@ class UrlConnectionClientSpockTest extends Specification {
             r -> return client.unmarshalXmlForResult(r)
         })
         then:
-        def ex = thrown(TwinglyException)
-        ex.message == "resultType:failure, message:Something went wrong."
+        def ex = thrown(TwinglySearchServerException)
+        ex.message == "resultType:FAILURE, message:" + OperationFailureMessages.UNDEFINED_ERROR
     }
 
     def "should throw exception for unauthorized api key result"() {
@@ -99,8 +100,8 @@ class UrlConnectionClientSpockTest extends Specification {
             r -> return client.unmarshalXmlForResult(r)
         })
         then:
-        def ex = thrown(TwinglyException)
-        ex.message == "resultType:failure, message:The API key does not grant access to the Search API."
+        def ex = thrown(TwinglySearchServerAPIKeyUnauthorizedException)
+        ex.message == "resultType:FAILURE, message:" + OperationFailureMessages.UNAUTHORIZED_API_KEY
     }
 
     def "should throw exception for service unavailable result"() {
@@ -112,8 +113,8 @@ class UrlConnectionClientSpockTest extends Specification {
             r -> return client.unmarshalXmlForResult(r)
         })
         then:
-        def ex = thrown(TwinglyException)
-        ex.message == "resultType:failure, message:Authentication service unavailable."
+        def ex = thrown(TwinglySearchServerServiceUnavailableException)
+        ex.message == "resultType:FAILURE, message:" + OperationFailureMessages.SERVICE_UNAVAILABLE
     }
 
 
@@ -126,8 +127,8 @@ class UrlConnectionClientSpockTest extends Specification {
             r -> return client.unmarshalXmlForResult(r)
         })
         then:
-        def ex = thrown(TwinglyException)
-        ex.message == "resultType:failure, message:The API key does not exist."
+        def ex = thrown(TwinglySearchServerAPIKeyDoesNotExistException)
+        ex.message == "resultType:FAILURE, message:" + OperationFailureMessages.API_KEY_DOESNT_EXIST
     }
 
     def "should throw exception for non xml result"() {
@@ -139,7 +140,7 @@ class UrlConnectionClientSpockTest extends Specification {
             r -> return client.unmarshalXmlForResult(r)
         })
         then:
-        def ex = thrown(TwinglyException)
+        def ex = thrown(TwinglySearchException)
         ex.message == "Unable to process request"
         assert ex.cause instanceof UnmarshalException
     }
@@ -191,7 +192,7 @@ class UrlConnectionClientSpockTest extends Specification {
         then:
         1 * client.getJAXBContext() >> jaxbContext
         1 * jaxbContext.createUnmarshaller() >> { throw new IOException("") }
-        def ex = thrown(TwinglyException)
+        def ex = thrown(TwinglySearchException)
         def cause = ex.getCause()
         assert cause instanceof IOException
     }
@@ -204,7 +205,7 @@ class UrlConnectionClientSpockTest extends Specification {
         then:
         1 * client.getJAXBContext() >> jaxbContext
         1 * jaxbContext.createUnmarshaller() >> { throw new JAXBException("") }
-        def ex = thrown(TwinglyException)
+        def ex = thrown(TwinglySearchException)
         def cause = ex.getCause()
         assert cause instanceof JAXBException
     }
@@ -221,7 +222,7 @@ class UrlConnectionClientSpockTest extends Specification {
         1 * client.getJAXBContext() >> jaxbContext
         1 * jaxbContext.createUnmarshaller() >> unmarschaller
         1 * unmarschaller.unmarshal(_ as BufferedReader) >> blogStream
-        thrown(TwinglyException)
+        thrown(TwinglySearchException)
     }
 
     def "should process query and return result isntance"() {
@@ -250,7 +251,7 @@ class UrlConnectionClientSpockTest extends Specification {
         when:
         client.getUrl(malformedUrl)
         then:
-        def ex = thrown(TwinglyException)
+        def ex = thrown(TwinglySearchException)
         def cause = ex.getCause()
         assert cause instanceof MalformedURLException
     }
