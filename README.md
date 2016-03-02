@@ -58,7 +58,12 @@ gradlew check
 
 ### Exception handling
 
-For now, any exception is wrapped in TwinglyException class.
+Given exception hierarchy is now available:
+* TwinglySearchException - super class for any TwinglySearch-related exception
+    * TwinglySearchServerException - super class for all server exceptions
+        * TwinglySearchServerAPIKeyDoesNotExistException - should be thrown when no API key was found
+        * TwinglySearchServerAPIKeyUnauthorizedException - should be thrown when API key is not authorized for any action
+        * TwinglySearchServerServiceUnavailableException - should be thrown when service is not available
 
 ### JavaDoc generation
 
