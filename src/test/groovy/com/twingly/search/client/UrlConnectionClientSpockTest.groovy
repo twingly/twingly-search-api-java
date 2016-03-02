@@ -1,10 +1,7 @@
 package com.twingly.search.client
 
 import com.twingly.search.Constants
-import com.twingly.search.domain.BlogStream
-import com.twingly.search.domain.OperationFailureMessages
-import com.twingly.search.domain.OperationResult
-import com.twingly.search.domain.Result
+import com.twingly.search.domain.*
 import com.twingly.search.exception.*
 import spock.lang.Specification
 
@@ -64,18 +61,12 @@ class UrlConnectionClientSpockTest extends Specification {
         result.numberOfMatchesReturned == 2
         result.numberOfMatchesTotal == 2
         result.secondsElapsed == 0.022d
-        result.posts.size() == 2
-        result.posts[0].url == "http://www.someurl.com/post"
-        result.posts[0].blogName == "Newspaper Name"
-        result.posts[0].blogUrl == "http://www.someurl.com/"
-        result.posts[0].tags == null
-        result.posts[0].contentType == "newspaper"
-
-        result.posts[1].url == "http://www.someotherurl.com/post"
-        result.posts[1].blogName == "Blog Name"
-        result.posts[1].blogUrl == "http://www.someotherurl.com/"
-        result.posts[1].tags == null
-        result.posts[1].contentType == "blog"
+        result.posts.size() == 1
+        result.posts[0].url == "http://www.someotherurl.com/post"
+        result.posts[0].blogName == "Blog Name"
+        result.posts[0].blogUrl == "http://www.someotherurl.com/"
+        result.posts[0].tags == []
+        result.posts[0].contentType == ContentType.BLOG
     }
 
     def "should throw exception for undefined error result"() {
@@ -171,7 +162,7 @@ class UrlConnectionClientSpockTest extends Specification {
         result.posts[2].url == "http://didriksinspesielleverden.blogg.no/1359472349_justin_bieber.html"
         result.posts[2].blogName == "Didriksinspesielleverden"
         result.posts[2].blogUrl == "http://didriksinspesielleverden.blogg.no/"
-        result.posts[2].tags == null
+        result.posts[2].tags == []
     }
 
     def "client should change user agent"() {

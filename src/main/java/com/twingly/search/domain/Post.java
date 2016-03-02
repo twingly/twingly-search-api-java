@@ -7,6 +7,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -73,7 +74,7 @@ public class Post {
      * Content type of post. The only supported now is "Blog"
      */
     @XmlAttribute(name = "contentType")
-    private String contentType;
+    private ContentType contentType;
 
     /**
      * Instantiates a new Post.
@@ -86,7 +87,7 @@ public class Post {
      *
      * @return the content type
      */
-    public String getContentType() {
+    public ContentType getContentType() {
         return contentType;
     }
 
@@ -95,7 +96,7 @@ public class Post {
      *
      * @param contentType the content type
      */
-    public void setContentType(String contentType) {
+    public void setContentType(ContentType contentType) {
         this.contentType = contentType;
     }
 
@@ -285,6 +286,9 @@ public class Post {
      * @return the tags
      */
     public List<String> getTags() {
+        if (tags == null) {
+            tags = new ArrayList<>();
+        }
         return tags;
     }
 

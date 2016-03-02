@@ -14,6 +14,7 @@ import java.io.Reader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.Iterator;
 
 /**
  * Client that could be used in Query object.
@@ -75,7 +76,7 @@ public class UrlConnectionClient implements Client {
             Unmarshaller jaxbUnmarshaller = getJAXBContext().createUnmarshaller();
             Object result = jaxbUnmarshaller.unmarshal(reader);
             if (result instanceof Result) {
-                return (Result) result;
+                return filterResultsWithEmptyContentTypes((Result) result);
             } else if (result instanceof BlogStream) {
                 handleException((BlogStream) result);
             }
@@ -83,6 +84,17 @@ public class UrlConnectionClient implements Client {
         } catch (JAXBException e) {
             throw new TwinglySearchException("Unable to process request", e);
         }
+    }
+
+    private Result filterResultsWithEmptyContentTypes(Result result) {
+        Iterator<Post> iterator = result.getPosts().iterator();
+        while (iterator.hasNext()) {
+            Post post = iterator.next();
+            if (post.getContentType() == null) {
+                iterator.remove();
+            }
+        }
+        return result;
     }
 
     private void handleException(BlogStream blogStream) {

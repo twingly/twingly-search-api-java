@@ -3,6 +3,7 @@ package com.twingly.search.domain;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -62,6 +63,9 @@ public class Result {
      * @return The posts returned from the query
      */
     public List<Post> getPosts() {
+        if (posts == null) {
+            posts = new ArrayList<>();
+        }
         return posts;
     }
 
