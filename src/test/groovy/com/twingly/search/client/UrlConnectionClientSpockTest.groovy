@@ -152,16 +152,43 @@ class UrlConnectionClientSpockTest extends Specification {
         result.posts[0].url == "http://oppogner.blogg.no/1409602010_bare_m_ha.html"
         result.posts[0].blogName == "oppogner"
         result.posts[0].blogUrl == "http://oppogner.blogg.no/"
-        result.posts[0].tags.size() == 1
+        result.posts[0].title == "Bare MÅ ha!"
+        result.posts[0].summary == "Ja, velkommen til høsten ..."
+        result.posts[0].languageCode == "no"
+        result.posts[0].published == sdf.parse("2014-09-02 06:53:26")
+        result.posts[0].indexed == sdf.parse("2014-09-02 09:00:53")
+        result.posts[0].authority == 1
+        result.posts[0].blogRank == 1
+        result.posts[0].tags == ["Blogg"]
+
 
         result.posts[1].url == "http://www.skvallernytt.se/hardtraning-da-galler-swedish-house-mafia"
         result.posts[1].blogName == "Skvallernytt.se"
         result.posts[1].blogUrl == "http://www.skvallernytt.se/"
-        result.posts[1].tags.size() == 5
+        result.posts[1].title == "Hårdträning – då gäller Swedish House Mafia"
+        result.posts[1].summary == "Träning. Och Swedish House Mafia. Det verkar vara ett lyckat koncept. \"Don't you worry child\" och \"Greyhound\" är nämligen de två mest spelade träningslåtarna under januari 2013 på Spotify.\n" +
+                "\n" +
+                "Relaterade inlägg:\n" +
+                "Swedish House Mafia – ny låt!\n" +
+                "Ny knivattack på Swedish House Mafia-konsert\n" +
+                "Swedish House Mafia gör succé i USA"
+        result.posts[1].languageCode == "sv"
+        result.posts[1].published == sdf.parse("2013-01-29 15:21:56")
+        result.posts[1].indexed == sdf.parse("2013-01-29 15:22:52")
+        result.posts[1].authority == 38
+        result.posts[1].blogRank == 4
+        result.posts[1].tags == ["Okategoriserat", "Träning", "greyhound", "koncept", "mafia"]
 
         result.posts[2].url == "http://didriksinspesielleverden.blogg.no/1359472349_justin_bieber.html"
         result.posts[2].blogName == "Didriksinspesielleverden"
         result.posts[2].blogUrl == "http://didriksinspesielleverden.blogg.no/"
+        result.posts[2].title == "Justin Bieber"
+        result.posts[2].summary == "OMG! Justin Bieber Believe acoustic albumet er nå ute på spotify. Han er helt super. Love him. Personlig liker jeg best beauty and a beat og as long as you love me, kommenter gjerne hva dere synes! <3 #sus YOLO"
+        result.posts[2].languageCode == "no"
+        result.posts[2].published == sdf.parse("2013-01-29 15:12:29")
+        result.posts[2].indexed == sdf.parse("2013-01-29 15:14:37")
+        result.posts[2].authority == 0
+        result.posts[2].blogRank == 1
         result.posts[2].tags == []
     }
 
