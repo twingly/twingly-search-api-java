@@ -35,6 +35,17 @@ query.makeRequest("spotify");
 
 A Query object can be reused for several requests
 
+
+### Api key from java system properties
+
+Additionally, you can create Query object with api key from Java system properties (property name is `TWINGLY_SEARCH_KEY`):
+```Java
+Query query = new Query(); // create query object with api key from java system property
+```
+To do so, you will need to run Java with property. For example, run `gradlew` with twingly search key property:
+```gradle
+gradlew build -DTWINGLY_SEARCH_KEY=some_key_value
+```
 ## Requirements
 
 * API key, contact [sales](mailto:sales@twingly.com) via [twingly.com](https://www.twingly.com/try-for-free/) to get one

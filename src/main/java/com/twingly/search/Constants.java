@@ -14,7 +14,7 @@ public final class Constants {
     public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 
     /**
-     * The constant TWINGLY_API_KEY_ENVIRONMENT_VARIABLE
+     * The constant TWINGLY_API_KEY_PROPERTY
      */
-    public static final String TWINGLY_API_KEY_ENVIRONMENT_VARIABLE = "TWINGLY_SEARCH_KEY";
+    public static final String TWINGLY_API_KEY_PROPERTY = "TWINGLY_SEARCH_KEY";
 }

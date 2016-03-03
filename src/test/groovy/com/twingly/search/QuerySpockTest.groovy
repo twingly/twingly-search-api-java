@@ -37,13 +37,13 @@ class QuerySpockTest extends Specification {
     def "should create query with environment API key"() {
         given:
         def apiKey = "key"
-        System.setProperty(Constants.TWINGLY_API_KEY_ENVIRONMENT_VARIABLE, apiKey)
+        System.setProperty(Constants.TWINGLY_API_KEY_PROPERTY, apiKey)
         when:
         def query = new Query(client)
         def queryString = query.buildRequestQuery("q", null, null, null)
         then:
         assert queryString.contains(apiKey)
-        System.getProperties().remove(Constants.TWINGLY_API_KEY_ENVIRONMENT_VARIABLE) != null
+        System.getProperties().remove(Constants.TWINGLY_API_KEY_PROPERTY) != null
     }
 
     def "should make request with query"() {

@@ -27,10 +27,21 @@ public class Query {
      * Default constructor that tries to instantiate Query object with
      * API key from System environment variables and uses {@link com.twingly.search.client.UrlConnectionClient}
      *
-     * @see Constants#TWINGLY_API_KEY_ENVIRONMENT_VARIABLE
+     * @see Constants#TWINGLY_API_KEY_PROPERTY
      */
     public Query() {
         this(new UrlConnectionClient());
+    }
+
+    /**
+     * Constructor that uses given apiKey and default {@link com.twingly.search.client.UrlConnectionClient}
+     * API key from System environment variables and uses given client
+     *
+     * @param apiKey the api key
+     */
+    public Query(String apiKey) {
+        this.client = new UrlConnectionClient();
+        this.apiKey = apiKey;
     }
 
     /**
@@ -38,15 +49,13 @@ public class Query {
      * API key from System environment variables and uses given client
      *
      * @param client Client that should handle requests and responses
-     * @see Constants#TWINGLY_API_KEY_ENVIRONMENT_VARIABLE
+     * @see Constants#TWINGLY_API_KEY_PROPERTY
      */
     public Query(Client client) {
         this.client = client;
-        this.apiKey = System.getProperty(Constants.TWINGLY_API_KEY_ENVIRONMENT_VARIABLE);
+        this.apiKey = System.getProperty(Constants.TWINGLY_API_KEY_PROPERTY);
         if (this.apiKey == null) {
-            throw new TwinglySearchException("Api key was not found in "
-                    + Constants.TWINGLY_API_KEY_ENVIRONMENT_VARIABLE +
-                    " environment variable, please set it.");
+            throw new TwinglySearchException("Api key missing, could not find" + Constants.TWINGLY_API_KEY_PROPERTY + " property");
         }
     }
 
