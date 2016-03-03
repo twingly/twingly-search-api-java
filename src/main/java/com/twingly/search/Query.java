@@ -55,7 +55,7 @@ public class Query {
         this.client = client;
         this.apiKey = System.getProperty(Constants.TWINGLY_API_KEY_PROPERTY);
         if (this.apiKey == null) {
-            throw new TwinglySearchException("Api key missing, could not find" + Constants.TWINGLY_API_KEY_PROPERTY + " property");
+            throw new TwinglySearchException("Api key missing, could not find " + Constants.TWINGLY_API_KEY_PROPERTY + " property");
         }
     }
 
