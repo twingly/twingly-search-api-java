@@ -128,7 +128,7 @@ public class Query {
      * @return the result
      */
     public Result makeRequest(String searchPattern, Language documentLanguage, Date startTime, Date endTime) {
-        String query = buildRequestQuery(searchPattern, documentLanguage.getIsoCode(), startTime, endTime);
+        String query = buildRequestQuery(searchPattern, documentLanguage != null ? documentLanguage.getIsoCode() : null, startTime, endTime);
         return client.makeRequest(query);
     }
 
@@ -141,7 +141,7 @@ public class Query {
      * @return the result
      */
     public Result makeRequest(String searchPattern, Language documentLanguage, Date startTime) {
-        String query = buildRequestQuery(searchPattern, documentLanguage.getIsoCode(), startTime, null);
+        String query = buildRequestQuery(searchPattern, documentLanguage != null ? documentLanguage.getIsoCode() : null, startTime, null);
         return client.makeRequest(query);
     }
 
@@ -153,7 +153,7 @@ public class Query {
      * @return the result
      */
     public Result makeRequest(String searchPattern, Language documentLanguage) {
-        String query = buildRequestQuery(searchPattern, documentLanguage.getIsoCode(), null, null);
+        String query = buildRequestQuery(searchPattern, documentLanguage != null ? documentLanguage.getIsoCode() : null, null, null);
         return client.makeRequest(query);
     }
 

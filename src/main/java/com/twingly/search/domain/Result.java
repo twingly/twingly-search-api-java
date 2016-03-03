@@ -58,6 +58,15 @@ public class Result {
     }
 
     /**
+     * Checks whether all Posts that matched the query are returned via this result.
+     *
+     * @return true if this result includes all Posts that matched the query, false if there are more Posts to fetch from the API
+     */
+    public boolean areAllResultsReturned() {
+        return numberOfMatchesTotal == numberOfMatchesReturned;
+    }
+
+    /**
      * Returns all posts that matched the query
      *
      * @return The posts returned from the query
