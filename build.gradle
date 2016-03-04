@@ -5,7 +5,7 @@ apply plugin: "maven"
 apply plugin: "signing"
 
 group = "com.twingly"
-version = "1.0.0"
+version = "1.0.1"
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
@@ -17,7 +17,6 @@ ext {
     cglibVersion = "3.2.0"
     objenesisVersion = "2.2"
     jaxbVersion = "2.2.11"
-
     libs = [
             jaxb     : "org.glassfish.jaxb:jaxb-runtime:$jaxbVersion",
             junit    : "junit:junit:$junitVersion",
