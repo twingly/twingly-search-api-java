@@ -1,6 +1,7 @@
 package com.twingly.search.client
 
 import com.twingly.search.Constants
+import com.twingly.search.QueryBuilder
 import com.twingly.search.domain.*
 import com.twingly.search.exception.*
 import spock.lang.Specification
@@ -13,6 +14,7 @@ import java.nio.file.Paths
 import java.text.SimpleDateFormat
 
 class UrlConnectionClientSpockTest extends Specification {
+    private static final String API_KEY = "apiKey"
     def packagePath = Paths.get("com", "twingly", "search", "client")
     def sdf = new SimpleDateFormat(Constants.DATE_FORMAT)
     def jaxbContext = Mock(JAXBContext)
@@ -20,7 +22,7 @@ class UrlConnectionClientSpockTest extends Specification {
     def urlStreamHandler
     def urlConnection = Mock(URLConnection)
     def inputStream = Mock(InputStream)
-    def client = Spy(UrlConnectionClient)
+    def client = Spy(UrlConnectionClient, constructorArgs: [API_KEY])
 
     def setup() {
         jaxbContext.createUnmarshaller() >> unmarschaller
@@ -31,6 +33,42 @@ class UrlConnectionClientSpockTest extends Specification {
             }
         }
         urlConnection.getInputStream() >> inputStream
+    }
+
+    def "shoud throw TwinglySearchException when API key is not set in System properties"() {
+        when:
+        new UrlConnectionClient()
+        then:
+        thrown(TwinglySearchException)
+    }
+
+    def "should create client with API key from System properties"() {
+        given:
+        System.setProperty(Constants.TWINGLY_API_KEY_PROPERTY, API_KEY)
+        when:
+        new UrlConnectionClient()
+        then:
+        notThrown(TwinglySearchException)
+        System.properties.remove(Constants.TWINGLY_API_KEY_PROPERTY)
+    }
+
+    def "should make request with fully-filled Query object"() {
+        given:
+        def searchPattern = "searchPattern"
+        def startTime = sdf.parse("2016-03-03 15:30:45");
+        def endTime = sdf.parse("2016-05-03 15:30:45");
+        def language = Language.English
+        def expectedQueryString = "https://api.twingly.com/analytics/Analytics.ashx?key=apiKey&xmloutputversion=2&searchpattern=searchPattern&ts=2016-03-03+15%3A30%3A45&tsTo=2016-05-03+15%3A30%3A45&documentlang=en"
+        def query = QueryBuilder.create(searchPattern).documentLanguage(language)
+                .startTime(startTime).endTime(endTime).build()
+        when:
+        def result = client.makeRequest(query)
+        then:
+        1 * client.getUrl(expectedQueryString)
+        1 * client.getJAXBContext() >> jaxbContext
+        1 * jaxbContext.createUnmarshaller() >> unmarschaller
+        1 * unmarschaller.unmarshal(_ as BufferedReader) >> new Result()
+        result != null
     }
 
 
@@ -74,7 +112,7 @@ class UrlConnectionClientSpockTest extends Specification {
         def filepath = packagePath.resolve("undefined_error_result.xml")
         def is = this.getClass().getClassLoader().getResourceAsStream(filepath.toString())
         when:
-        def result = is.withReader("UTF-8", {
+        is.withReader("UTF-8", {
             r -> return client.unmarshalXmlForResult(r)
         })
         then:
@@ -87,7 +125,7 @@ class UrlConnectionClientSpockTest extends Specification {
         def filepath = packagePath.resolve("unauthorized_api_key_result.xml")
         def is = this.getClass().getClassLoader().getResourceAsStream(filepath.toString())
         when:
-        def result = is.withReader("UTF-8", {
+        is.withReader("UTF-8", {
             r -> return client.unmarshalXmlForResult(r)
         })
         then:
@@ -100,7 +138,7 @@ class UrlConnectionClientSpockTest extends Specification {
         def filepath = packagePath.resolve("service_unavailable_result.xml")
         def is = this.getClass().getClassLoader().getResourceAsStream(filepath.toString())
         when:
-        def result = is.withReader("UTF-8", {
+        is.withReader("UTF-8", {
             r -> return client.unmarshalXmlForResult(r)
         })
         then:
@@ -114,7 +152,7 @@ class UrlConnectionClientSpockTest extends Specification {
         def filepath = packagePath.resolve("nonexistent_api_key_result.xml")
         def is = this.getClass().getClassLoader().getResourceAsStream(filepath.toString())
         when:
-        def result = is.withReader("UTF-8", {
+        is.withReader("UTF-8", {
             r -> return client.unmarshalXmlForResult(r)
         })
         then:
@@ -127,7 +165,7 @@ class UrlConnectionClientSpockTest extends Specification {
         def filepath = packagePath.resolve("non_xml_result.xml")
         def is = this.getClass().getClassLoader().getResourceAsStream(filepath.toString())
         when:
-        def result = is.withReader("UTF-8", {
+        is.withReader("UTF-8", {
             r -> return client.unmarshalXmlForResult(r)
         })
         then:
@@ -204,9 +242,9 @@ class UrlConnectionClientSpockTest extends Specification {
 
     def "client should throw IO exception that should be wrapped into Twingly Exception"() {
         given:
-        def query = "http://twingly.com/"
+        def query = QueryBuilder.create("pattern").build()
         when:
-        def result = client.makeRequest(query)
+        client.makeRequest(query)
         then:
         1 * client.getJAXBContext() >> jaxbContext
         1 * jaxbContext.createUnmarshaller() >> { throw new IOException("") }
@@ -217,9 +255,9 @@ class UrlConnectionClientSpockTest extends Specification {
 
     def "client should throw JAXB exception that should be wrapped into Twingly Exception"() {
         given:
-        def query = "http://twingly.com/"
+        def query = QueryBuilder.create("pattern").build()
         when:
-        def result = client.makeRequest(query)
+        client.makeRequest(query)
         then:
         1 * client.getJAXBContext() >> jaxbContext
         1 * jaxbContext.createUnmarshaller() >> { throw new JAXBException("") }
@@ -230,12 +268,12 @@ class UrlConnectionClientSpockTest extends Specification {
 
     def "should process query, return blog stream and throw exception"() {
         given:
-        def query = "http://twingly.com/"
+        def query = QueryBuilder.create("pattern").build()
         def blogStream = new BlogStream()
         def operationResult = new OperationResult()
         blogStream.setOperationResult(operationResult)
         when:
-        def result = client.makeRequest(query)
+        client.makeRequest(query)
         then:
         1 * client.getJAXBContext() >> jaxbContext
         1 * jaxbContext.createUnmarshaller() >> unmarschaller
@@ -245,7 +283,7 @@ class UrlConnectionClientSpockTest extends Specification {
 
     def "should process query and return result isntance"() {
         given:
-        def query = "http://twingly.com/"
+        def query = QueryBuilder.create("pattern").build()
         when:
         def result = client.makeRequest(query)
         then:
