@@ -5,6 +5,7 @@ import com.twingly.search.QueryBuilder
 import com.twingly.search.domain.*
 import com.twingly.search.exception.*
 import spock.lang.Specification
+import spock.lang.Unroll
 
 import javax.xml.bind.JAXBContext
 import javax.xml.bind.JAXBException
@@ -319,6 +320,30 @@ class UrlConnectionClientSpockTest extends Specification {
         def result = client.getUrl(url)
         then:
         result != null
+    }
+
+    @Unroll
+    def "should build valid request query for apiKey=#apiKey, searchPattern=#searchPattern, st=#startDate, stTo=#endDate"() {
+        given:
+        def client = Spy(UrlConnectionClient, constructorArgs: [apiKey])
+        def st = startDate != null ? sdf.parse(startDate) : null
+        def stTo = endDate != null ? sdf.parse(endDate) : null
+        def query = QueryBuilder.create(searchPattern).documentLanguage(language)
+                .startTime(st).endTime(stTo).build()
+        when:
+        def result = client.makeRequest(query)
+        then:
+        1 * client.getUrl(expected)
+        1 * client.getJAXBContext() >> jaxbContext
+        1 * jaxbContext.createUnmarshaller() >> unmarschaller
+        1 * unmarschaller.unmarshal(_ as BufferedReader) >> new Result()
+        result != null
+        where:
+        apiKey | searchPattern     | language           | startDate             | endDate               || expected
+        "test" | "searchPattern"   | Language.Afrikaans | "2016-02-18 00:00:00" | "2016-03-18 00:00:00" || "https://api.twingly.com/analytics/Analytics.ashx?key=test&xmloutputversion=2&searchpattern=searchPattern&ts=2016-02-18+00%3A00%3A00&tsTo=2016-03-18+00%3A00%3A00&documentlang=af"
+        "key"  | "searchPattern"   | null               | "2016-02-18 00:00:00" | "2016-03-18 00:00:00" || "https://api.twingly.com/analytics/Analytics.ashx?key=key&xmloutputversion=2&searchpattern=searchPattern&ts=2016-02-18+00%3A00%3A00&tsTo=2016-03-18+00%3A00%3A00"
+        "test" | "github"          | null               | null                  | "2016-03-18 00:00:00" || "https://api.twingly.com/analytics/Analytics.ashx?key=test&xmloutputversion=2&searchpattern=github&tsTo=2016-03-18+00%3A00%3A00"
+        "test" | "Nothing special" | null               | null                  | null                  || "https://api.twingly.com/analytics/Analytics.ashx?key=test&xmloutputversion=2&searchpattern=Nothing+special"
     }
 
 }
