@@ -1,0 +1,21 @@
+version '0.0.3'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+repositories {
+    mavenCentral()
+}
+dependencies {
+    compile rootProject
+}
+task execute(type: JavaExec) {
+    def className = "HelloWorld"
+    if (project.hasProperty("mainClass")) {
+        className = mainClass
+    }
+    main = className
+    systemProperty "TWINGLY_SEARCH_KEY", System.getProperty("TWINGLY_SEARCH_KEY")
+    classpath = sourceSets.main.runtimeClasspath
+}

@@ -1,0 +1,3 @@
+rootProject.name = "twingly-search-api-java"
+
+include 'example'

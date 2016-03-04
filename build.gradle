@@ -1,0 +1,96 @@
+apply plugin: "idea"
+apply plugin: "java"
+apply plugin: "groovy"
+apply plugin: "maven"
+apply plugin: "signing"
+
+group = "com.twingly"
+version = "0.0.4"
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
+ext {
+    sourceEncoding = "UTF-8"
+    spockVersion = "1.0-groovy-2.3"
+    groovyVersion = "2.3.3"
+    junitVersion = "4.12"
+    cglibVersion = "3.2.0"
+    objenesisVersion = "2.2"
+    jaxbVersion = "2.2.11"
+
+    libs = [
+            jaxb     : "org.glassfish.jaxb:jaxb-runtime:$jaxbVersion",
+            junit    : "junit:junit:$junitVersion",
+            groovy   : "org.codehaus.groovy:groovy-all:$groovyVersion",
+            spock    : "org.spockframework:spock-core:$spockVersion",
+            cglib    : "cglib:cglib-nodep:$cglibVersion",
+            objenesis: "org.objenesis:objenesis:$objenesisVersion"
+
+    ]
+
+    javadocFolder = "doc"
+
+    sharedManifest = manifest {
+        attributes("Implementation-Title": 'Twingly Search API Java',
+                "Implementation-Version": version)
+    }
+}
+
+repositories {
+    mavenCentral()
+    jcenter()
+    mavenLocal()
+}
+dependencies {
+    compile libs.jaxb
+    testCompile libs.junit
+    testCompile libs.groovy
+    testCompile libs.spock
+    testRuntime libs.cglib
+    testRuntime libs.objenesis
+}
+test {
+    testLogging.showStandardStreams = true
+    testLogging {
+        events "PASSED", "FAILED", "SKIPPED"
+    }
+}
+
+
+javadoc {
+    options.memberLevel = JavadocMemberLevel.PROTECTED
+    classpath = configurations.compile
+}
+//create a single Jar with all dependencies
+task generateOneJar(type: Jar) {
+    manifest = project.manifest {
+        from sharedManifest
+    }
+    baseName = project.name + '-all'
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from tasks.javadoc.destinationDir
+}
+
+task sourcesJar(type: Jar) {
+    from sourceSets.main.allSource
+    classifier = 'sources'
+}
+
+tasks.withType(JavaCompile.class) {
+    options.deprecation = false
+    options.warnings = false
+    options.encoding = sourceEncoding
+    options.compilerArgs = ["-Xmaxerrs", "20", "-Xmaxwarns", "0", "-Xlint:all"]
+}
+
+artifacts {
+    archives jar
+
+    archives javadocJar
+    archives sourcesJar
+}
