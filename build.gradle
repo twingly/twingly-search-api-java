@@ -5,11 +5,10 @@ apply plugin: "maven"
 apply plugin: "signing"
 
 group = "com.twingly"
-version = "1.0.1"
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
 
 ext {
+    versionProperties = new Properties()
+    versionProperties.load(file("src/main/resources/version.properties").newReader())
     sourceEncoding = "UTF-8"
     spockVersion = "1.0-groovy-2.3"
     groovyVersion = "2.3.3"
@@ -34,6 +33,10 @@ ext {
                 "Implementation-Version": version)
     }
 }
+version = ext.versionProperties["version"]
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
 
 repositories {
     mavenCentral()
