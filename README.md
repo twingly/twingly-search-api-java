@@ -5,39 +5,31 @@ Java client for Twingly Search API (previously known as Twingly Analytics API). 
 ## Example usage
 
 ```Java
-// create Query object using your API key
-Query query = new Query(apiKey);
 
-// find posts containing word "spotify" in English language created from startDate to endDate
-Result result = query.makeRequest("spotify", Language.English, startDate, endDate);
+import com.twingly.search.*;
+public class Test{
+    public static void main(String[] args){
+        String apiKey = "API_KEY";
+        // create Client object using your API key
+        Client client = new UrlConnectionClient(apiKey);
+        // Create Query object using QueryBuilder for results in English published from startTime to endTime
+        Query query = QueryBuilder.create("spotify").documentLanguage(Language.English).startTime(startTime).endTime(endTime).build();
+        Result result = client.makeRequest(query);
+        // Get the total number of matches returned
+        int numberOfMatchesReturned = result.getNumberOfMatchesReturned();
+        // Get the total number of matches to the search query
+        int numberOfMatchesTotal = result.getNumberOfMatchesTotal();
+        // Get number of seconds it took to execute query
+        double secondsElapsed = result.getSecondsElapsed();
+        for (Post p : result.getPosts()){
+            System.out.println(p.getUrl());             // print url for each post
+            System.out.println(p.getTitle());           // print title for each post
+        }
+    }
+}
 
-// Get the total number of matches returned
-int numberOfMatchesReturned = result.getNumberOfMatchesReturned();
-
-// Get the total number of matches to the search query
-int numberOfMatchesTotal = result.getNumberOfMatchesTotal();
-
-// Get number of seconds it took to execute query
-double secondsElapsed = result.getSecondsElapsed();
-
-// Iterate through the results
-for (Post p : result.getPosts())
-    System.out.println(p.getUrl());             // print url for each post
-    System.out.println(p.getTitle());           // print title for each post
 ```
-
-Later you can repeat the search for any new posts with same or other parameters:
-
-```Java
-// find posts containing word "spotify" in English language created from startDate (up to now)
-query.makeRequest("spotify", Language.English, startDate);
-
-// find posts containing word "spotify" in English language (all posts, without any time limits)
-query.makeRequest("spotify", Language.English);
-
-// find posts containing word "spotify" (all posts, withou time and language limits)
-query.makeRequest("spotify");
-```
+A Query object can be reused for several requests.
 
 To learn more about the features of this client, check out the example code that can be found in [example](example).
 
@@ -47,10 +39,15 @@ To learn more about the capabilities of the API, please read the [Twingly Search
 
 ### API key from Java system properties
 
-Additionally, you can create Query object with API key from Java system properties (property name is `TWINGLY_SEARCH_KEY`):
+Additionally, you can create Client object with API key from Java system properties (property name is `TWINGLY_SEARCH_KEY`):
 
 ```Java
-Query query = new Query(); // create query object with API key from java system property
+import com.twingly.search.client.*;
+public class Test{
+    public static void main(String[] args){
+        Client client = new UrlConnectionClient(); // create client object with API key from java system property
+    }
+}
 ```
 
 To do so, you will need to run Java with property. For example, run `gradlew` with twingly search key property:
