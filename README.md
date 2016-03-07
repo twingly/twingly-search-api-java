@@ -1,4 +1,4 @@
-# twingly-search-api-java [![Build Status](https://travis-ci.org/twingly/twingly-search-api-java.svg?branch=master)](https://travis-ci.org/twingly/twingly-search-api-java)
+# twingly-search-api-java [![Build Status](https://travis-ci.org/xSAVIKx/twingly-search-api-java.svg?branch=master)](https://travis-ci.org/xSAVIKx/twingly-search-api-java)
 
 Java client for Twingly Search API (previously known as Twingly Analytics API). Twingly is a blog search service that provides a searchable API known as [Twingly Search API](https://developer.twingly.com/resources/search/).
 
