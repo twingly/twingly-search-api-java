@@ -37,15 +37,15 @@ To learn more about the capabilities of the API, please read the [Twingly Search
 
 [Twingly Search API documentation]: https://developer.twingly.com/resources/search/
 
-### Api key from java system properties
+### API key from Java system properties
 
-Additionally, you can create Client object with api key from Java system properties (property name is `TWINGLY_SEARCH_KEY`):
+Additionally, you can create Client object with API key from Java system properties (property name is `TWINGLY_SEARCH_KEY`):
 
 ```Java
 import com.twingly.search.client.*;
 public class Test{
     public static void main(String[] args){
-        Client client = new UrlConnectionClient(); // create client object with api key from java system property
+        Client client = new UrlConnectionClient(); // create client object with API key from java system property
     }
 }
 ```
