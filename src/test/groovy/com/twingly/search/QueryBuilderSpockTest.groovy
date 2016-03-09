@@ -9,7 +9,7 @@ import java.text.SimpleDateFormat
 class QueryBuilderSpockTest extends Specification {
     private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat(Constants.DATE_FORMAT);
 
-    def "should through QueryException for empty search pattern"() {
+    def "should throw QueryException for empty search pattern"() {
         when:
         QueryBuilder.create("")
         then:
@@ -35,7 +35,7 @@ class QueryBuilderSpockTest extends Specification {
         query.documentLanguage == Language.English.isoCode
     }
 
-    def "should through QueryException on invalid search pattern set"() {
+    def "should throw QueryException on invalid search pattern set"() {
         given:
         def validSearchPattern = "searchPattern"
         def invalidSearchPattern = ""
@@ -102,7 +102,6 @@ class QueryBuilderSpockTest extends Specification {
         then:
         query.documentLanguage == null
     }
-
 
     def "should create valid query object with all fields set"() {
         given:

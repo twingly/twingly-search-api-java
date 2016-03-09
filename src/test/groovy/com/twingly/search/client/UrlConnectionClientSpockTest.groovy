@@ -72,7 +72,6 @@ class UrlConnectionClientSpockTest extends Specification {
         result != null
     }
 
-
     def "should parse valid result result"() {
         given:
         def filepath = packagePath.resolve("valid_result.xml")
@@ -147,7 +146,6 @@ class UrlConnectionClientSpockTest extends Specification {
         ex.message == "resultType:FAILURE, message:" + OperationFailureMessages.SERVICE_UNAVAILABLE
     }
 
-
     def "should throw exception for non existent api key result"() {
         given:
         def filepath = packagePath.resolve("nonexistent_api_key_result.xml")
@@ -199,7 +197,6 @@ class UrlConnectionClientSpockTest extends Specification {
         result.posts[0].authority == 1
         result.posts[0].blogRank == 1
         result.posts[0].tags == ["Blogg"]
-
 
         result.posts[1].url == "http://www.skvallernytt.se/hardtraning-da-galler-swedish-house-mafia"
         result.posts[1].blogName == "Skvallernytt.se"
@@ -345,5 +342,4 @@ class UrlConnectionClientSpockTest extends Specification {
         "test" | "github"          | null               | null                  | "2016-03-18 00:00:00" || "https://api.twingly.com/analytics/Analytics.ashx?key=test&xmloutputversion=2&searchpattern=github&tsTo=2016-03-18+00%3A00%3A00"
         "test" | "Nothing special" | null               | null                  | null                  || "https://api.twingly.com/analytics/Analytics.ashx?key=test&xmloutputversion=2&searchpattern=Nothing+special"
     }
-
 }
