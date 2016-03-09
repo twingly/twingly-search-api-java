@@ -5,11 +5,10 @@ apply plugin: "maven"
 apply plugin: "signing"
 
 group = "com.twingly"
-version = "1.0.0"
-sourceCompatibility = 1.7
-targetCompatibility = 1.7
 
 ext {
+    versionProperties = new Properties()
+    versionProperties.load(file("src/main/resources/version.properties").newReader())
     sourceEncoding = "UTF-8"
     spockVersion = "1.0-groovy-2.3"
     groovyVersion = "2.3.3"
@@ -17,7 +16,6 @@ ext {
     cglibVersion = "3.2.0"
     objenesisVersion = "2.2"
     jaxbVersion = "2.2.11"
-
     libs = [
             jaxb     : "org.glassfish.jaxb:jaxb-runtime:$jaxbVersion",
             junit    : "junit:junit:$junitVersion",
@@ -25,16 +23,17 @@ ext {
             spock    : "org.spockframework:spock-core:$spockVersion",
             cglib    : "cglib:cglib-nodep:$cglibVersion",
             objenesis: "org.objenesis:objenesis:$objenesisVersion"
-
     ]
-
-    javadocFolder = "doc"
 
     sharedManifest = manifest {
         attributes("Implementation-Title": 'Twingly Search API Java',
                 "Implementation-Version": version)
     }
 }
+version = ext.versionProperties["version"]
+sourceCompatibility = 1.7
+targetCompatibility = 1.7
+
 
 repositories {
     mavenCentral()
