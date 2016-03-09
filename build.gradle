@@ -9,6 +9,7 @@ group = "com.twingly"
 ext {
     versionProperties = new Properties()
     versionProperties.load(file("src/main/resources/version.properties").newReader())
+    projectVersion = versionProperties["version"]
     sourceEncoding = "UTF-8"
     spockVersion = "1.0-groovy-2.3"
     groovyVersion = "2.3.3"
@@ -24,13 +25,16 @@ ext {
             cglib    : "cglib:cglib-nodep:$cglibVersion",
             objenesis: "org.objenesis:objenesis:$objenesisVersion"
     ]
-
+    buildTime = new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
     sharedManifest = manifest {
-        attributes("Implementation-Title": 'Twingly Search API Java',
-                "Implementation-Version": version)
+        attributes(
+                "Implementation-Title": "Twingly Search API Java",
+                "Implementation-Version": projectVersion,
+                "Build-Time": buildTime
+        )
     }
 }
-version = ext.versionProperties["version"]
+version = ext.projectVersion
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
@@ -62,12 +66,15 @@ javadoc {
 }
 //create a single Jar with all dependencies
 task generateOneJar(type: Jar) {
-    manifest = project.manifest {
-        from sharedManifest
-    }
     baseName = project.name + '-all'
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
+}
+
+tasks.withType(Jar) { // includes War and Ear
+    manifest = project.manifest {
+        from sharedManifest
+    }
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
