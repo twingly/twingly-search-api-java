@@ -1,6 +1,6 @@
 package com.twingly.search;
 
-import java.io.FileInputStream;
+import java.io.BufferedInputStream;
 import java.net.URL;
 import java.util.Properties;
 
@@ -26,8 +26,8 @@ public final class Constants {
     static {
         URL resource = Constants.class.getClassLoader().getResource("version.properties");
         assert resource != null;
-        try (FileInputStream fis = new FileInputStream(resource.getFile())) {
-            VERSION_PROPERTIES.load(fis);
+        try (BufferedInputStream bis = new BufferedInputStream(resource.openStream())) {
+            VERSION_PROPERTIES.load(bis);
         } catch (Exception e) {
             throw new RuntimeException("version.properties was not found or cannot be read", e);
         }
