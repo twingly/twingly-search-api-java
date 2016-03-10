@@ -3,6 +3,7 @@ apply plugin: "java"
 apply plugin: "groovy"
 apply plugin: "maven"
 apply plugin: "signing"
+apply plugin: "jacoco"
 
 group = "com.twingly"
 
@@ -52,13 +53,30 @@ dependencies {
     testRuntime libs.cglib
     testRuntime libs.objenesis
 }
+
+jacoco {
+    toolVersion = "0.7.1.201405082137"
+}
+
 test {
     testLogging.showStandardStreams = true
     testLogging {
         events "PASSED", "FAILED", "SKIPPED"
     }
+    jacoco {
+        append = false
+        destinationFile = file("$buildDir/jacoco/jacocoTest.exec")
+        classDumpFile = file("$buildDir/jacoco/classpathdumps")
+    }
 }
 
+jacocoTestReport {
+    reports {
+        xml.enabled false
+        csv.enabled false
+        html.destination "${buildDir}/jacocoHtml"
+    }
+}
 
 javadoc {
     options.memberLevel = JavadocMemberLevel.PROTECTED

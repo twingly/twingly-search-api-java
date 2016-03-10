@@ -91,6 +91,14 @@ Run the tests
 gradlew check
 ```
 
+Generate coverage report, using [JaCoCo]
+
+```
+gradlew jacocoTestReport
+```
+
+[JaCoCo]: https://docs.gradle.org/current/userguide/jacoco_plugin.html
+
 ### JavaDoc generation
 
 To generate java docs just run gradle task `javadoc`:
