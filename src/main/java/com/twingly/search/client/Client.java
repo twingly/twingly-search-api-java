@@ -15,14 +15,14 @@ public interface Client {
      *
      * @return user agent string
      */
-    public String getUserAgent();
+    String getUserAgent();
 
     /**
      * Set user agent to use in requests
      *
      * @param userAgent user agent to be set
      */
-    public void setUserAgent(String userAgent);
+    void setUserAgent(String userAgent);
 
     /**
      * Make request with given query
@@ -31,5 +31,5 @@ public interface Client {
      * @return Result object
      * @throws TwinglySearchException if any exception happens
      */
-    public Result makeRequest(Query query);
+    Result makeRequest(Query query);
 }

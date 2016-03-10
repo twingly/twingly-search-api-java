@@ -233,7 +233,7 @@ public enum Language {
     /**
      * Represents two-letter <a href="https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes#Partial_ISO_639_table">ISO 639-1</a> code
      */
-    private String isoCode;
+    private final String isoCode;
 
     Language(String isoCode) {
         this.isoCode = isoCode;

@@ -14,5 +14,5 @@ public enum ContentType {
      * Blog content type.
      */
     @XmlEnumValue("blog")
-    BLOG;
+    BLOG
 }

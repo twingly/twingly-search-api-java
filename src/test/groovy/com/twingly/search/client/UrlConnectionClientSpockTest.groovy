@@ -36,7 +36,7 @@ class UrlConnectionClientSpockTest extends Specification {
         urlConnection.getInputStream() >> inputStream
     }
 
-    def "shoud throw TwinglySearchException when API key is not set in System properties"() {
+    def "should throw TwinglySearchException when API key is not set in System properties"() {
         when:
         new UrlConnectionClient()
         then:
@@ -50,6 +50,7 @@ class UrlConnectionClientSpockTest extends Specification {
         new UrlConnectionClient()
         then:
         notThrown(TwinglySearchException)
+        cleanup:
         System.properties.remove(Constants.TWINGLY_API_KEY_PROPERTY)
     }
 
@@ -156,7 +157,7 @@ class UrlConnectionClientSpockTest extends Specification {
         })
         then:
         def ex = thrown(TwinglySearchServerAPIKeyDoesNotExistException)
-        ex.message == "resultType:FAILURE, message:" + OperationFailureMessages.API_KEY_DOESNT_EXIST
+        ex.message == "resultType:FAILURE, message:" + OperationFailureMessages.API_KEY_DOES_NOT_EXIST
     }
 
     def "should throw exception for non xml result"() {
@@ -279,7 +280,7 @@ class UrlConnectionClientSpockTest extends Specification {
         thrown(TwinglySearchException)
     }
 
-    def "should process query and return result isntance"() {
+    def "should process query and return result instance"() {
         given:
         def query = QueryBuilder.create("pattern").build()
         when:

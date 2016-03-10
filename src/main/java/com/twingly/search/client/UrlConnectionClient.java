@@ -165,7 +165,7 @@ public class UrlConnectionClient implements Client {
     private void handleException(BlogStream blogStream) {
         if (blogStream.getOperationResult() != null && blogStream.getOperationResult().getResultType() == OperationResultType.FAILURE) {
             String message = blogStream.getOperationResult().getMessage();
-            if (OperationFailureMessages.API_KEY_DOESNT_EXIST.equalsIgnoreCase(message)) {
+            if (OperationFailureMessages.API_KEY_DOES_NOT_EXIST.equalsIgnoreCase(message)) {
                 throw new TwinglySearchServerAPIKeyDoesNotExistException(blogStream);
             }
             if (OperationFailureMessages.UNAUTHORIZED_API_KEY.equalsIgnoreCase(message)) {
