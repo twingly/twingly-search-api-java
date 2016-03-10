@@ -50,10 +50,10 @@ public class Test{
 }
 ```
 
-To do so, you will need to run Java with property. For example, run `gradlew` with twingly search key property:
+To do so, you will need to run Java with property. For example, run your own `jar` file with twingly search key property:
 
 ```
-gradlew build -DTWINGLY_SEARCH_KEY=some_key_value
+java -jar myJar.jar -DTWINGLY_SEARCH_KEY=some_key_value
 ```
 
 ### Exception handling
