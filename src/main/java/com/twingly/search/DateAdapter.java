@@ -10,7 +10,7 @@ import java.util.Date;
  * @see Constants#DATE_FORMAT
  */
 public class DateAdapter extends XmlAdapter<String, Date> {
-    private SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.DATE_FORMAT);
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.DATE_FORMAT);
 
     /**
      * {@inheritDoc}

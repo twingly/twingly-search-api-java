@@ -7,7 +7,7 @@ class DateAdapterSpockTest extends Specification {
     def adapter = new DateAdapter()
 
     @Unroll
-    def "java date:#date should be equal to formated date:#expected"() {
+    def "java date:#date should be equal to formatted date:#expected"() {
         when:
         def actual = adapter.marshal(date)
         then:
@@ -20,7 +20,7 @@ class DateAdapterSpockTest extends Specification {
     }
 
     @Unroll
-    def "formated date:#date should be equal to java date:#expected"() {
+    def "formatted date:#date should be equal to java date:#expected"() {
         when:
         def actual = adapter.unmarshal(date)
         then:

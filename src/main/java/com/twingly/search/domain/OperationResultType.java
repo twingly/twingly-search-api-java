@@ -14,5 +14,5 @@ public enum OperationResultType {
      * Failure operation result type.
      */
     @XmlEnumValue("failure")
-    FAILURE;
+    FAILURE
 }

@@ -5,9 +5,9 @@ package com.twingly.search.domain;
  */
 public final class OperationFailureMessages {
     /**
-     * The constant API_KEY_DOESNT_EXIST.
+     * The constant API_KEY_DOES_NOT_EXIST.
      */
-    public static final String API_KEY_DOESNT_EXIST = "The API key does not exist.";
+    public static final String API_KEY_DOES_NOT_EXIST = "The API key does not exist.";
     /**
      * The constant SERVICE_UNAVAILABLE.
      */

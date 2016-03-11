@@ -1,180 +1,94 @@
 package com.twingly.search;
 
-import com.twingly.search.client.Client;
-import com.twingly.search.client.UrlConnectionClient;
-import com.twingly.search.domain.Language;
-import com.twingly.search.domain.Result;
-import com.twingly.search.exception.QueryException;
-import com.twingly.search.exception.TwinglySearchException;
-
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
  * The type Query.
  */
 public class Query {
-    private static final String BASE_URL = "https://api.twingly.com";
-    private static final String SEARCH_PATH = "/analytics/Analytics.ashx";
-    private static final char AND = '&';
-    private final String apiKey;
-    private final SimpleDateFormat df = new SimpleDateFormat(Constants.DATE_FORMAT);
-    private Client client;
+    private Date startTime;
+    private Date endTime;
+    private String searchPattern;
+    private String documentLanguage;
 
     /**
-     * Default constructor that tries to instantiate Query object with
-     * API key from System environment variables and uses {@link com.twingly.search.client.UrlConnectionClient}
+     * Package-level constructor for API usage only. API users should use QueryBuilder instead.
      *
-     * @see Constants#TWINGLY_API_KEY_PROPERTY
+     * @see QueryBuilder
      */
-    public Query() {
-        this(new UrlConnectionClient());
+    Query() {
+        //
     }
 
     /**
-     * Constructor that uses given apiKey and default {@link com.twingly.search.client.UrlConnectionClient}
-     * API key from System environment variables and uses given client
+     * Gets start time.
      *
-     * @param apiKey the api key
+     * @return the start time
      */
-    public Query(String apiKey) {
-        this.client = new UrlConnectionClient();
-        this.apiKey = apiKey;
+    public Date getStartTime() {
+        return startTime;
     }
 
     /**
-     * Constructor that tries to instantiate Query object with
-     * API key from System environment variables and uses given client
+     * Sets start time.
      *
-     * @param client Client that should handle requests and responses
-     * @see Constants#TWINGLY_API_KEY_PROPERTY
+     * @param startTime the start time
      */
-    public Query(Client client) {
-        this.client = client;
-        this.apiKey = System.getProperty(Constants.TWINGLY_API_KEY_PROPERTY);
-        if (this.apiKey == null) {
-            throw new TwinglySearchException("Api key missing, could not find " + Constants.TWINGLY_API_KEY_PROPERTY + " property");
-        }
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
     }
 
     /**
-     * Constructor that uses given apiKey and client to make requests
+     * Gets end time.
      *
-     * @param client Client that should handle requests and responses
-     * @param apiKey the api key
+     * @return the end time
      */
-    public Query(Client client, String apiKey) {
-        this.client = client;
-        this.apiKey = apiKey;
+    public Date getEndTime() {
+        return endTime;
     }
 
-
     /**
-     * Build request query string.
+     * Sets end time.
      *
-     * @param searchPattern    the search pattern
-     * @param documentLanguage the document language
-     * @param startTime        the start time
-     * @param endTime          the end time
-     * @return the ready-to-use Query
+     * @param endTime the end time
      */
-    public String buildRequestQuery(String searchPattern, String documentLanguage, Date startTime, Date endTime) {
-        if (searchPattern == null || "".equalsIgnoreCase(searchPattern.trim())) {
-            throw new QueryException("Missing pattern");
-        }
-        StringBuilder sb = new StringBuilder();
-        sb.append(BASE_URL);
-        sb.append(SEARCH_PATH);
-        sb.append("?key=").append(apiKey);
-        sb.append(AND).append("xmloutputversion=2");
-
-        sb.append(AND).append("searchpattern=").append(urlEncode(searchPattern));
-
-        // add start time if supplied
-        if (startTime != null) {
-            sb.append(AND).append("ts=").append(urlEncode(df.format(startTime)));
-        }
-
-        // add end time if supplied
-        if (endTime != null) {
-            sb.append(AND).append("tsTo=").append(urlEncode(df.format(endTime)));
-        }
-
-        // add document language if supplied
-        if (documentLanguage != null) {
-            sb.append(AND).append("documentlang=").append(documentLanguage);
-        }
-        return sb.toString();
-    }
-
-    private String urlEncode(String s) {
-        try {
-            return URLEncoder.encode(s, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            // This is impossible, UTF-8 is always supported according to the java standard
-            throw new TwinglySearchException("It's quite impossible, but there's no UTF-8 encoding in your JVM", e);
-        }
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
     }
 
     /**
-     * Make request result.
+     * Gets search pattern.
      *
-     * @param searchPattern    the search pattern
-     * @param documentLanguage the document language
-     * @param startTime        the start time
-     * @param endTime          the end time
-     * @return the result
+     * @return the search pattern
      */
-    public Result makeRequest(String searchPattern, Language documentLanguage, Date startTime, Date endTime) {
-        String query = buildRequestQuery(searchPattern, documentLanguage != null ? documentLanguage.getIsoCode() : null, startTime, endTime);
-        return client.makeRequest(query);
+    public String getSearchPattern() {
+        return searchPattern;
     }
 
     /**
-     * Make request result.
-     *
-     * @param searchPattern    the search pattern
-     * @param documentLanguage the document language
-     * @param startTime        the start time
-     * @return the result
-     */
-    public Result makeRequest(String searchPattern, Language documentLanguage, Date startTime) {
-        String query = buildRequestQuery(searchPattern, documentLanguage != null ? documentLanguage.getIsoCode() : null, startTime, null);
-        return client.makeRequest(query);
-    }
-
-    /**
-     * Make request result.
-     *
-     * @param searchPattern    the search pattern
-     * @param documentLanguage the document language
-     * @return the result
-     */
-    public Result makeRequest(String searchPattern, Language documentLanguage) {
-        String query = buildRequestQuery(searchPattern, documentLanguage != null ? documentLanguage.getIsoCode() : null, null, null);
-        return client.makeRequest(query);
-    }
-
-    /**
-     * Make request result.
+     * Sets search pattern.
      *
      * @param searchPattern the search pattern
-     * @return the result
      */
-    public Result makeRequest(String searchPattern) {
-        String query = buildRequestQuery(searchPattern, null, null, null);
-        return client.makeRequest(query);
+    public void setSearchPattern(String searchPattern) {
+        this.searchPattern = searchPattern;
     }
 
     /**
-     * Query result.
+     * Gets document language.
      *
-     * @param query the query
-     * @return the result
+     * @return the document language
      */
-    public Result query(String query) {
-        return client.makeRequest(query);
+    public String getDocumentLanguage() {
+        return documentLanguage;
+    }
+
+    /**
+     * Sets document language.
+     *
+     * @param documentLanguage the document language
+     */
+    public void setDocumentLanguage(String documentLanguage) {
+        this.documentLanguage = documentLanguage;
     }
 }
