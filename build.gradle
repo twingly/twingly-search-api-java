@@ -19,6 +19,7 @@ ext {
     objenesisVersion = "2.2"
     jaxbVersion = "2.2.11"
     betamaxVersion = "2.0.0-alpha-1"
+    betamaxSnapshotVersion = "2.0.0-SNAPSHOT"
     libs = [
             jaxb     : "org.glassfish.jaxb:jaxb-runtime:$jaxbVersion",
             junit    : "junit:junit:$junitVersion",
@@ -26,7 +27,7 @@ ext {
             spock    : "org.spockframework:spock-core:$spockVersion",
             cglib    : "cglib:cglib-nodep:$cglibVersion",
             objenesis: "org.objenesis:objenesis:$objenesisVersion",
-            betamax  : "software.betamax:betamax-junit:$betamaxVersion"
+            betamax  : "software.betamax:betamax-junit:$betamaxSnapshotVersion"
     ]
     buildTime = new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
     sharedManifest = manifest {
@@ -45,6 +46,7 @@ targetCompatibility = 1.7
 repositories {
     mavenCentral()
     jcenter()
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
     mavenLocal()
 }
 dependencies {
