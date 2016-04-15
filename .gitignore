@@ -111,5 +111,5 @@ local.properties
 hs_err_pid*
 
 # betamax certificates
-littleproxy_cert
-littleproxy_keystore.jks
+*.jks
+*.jks.cert
