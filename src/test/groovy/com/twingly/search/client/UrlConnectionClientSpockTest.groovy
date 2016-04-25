@@ -108,6 +108,21 @@ class UrlConnectionClientSpockTest extends Specification {
         result.posts[0].contentType == ContentType.BLOG
     }
 
+    def "should parse valid empty result"() {
+        given:
+        def filepath = packagePath.resolve("valid_empty_result.xml")
+        def is = this.getClass().getClassLoader().getResourceAsStream(filepath.toString())
+        when:
+        def result = is.withReader("UTF-8", {
+            r -> return client.unmarshalXmlForResult(r)
+        })
+        then:
+        result.numberOfMatchesReturned == 0
+        result.numberOfMatchesTotal == 0
+        result.secondsElapsed == 0.213d
+        result.posts.size() == 0
+    }
+
     def "should throw exception for undefined error result"() {
         given:
         def filepath = packagePath.resolve("undefined_error_result.xml")
