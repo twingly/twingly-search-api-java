@@ -35,16 +35,17 @@ ext {
         )
     }
 }
+
 version = ext.projectVersion
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
-
 
 repositories {
     mavenCentral()
     jcenter()
     mavenLocal()
 }
+
 dependencies {
     compile libs.jaxb
     testCompile libs.junit
@@ -82,6 +83,7 @@ javadoc {
     options.memberLevel = JavadocMemberLevel.PROTECTED
     classpath = configurations.compile
 }
+
 //create a single Jar with all dependencies
 task generateOneJar(type: Jar) {
     baseName = project.name + '-all'
