@@ -73,7 +73,7 @@ class UrlConnectionClientSpockTest extends Specification {
         result != null
     }
 
-    def "should parse valid result result"() {
+    def "should parse valid result"() {
         given:
         def filepath = packagePath.resolve("valid_result.xml")
         def is = this.getClass().getClassLoader().getResourceAsStream(filepath.toString())
@@ -88,7 +88,7 @@ class UrlConnectionClientSpockTest extends Specification {
         result.posts.size() == 1000
     }
 
-    def "should parse valid non blog result result"() {
+    def "should parse valid non blog result"() {
         given:
         def filepath = packagePath.resolve("valid_non_blog_result.xml")
         def is = this.getClass().getClassLoader().getResourceAsStream(filepath.toString())
