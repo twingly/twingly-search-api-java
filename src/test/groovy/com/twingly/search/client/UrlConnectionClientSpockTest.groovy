@@ -73,7 +73,7 @@ class UrlConnectionClientSpockTest extends Specification {
         result != null
     }
 
-    def "should parse valid result result"() {
+    def "should parse valid result"() {
         given:
         def filepath = packagePath.resolve("valid_result.xml")
         def is = this.getClass().getClassLoader().getResourceAsStream(filepath.toString())
@@ -88,7 +88,7 @@ class UrlConnectionClientSpockTest extends Specification {
         result.posts.size() == 1000
     }
 
-    def "should parse valid non blog result result"() {
+    def "should parse valid non blog result"() {
         given:
         def filepath = packagePath.resolve("valid_non_blog_result.xml")
         def is = this.getClass().getClassLoader().getResourceAsStream(filepath.toString())
@@ -106,6 +106,21 @@ class UrlConnectionClientSpockTest extends Specification {
         result.posts[0].blogUrl == "http://www.someotherurl.com/"
         result.posts[0].tags == []
         result.posts[0].contentType == ContentType.BLOG
+    }
+
+    def "should parse valid empty result"() {
+        given:
+        def filepath = packagePath.resolve("valid_empty_result.xml")
+        def is = this.getClass().getClassLoader().getResourceAsStream(filepath.toString())
+        when:
+        def result = is.withReader("UTF-8", {
+            r -> return client.unmarshalXmlForResult(r)
+        })
+        then:
+        result.numberOfMatchesReturned == 0
+        result.numberOfMatchesTotal == 0
+        result.secondsElapsed == 0.213d
+        result.posts.size() == 0
     }
 
     def "should throw exception for undefined error result"() {
