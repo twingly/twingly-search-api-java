@@ -118,6 +118,15 @@ gradlew generateOneJar
 
 This will save JAR file with all needed dependencies in `build/libs/` with `-all` suffix. (like `twingly-search-api-java-all-0.0.1.jar`)
 
+### Release
+
+Before you start, ensure that you have a properly setup `gradle.properties`, [example](http://central.sonatype.org/pages/gradle.html#credentials).
+
+1. Bump the version in [version.properties](./src/main/resources/version.properties)
+1. Run `gradlew uploadArchives -Prelease`
+1. Log into https://oss.sonatype.org/
+1. [Release](http://central.sonatype.org/pages/releasing-the-deployment.html) to Central Repository
+
 ## License
 
 The MIT License (MIT)
