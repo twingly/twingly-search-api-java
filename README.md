@@ -125,6 +125,7 @@ This will save JAR file with all needed dependencies in `build/libs/` with `-all
 
 Before you start, ensure that you have a properly setup `~/.gradle/gradle.properties` ([see the example](http://central.sonatype.org/pages/gradle.html#credentials)) and [GPG](https://www.gnupg.org/) keyring (`brew install gpg`, get the secret key from our secret stash, `gpg --import <path to key>`).
 
+1. Ensure you are using Java 7
 1. Bump the version in [version.properties](./src/main/resources/version.properties)
 1. Run `gradlew uploadArchives -Prelease` to release to the staging repository
 1. Log into [Nexus Repository Manager](https://oss.sonatype.org/) and find the archive
