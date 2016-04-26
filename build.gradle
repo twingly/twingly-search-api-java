@@ -150,7 +150,7 @@ uploadArchives {
                 }
 
                 pom.project {
-                   name "twingly-search-api-java"
+                   name "twingly-search-api"
                    packaging "jar"
                    description "Client for Twingly Search API."
                    url "https://developer.twingly.com/resources/search/"
