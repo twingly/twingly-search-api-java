@@ -2,10 +2,13 @@
 
 Java client for Twingly Search API (previously known as Twingly Analytics API). Twingly is a blog search service that provides a searchable API known as [Twingly Search API](https://developer.twingly.com/resources/search/).
 
+## Installation
+
+Get the latest release from [Maven Central](https://search.maven.org/#search%7Cga%7C1%7Ctwingly-search-api).
+
 ## Usage
 
 ```Java
-
 import com.twingly.search.*;
 public class Test{
     public static void main(String[] args){
@@ -27,8 +30,8 @@ public class Test{
         }
     }
 }
-
 ```
+
 A Query object can be reused for several requests.
 
 To learn more about the features of this client, check out the example code that can be found in [example](example).
