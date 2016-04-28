@@ -5,8 +5,6 @@ apply plugin: "maven"
 apply plugin: "signing"
 apply plugin: "jacoco"
 
-group = "com.twingly"
-
 ext {
     versionProperties = new Properties()
     versionProperties.load(file("src/main/resources/version.properties").newReader())
@@ -35,16 +33,25 @@ ext {
         )
     }
 }
+
+group = "com.twingly"
 version = ext.projectVersion
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
+def isReleaseBuild
+if(hasProperty("release")) {
+    isReleaseBuild = true
+} else {
+    isReleaseBuild = false
+}
 
 repositories {
     mavenCentral()
     jcenter()
     mavenLocal()
 }
+
 dependencies {
     compile libs.jaxb
     testCompile libs.junit
@@ -82,6 +89,7 @@ javadoc {
     options.memberLevel = JavadocMemberLevel.PROTECTED
     classpath = configurations.compile
 }
+
 //create a single Jar with all dependencies
 task generateOneJar(type: Jar) {
     baseName = project.name + '-all'
@@ -114,7 +122,62 @@ tasks.withType(JavaCompile.class) {
 
 artifacts {
     archives jar
-
     archives javadocJar
     archives sourcesJar
+}
+
+if(isReleaseBuild) {
+    signing {
+        sign configurations.archives
+    }
+} else {
+    task signArchives {
+        // do nothing
+    }
+}
+
+uploadArchives {
+    repositories {
+        if (!isReleaseBuild) {
+            mavenLocal()
+        }
+        else {
+            mavenDeployer {
+                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+                repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                  authentication(userName: sonatypeUsername, password: sonatypePassword)
+                }
+
+                pom.project {
+                   name "twingly-search"
+                   packaging "jar"
+                   description "Client for Twingly Search API."
+                   url "https://developer.twingly.com/resources/search/"
+
+                   scm {
+                       connection "scm:git@github.com:twingly/twingly-search-api-java.git"
+                       developerConnection "scm:git@github.com:twingly/twingly-search-api-java.git"
+                       url "scm:git@github.com:twingly/twingly-search-api-java.git"
+                   }
+
+                   licenses {
+                       license {
+                           name "MIT License"
+                           url "http://www.opensource.org/licenses/mit-license.php"
+                           distribution "repo"
+                       }
+                   }
+
+                   developers {
+                       developer {
+                           id "twingly"
+                           name "Twingly AB"
+                           email "support@twingly.com"
+                       }
+                   }
+               }
+            }
+        }
+    }
 }
