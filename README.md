@@ -4,7 +4,7 @@ Java client for Twingly Search API (previously known as Twingly Analytics API). 
 
 ## Installation
 
-Get the latest release from [Maven Central](https://search.maven.org/#search%7Cga%7C1%7Ctwingly-search).
+Get the latest release from [Maven Central](https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22twingly-search%22).
 
 ## Usage
 
