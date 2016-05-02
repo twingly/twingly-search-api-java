@@ -198,8 +198,8 @@ class UrlConnectionClientSpockTest extends Specification {
             r -> return client.unmarshalXmlForResult(r)
         })
         then:
-        result.numberOfMatchesReturned == 1
-        result.numberOfMatchesTotal == 1
+        result.numberOfMatchesReturned == 3
+        result.numberOfMatchesTotal == 3
         result.secondsElapsed == 0.148d
         result.posts.size() == 3
         result.posts[0].url == "http://oppogner.blogg.no/1409602010_bare_m_ha.html"
