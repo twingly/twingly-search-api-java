@@ -70,7 +70,7 @@ Given exception hierarchy is now available:
 
 ## Requirements
 
-* API key, contact [sales](mailto:sales@twingly.com) via [twingly.com](https://www.twingly.com/try-for-free/) to get one
+* API key, [sign up](https://www.twingly.com/try-for-free) via [twingly.com](https://www.twingly.com/) to get one
 * Java:
     * v 1.7
     * v 1.8
