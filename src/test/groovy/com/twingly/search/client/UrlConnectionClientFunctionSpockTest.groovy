@@ -19,7 +19,7 @@ class UrlConnectionClientFunctionSpockTest extends Specification {
     @Rule
     RecorderRule recorder = new RecorderRule(configuration);
 
-    @Betamax(tape = "search for spotify", mode = TapeMode.READ_WRITE)
+    @Betamax(tape = "search for spotify", mode = TapeMode.READ_ONLY)
     def "search for spotify"() {
         given:
         def apiKey = "API_KEY"
@@ -33,7 +33,7 @@ class UrlConnectionClientFunctionSpockTest extends Specification {
         result.getNumberOfMatchesReturned() == 10
     }
 
-    @Betamax(tape = "search without valid API key", mode = TapeMode.READ_WRITE)
+    @Betamax(tape = "search without valid API key", mode = TapeMode.READ_ONLY)
     def "search without valid api key"() {
         given:
         def apiKey = "API_KEY"
