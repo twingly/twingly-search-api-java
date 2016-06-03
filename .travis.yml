@@ -4,7 +4,7 @@ jdk:
   - oraclejdk7
   - oraclejdk8
 sudo: false
-script: ./gradlew --debug check
+script: ./gradlew --debug -Djavax.net.debug=ssl check
 addons:
   apt:
     packages:
