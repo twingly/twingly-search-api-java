@@ -1,0 +1,24 @@
+!tape
+name: search without valid API key
+interactions:
+- recorded: 2016-03-12T12:24:38.299Z
+  request:
+    method: GET
+    uri: https://api.twingly.com/analytics/Analytics.ashx?key=API_KEY&xmloutputversion=2&searchpattern=some+pattern
+    headers:
+      Accept: text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2
+      Connection: keep-alive
+      Content-Length: '0'
+      Host: api.twingly.com
+      User-Agent: Twingly Search Java Client/1.0.0
+  response:
+    status: 200
+    headers:
+      Cache-Control: private
+      Connection: keep-alive
+      Content-Length: '183'
+      Content-Type: text/xml; charset=utf-8
+      Date: Sat, 12 Mar 2016 12:24:58 GMT
+      Server: nginx
+      Set-Cookie: SERVERID=web03; path=/
+    body: "<?xml version=\"1.0\" encoding=\"UTF-8\"?><blogstream xmlns=\"http://www.twingly.com\">\r\n  <operationResult resultType=\"failure\">The API key does not exist.</operationResult>\r\n</blogstream>"
