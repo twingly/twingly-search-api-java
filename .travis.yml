@@ -4,6 +4,7 @@ jdk:
   - oraclejdk7
   - oraclejdk8
 sudo: false
+script: ./gradlew --debug check
 addons:
   apt:
     packages:
