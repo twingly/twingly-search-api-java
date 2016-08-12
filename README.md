@@ -1,11 +1,14 @@
-# twingly-search-api-java [![Build Status](https://travis-ci.org/twingly/twingly-search-api-java.svg?branch=master)](https://travis-ci.org/twingly/twingly-search-api-java)
+# Twingly Search API Java [![Build Status](https://travis-ci.org/twingly/twingly-search-api-java.svg?branch=master)](https://travis-ci.org/twingly/twingly-search-api-java)
 
 Java client for Twingly Search API (previously known as Twingly Analytics API). Twingly is a blog search service that provides a searchable API known as [Twingly Search API](https://developer.twingly.com/resources/search/).
 
-## Example usage
+## Installation
+
+Get the latest release from [Maven Central](https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22twingly-search%22).
+
+## Usage
 
 ```Java
-
 import com.twingly.search.*;
 public class Test{
     public static void main(String[] args){
@@ -27,8 +30,8 @@ public class Test{
         }
     }
 }
-
 ```
+
 A Query object can be reused for several requests.
 
 To learn more about the features of this client, check out the example code that can be found in [example](example).
@@ -67,7 +70,7 @@ Given exception hierarchy is now available:
 
 ## Requirements
 
-* API key, contact [sales](mailto:sales@twingly.com) via [twingly.com](https://www.twingly.com/try-for-free/) to get one
+* API key, [sign up](https://www.twingly.com/try-for-free) via [twingly.com](https://www.twingly.com/) to get one
 * Java:
     * v 1.7
     * v 1.8
@@ -117,6 +120,19 @@ gradlew generateOneJar
 ```
 
 This will save JAR file with all needed dependencies in `build/libs/` with `-all` suffix. (like `twingly-search-api-java-all-0.0.1.jar`)
+
+### Release
+
+Before you start, ensure that you have a properly setup `~/.gradle/gradle.properties` ([see the example](http://central.sonatype.org/pages/gradle.html#credentials)) and [GPG](https://www.gnupg.org/) keyring (`brew install gpg`, get the secret key from our secret stash, `gpg --import <path to key>`).
+
+1. Ensure you are using Java 7
+1. Bump the version in [version.properties](./src/main/resources/version.properties)
+1. Commit the changes
+1. Tag the current commit with the same version number and push it
+1. Run `gradlew uploadArchives -Prelease` to release to the staging repository
+1. Log into [Nexus Repository Manager](https://oss.sonatype.org/) and find the archive
+1. Read [Releasing the Deployment](http://central.sonatype.org/pages/releasing-the-deployment.html)
+1. Release to Central Repository using [Nexus Repository Manager](https://oss.sonatype.org/)
 
 ## License
 
