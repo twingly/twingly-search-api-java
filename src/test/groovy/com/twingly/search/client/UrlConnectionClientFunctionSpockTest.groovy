@@ -5,7 +5,6 @@ import com.twingly.search.domain.Language
 import com.twingly.search.exception.TwinglySearchServerAPIKeyDoesNotExistException
 import org.junit.Rule
 import software.betamax.Configuration
-import software.betamax.ProxyConfiguration
 import software.betamax.TapeMode
 import software.betamax.junit.Betamax
 import software.betamax.junit.RecorderRule
@@ -15,7 +14,7 @@ class UrlConnectionClientFunctionSpockTest extends Specification {
     private static final String TAPES_STORAGE = "src/test/resources/com/twingly/search/client/tapes";
 
     File f = new File(TAPES_STORAGE);
-    Configuration configuration = ProxyConfiguration.builder().tapeRoot(f).sslEnabled(true).build();
+    Configuration configuration = Configuration.builder().tapeRoot(f).sslEnabled(true).build();
     @Rule
     RecorderRule recorder = new RecorderRule(configuration);
 
