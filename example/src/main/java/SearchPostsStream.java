@@ -1,22 +1,25 @@
-import com.twingly.search.Query;
-import com.twingly.search.QueryBuilder;
+import com.twingly.search.Constants;
 import com.twingly.search.client.Client;
 import com.twingly.search.client.UrlConnectionClient;
 import com.twingly.search.domain.Post;
 import com.twingly.search.domain.Result;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class SearchPostsStream {
+    public static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat(Constants.DATE_FORMAT);
     private static final String USER_AGENT = "MyCompany/1.0";
-    private final String searchPattern;
+    private final String keyword;
+    private String q;
     private Client client;
-    private Query query;
     private int counter;
 
     public SearchPostsStream(String keyword) {
-        searchPattern = String.format("sort-order:asc sort:published %s", keyword);
+        this.keyword = keyword;
+        q = String.format("sort-order:asc sort:published %s", keyword);
         client = new UrlConnectionClient();
         client.setUserAgent(USER_AGENT);
-        query = QueryBuilder.create(searchPattern).build();
     }
 
     public static void main(String[] args) {
@@ -27,7 +30,7 @@ public class SearchPostsStream {
     }
 
     public void each() {
-        Result result = client.makeRequest(query);
+        Result result = client.makeRequest(q);
         iterateAllPosts(result);
     }
 
@@ -44,8 +47,10 @@ public class SearchPostsStream {
             return;
         }
         Post lastPost = result.getPosts().get(result.getPosts().size() - 1);
-        query.setStartTime(lastPost.getPublished());
-        Result newResult = client.makeRequest(query);
+        Date publishedAt = lastPost.getPublishedAt();
+        String startDate = SIMPLE_DATE_FORMAT.format(publishedAt);
+        q = String.format("sort-order:asc sort:published %s start-date:%s", keyword, startDate);
+        Result newResult = client.makeRequest(q);
         iterateAllPosts(newResult);
     }
 }
