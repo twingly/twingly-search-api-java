@@ -1,6 +1,6 @@
 package com.twingly.search.exception;
 
-import com.twingly.search.domain.BlogStream;
+import com.twingly.search.domain.Error;
 
 /**
  * Custom runtime Twingly Exception
@@ -16,10 +16,10 @@ public class TwinglySearchException extends RuntimeException {
     /**
      * Instantiates a new Twingly exception.
      *
-     * @param blogStream the blog stream
+     * @param error the error
      */
-    public TwinglySearchException(BlogStream blogStream) {
-        this(String.format("resultType:%s, message:%s", blogStream.getOperationResult().getResultType(), blogStream.getOperationResult().getMessage()));
+    public TwinglySearchException(Error error) {
+        super(String.format("Error code: %s. Error message: %s", error.getCode(), error.getMessage()));
     }
 
     /**

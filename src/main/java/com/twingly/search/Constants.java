@@ -12,7 +12,7 @@ public final class Constants {
     /**
      * The constant DATE_FORMAT.
      */
-    public static final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
+    public static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssX";
     /**
      * The constant TWINGLY_API_KEY_PROPERTY
      */

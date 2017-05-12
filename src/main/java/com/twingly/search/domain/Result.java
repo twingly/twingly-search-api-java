@@ -36,6 +36,12 @@ public class Result {
     private List<Post> posts;
 
     /**
+     * Defined whether result is complete or not
+     */
+    @XmlAttribute(name = "incompleteResult")
+    private boolean incompleteResult;
+
+    /**
      * Instantiates a new Result.
      */
     public Result() {
@@ -85,6 +91,24 @@ public class Result {
      */
     public void setPosts(List<Post> posts) {
         this.posts = posts;
+    }
+
+    /**
+     * Gets incomplete result
+     *
+     * @return the incomplete result
+     */
+    public boolean isIncompleteResult() {
+        return incompleteResult;
+    }
+
+    /**
+     * Sets incomplete result
+     *
+     * @param incompleteResult the incomplete result
+     */
+    public void setIncompleteResult(boolean incompleteResult) {
+        this.incompleteResult = incompleteResult;
     }
 
     /**

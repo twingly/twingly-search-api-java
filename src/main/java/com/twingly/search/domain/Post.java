@@ -2,7 +2,6 @@ package com.twingly.search.domain;
 
 import com.twingly.search.DateAdapter;
 
-import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -29,21 +28,21 @@ public class Post {
     /**
      * the blog post text
      */
-    private String summary;
+    private String text;
     /**
      * ISO two letter language code for the language that the post was written in.
      */
     private String languageCode;
     /**
-     * the time, in UTC, when the post was published
+     * the time, in UTC, when the post was published at
      */
     @XmlJavaTypeAdapter(DateAdapter.class)
-    private Date published;
+    private Date publishedAt;
     /**
-     * the time, in UTC, when the post was indexed by Twingly
+     * the time, in UTC, when the post was indexed at by Twingly
      */
     @XmlJavaTypeAdapter(DateAdapter.class)
-    private Date indexed;
+    private Date indexedAt;
     /**
      * the blog URL
      */
@@ -52,6 +51,11 @@ public class Post {
      * name of the blog
      */
     private String blogName;
+
+    /**
+     * The ID of the blog
+     */
+    private String blogId;
     /**
      * the blog's authority/influence.
      *
@@ -70,11 +74,49 @@ public class Post {
     @XmlElementWrapper(name = "tags")
     @XmlElement(name = "tag")
     private List<String> tags;
+
     /**
-     * Content type of post. The only supported now is "Blog"
+     * The blog post ID
      */
-    @XmlAttribute(name = "contentType")
-    private ContentType contentType;
+    private String id;
+
+    /**
+     * The blog post author
+     */
+    private String author;
+
+    /**
+     * ISO two letter location code for the language that the post was written in.
+     */
+    private String locationCode;
+
+    /**
+     * Number of links found in other blog posts
+     */
+    private int inlinksCount;
+    /**
+     * the time, in UTC, when the post was reindexed at by Twingly
+     */
+    @XmlJavaTypeAdapter(DateAdapter.class)
+    private Date reindexedAt;
+    /**
+     * All links from the blog post to other resources
+     */
+    @XmlElementWrapper(name = "links")
+    @XmlElement(name = "link")
+    private List<String> links;
+
+    /**
+     * Image URLs from the posts
+     */
+    @XmlElementWrapper(name = "images")
+    @XmlElement(name = "image")
+    private List<String> images;
+
+    /**
+     * Geographical coordinates from blog post
+     */
+    private String coordinates;
 
     /**
      * Instantiates a new Post.
@@ -83,21 +125,21 @@ public class Post {
     }
 
     /**
-     * Gets content type.
+     * Gets blog id
      *
-     * @return the content type
+     * @return the blog id
      */
-    public ContentType getContentType() {
-        return contentType;
+    public String getBlogId() {
+        return blogId;
     }
 
     /**
-     * Sets content type.
+     * Sets blog id
      *
-     * @param contentType the content type
+     * @param blogId the blog id
      */
-    public void setContentType(ContentType contentType) {
-        this.contentType = contentType;
+    public void setBlogId(String blogId) {
+        this.blogId = blogId;
     }
 
     /**
@@ -137,21 +179,21 @@ public class Post {
     }
 
     /**
-     * Gets summary.
+     * Gets text.
      *
-     * @return the summary
+     * @return the text
      */
-    public String getSummary() {
-        return summary;
+    public String getText() {
+        return text;
     }
 
     /**
-     * Sets summary.
+     * Sets text.
      *
-     * @param summary the summary
+     * @param text the text
      */
-    public void setSummary(String summary) {
-        this.summary = summary;
+    public void setText(String text) {
+        this.text = text;
     }
 
     /**
@@ -173,39 +215,39 @@ public class Post {
     }
 
     /**
-     * Gets published.
+     * Gets publishedAt.
      *
-     * @return the published
+     * @return the publishedAt
      */
-    public Date getPublished() {
-        return published;
+    public Date getPublishedAt() {
+        return publishedAt;
     }
 
     /**
-     * Sets published.
+     * Sets publishedAt.
      *
-     * @param published the published
+     * @param publishedAt the publishedAt
      */
-    public void setPublished(Date published) {
-        this.published = published;
+    public void setPublishedAt(Date publishedAt) {
+        this.publishedAt = publishedAt;
     }
 
     /**
-     * Gets indexed.
+     * Gets indexedAt.
      *
-     * @return the indexed
+     * @return the indexedAt
      */
-    public Date getIndexed() {
-        return indexed;
+    public Date getIndexedAt() {
+        return indexedAt;
     }
 
     /**
-     * Sets indexed.
+     * Sets indexedAt.
      *
-     * @param indexed the indexed
+     * @param indexedAt the indexedAt
      */
-    public void setIndexed(Date indexed) {
-        this.indexed = indexed;
+    public void setIndexedAt(Date indexedAt) {
+        this.indexedAt = indexedAt;
     }
 
     /**
@@ -299,5 +341,155 @@ public class Post {
      */
     public void setTags(List<String> tags) {
         this.tags = tags;
+    }
+
+    /**
+     * Gets id
+     *
+     * @return the id
+     */
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * Sets id.
+     *
+     * @param id the id
+     */
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    /**
+     * Gets author
+     *
+     * @return the author
+     */
+    public String getAuthor() {
+        return author;
+    }
+
+    /**
+     * Sets author
+     *
+     * @param author the author
+     */
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    /**
+     * Gets location code
+     *
+     * @return the location code
+     */
+    public String getLocationCode() {
+        return locationCode;
+    }
+
+    /**
+     * Sets location code
+     *
+     * @param locationCode the location code
+     */
+    public void setLocationCode(String locationCode) {
+        this.locationCode = locationCode;
+    }
+
+    /**
+     * Gets inlinks count
+     *
+     * @return the inlinks count
+     */
+    public int getInlinksCount() {
+        return inlinksCount;
+    }
+
+    /**
+     * Sets inlinks count
+     *
+     * @param inlinksCount the inlinks count
+     */
+    public void setInlinksCount(int inlinksCount) {
+        this.inlinksCount = inlinksCount;
+    }
+
+    /**
+     * Gets re-indexed at date
+     *
+     * @return the re-indexed at date
+     */
+    public Date getReindexedAt() {
+        return reindexedAt;
+    }
+
+    /**
+     * Sets re-indexed at date
+     *
+     * @param reindexedAt the re-indexed at date
+     */
+    public void setReindexedAt(Date reindexedAt) {
+        this.reindexedAt = reindexedAt;
+    }
+
+    /**
+     * Gets links
+     *
+     * @return the links
+     */
+    public List<String> getLinks() {
+        if (links == null) {
+            links = new ArrayList<>();
+        }
+        return links;
+    }
+
+    /**
+     * Sets links
+     *
+     * @param links the links
+     */
+    public void setLinks(List<String> links) {
+        this.links = links;
+    }
+
+    /**
+     * Gets images
+     *
+     * @return the images
+     */
+    public List<String> getImages() {
+        if (images == null) {
+            images = new ArrayList<>();
+        }
+        return images;
+    }
+
+    /**
+     * Sets images
+     *
+     * @param images the images
+     */
+    public void setImages(List<String> images) {
+        this.images = images;
+    }
+
+    /**
+     * Gets coordinates
+     *
+     * @return the coordinates
+     */
+    public String getCoordinates() {
+        return coordinates;
+    }
+
+    /**
+     * Sets coordinates
+     *
+     * @param coordinates the coordinates
+     */
+    public void setCoordinates(String coordinates) {
+        this.coordinates = coordinates;
     }
 }
