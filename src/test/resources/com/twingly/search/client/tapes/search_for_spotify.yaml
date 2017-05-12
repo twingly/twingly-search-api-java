@@ -4,7 +4,7 @@ interactions:
 - recorded: 2017-05-12T20:34:14.499Z
   request:
     method: GET
-    uri: https://api.twingly.com/blog/search/api/v3/search?apiKey=693C38C9-FB4E-4DC9-869E-80CFD00ED839&q=spotify+page-size%3A10+lang%3Aen
+    uri: https://api.twingly.com/blog/search/api/v3/search?apiKey=API_KEY&q=spotify+page-size%3A10+lang%3Aen
     headers:
       Accept: text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2
       Accept-Encoding: gzip;q=1.0,deflate;q=0.6,identity;q=0.3

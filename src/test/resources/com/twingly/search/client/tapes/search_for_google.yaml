@@ -4,7 +4,7 @@ interactions:
 - recorded: 2017-05-12T20:35:57.859Z
   request:
     method: GET
-    uri: https://api.twingly.com/blog/search/api/v3/search?apiKey=693C38C9-FB4E-4DC9-869E-80CFD00ED839&q=google+page-size%3A100+location%3Aua%7Cby
+    uri: https://api.twingly.com/blog/search/api/v3/search?apiKey=API_KEY&q=google+page-size%3A100+location%3Aua%7Cby
     headers:
       Accept: text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2
       Connection: keep-alive

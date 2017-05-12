@@ -21,7 +21,7 @@ class UrlConnectionClientFunctionSpockTest extends Specification {
     @Betamax(tape = "search for spotify", mode = TapeMode.READ_WRITE)
     def "search for spotify in English"() {
         given:
-        def apiKey = "693C38C9-FB4E-4DC9-869E-80CFD00ED839"
+        def apiKey = "API_KEY"
         def client = new UrlConnectionClient(apiKey)
         def q = String.format("spotify page-size:10 lang:%s", Language.English.isoCode)
         when:
@@ -34,7 +34,7 @@ class UrlConnectionClientFunctionSpockTest extends Specification {
     @Betamax(tape = "search for google", mode = TapeMode.READ_WRITE)
     def "search for google without compression in Ukraine and Belarus"() {
         given:
-        def apiKey = "693C38C9-FB4E-4DC9-869E-80CFD00ED839"
+        def apiKey = "API_KEY"
         def client = new UrlConnectionClient(apiKey)
         client.setIsCompressionEnabled(false)
         def q = String.format("google page-size:100 location:%s|%s", Location.Ukraine.isoCode, Location.Belarus.isoCode)
