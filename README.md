@@ -15,9 +15,8 @@ public class Test{
         String apiKey = "API_KEY";
         // create Client object using your API key
         Client client = new UrlConnectionClient(apiKey);
-        // Create Query object using QueryBuilder for results in English published from startTime to endTime
-        Query query = QueryBuilder.create("spotify").documentLanguage(Language.English).startTime(startTime).endTime(endTime).build();
-        Result result = client.makeRequest(query);
+        Query q = "spotify";
+        Result result = client.makeRequest(q);
         // Get the total number of matches returned
         int numberOfMatchesReturned = result.getNumberOfMatchesReturned();
         // Get the total number of matches to the search query
@@ -31,8 +30,6 @@ public class Test{
     }
 }
 ```
-
-A Query object can be reused for several requests.
 
 To learn more about the features of this client, check out the example code that can be found in [example](example).
 
@@ -63,10 +60,13 @@ java -jar myJar.jar -DTWINGLY_SEARCH_KEY=some_key_value
 
 Given exception hierarchy is now available:
 * TwinglySearchException - super class for any TwinglySearch-related exception
-    * TwinglySearchServerException - super class for all server exceptions
-        * TwinglySearchServerAPIKeyDoesNotExistException - should be thrown when no API key was found
-        * TwinglySearchServerAPIKeyUnauthorizedException - should be thrown when API key is not authorized for any action
-        * TwinglySearchServerServiceUnavailableException - should be thrown when service is not available
+    * TwinglySearchErrorException - super class exceptions, that have some Error details from Twingly Search API response
+        * TwinglySearchServerException - exceptions that happened on the API side
+        * TwinglySearchClientException - exceptions that happened due to Client misconfiguration or incorrect query
+
+Check documentation [Error paragraph][error] for additional information.
+
+[error]: https://developer.twingly.com/resources/search/#error
 
 ## Requirements
 
@@ -151,13 +151,13 @@ This will save JAR file with all needed dependencies in `build/libs/` with `-all
 Before you start, ensure that you have a properly setup `~/.gradle/gradle.properties` ([see the example](http://central.sonatype.org/pages/gradle.html#credentials)) and [GPG](https://www.gnupg.org/) keyring (`brew install gpg`, get the secret key from our secret stash, `gpg --import <path to key>`).
 
 1. Ensure you are using Java 7
-1. Bump the version in [version.properties](./src/main/resources/version.properties)
-1. Commit the changes
-1. Tag the current commit with the same version number and push it
-1. Run `gradlew uploadArchives -Prelease` to release to the staging repository
-1. Log into [Nexus Repository Manager](https://oss.sonatype.org/) and find the archive
-1. Read [Releasing the Deployment](http://central.sonatype.org/pages/releasing-the-deployment.html)
-1. Release to Central Repository using [Nexus Repository Manager](https://oss.sonatype.org/)
+2. Bump the version in [version.properties](./src/main/resources/version.properties)
+3. Commit the changes
+4. Tag the current commit with the same version number and push it
+5. Run `gradlew uploadArchives -Prelease` to release to the staging repository
+6. Log into [Nexus Repository Manager](https://oss.sonatype.org/) and find the archive
+7. Read [Releasing the Deployment](http://central.sonatype.org/pages/releasing-the-deployment.html)
+8. Release to Central Repository using [Nexus Repository Manager](https://oss.sonatype.org/)
 
 ## License
 
