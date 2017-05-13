@@ -72,6 +72,22 @@ class UrlConnectionClientSpockTest extends Specification {
         result != null
     }
 
+    def "should parse incomplete result"() {
+        given:
+        def is = resourceInputStream("incomplete_result.xml")
+        when:
+        def result = is.withReader("UTF-8", {
+            r -> return client.unmarshalXmlForResult(r)
+        })
+        then:
+        notThrown(Throwable)
+        result.numberOfMatchesReturned == 0
+        result.numberOfMatchesTotal == 0
+        result.secondsElapsed == 0.203d
+        result.posts.size() == 0
+        result.incompleteResult
+    }
+
     def "should parse valid links result"() {
         given:
         def is = resourceInputStream("valid_links_result.xml")
