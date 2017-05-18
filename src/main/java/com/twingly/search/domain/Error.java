@@ -7,6 +7,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * The type Error.
+ *
+ * @since 3.0.0
  */
 @XmlRootElement(name = "error")
 public class Error {
@@ -14,6 +16,14 @@ public class Error {
     private String code;
     @XmlElement(name = "message")
     private String message;
+
+    public Error() {
+    }
+
+    public Error(String code, String message) {
+        this.code = code;
+        this.message = message;
+    }
 
     /**
      * Gets error code.

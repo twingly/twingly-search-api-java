@@ -37,6 +37,7 @@ public class Result {
 
     /**
      * Defined whether result is complete or not
+     * @since 3.0.0
      */
     @XmlAttribute(name = "incompleteResult")
     private boolean incompleteResult;

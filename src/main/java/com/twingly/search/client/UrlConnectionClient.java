@@ -1,13 +1,11 @@
 package com.twingly.search.client;
 
 import com.twingly.search.Constants;
+import com.twingly.search.Query;
 import com.twingly.search.domain.Error;
 import com.twingly.search.domain.Post;
 import com.twingly.search.domain.Result;
-import com.twingly.search.exception.TwinglySearchClientException;
-import com.twingly.search.exception.TwinglySearchErrorException;
 import com.twingly.search.exception.TwinglySearchException;
-import com.twingly.search.exception.TwinglySearchServerException;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -116,6 +114,11 @@ public class UrlConnectionClient implements Client {
         return isCompressionsEnabled;
     }
 
+    @Override
+    public Result makeRequest(Query query) {
+        return makeRequest(query.toStringRepresentation());
+    }
+
     private String buildQueryString(String q) {
         StringBuilder sb = new StringBuilder();
         sb.append(API_URL);
@@ -163,23 +166,11 @@ public class UrlConnectionClient implements Client {
             if (result instanceof Result) {
                 return (Result) result;
             } else if (result instanceof Error) {
-                handleError((Error) result);
+                throw TwinglySearchException.fromError((Error) result);
             }
             throw new TwinglySearchException("Unprocessed exception");
         } catch (JAXBException e) {
             throw new TwinglySearchException("Unable to process request", e);
-        }
-    }
-
-    private void handleError(Error error) {
-        if (error.getCode() != null) {
-            if (error.getCode().startsWith("4")) {
-                throw new TwinglySearchClientException(error);
-            }
-            if (error.getCode().startsWith("5")) {
-                throw new TwinglySearchServerException(error);
-            }
-            throw new TwinglySearchErrorException(error);
         }
     }
 

@@ -63,6 +63,8 @@ Given exception hierarchy is now available:
     * TwinglySearchErrorException - super class exceptions, that have some Error details from Twingly Search API response
         * TwinglySearchServerException - exceptions that happened on the API side
         * TwinglySearchClientException - exceptions that happened due to Client misconfiguration or incorrect query
+          * TwinglySearchAuthenticationException - exception that happened due to Client Authentication problems
+          * TwinglySEarchQueryException - exception that happened due to problems with Query
 
 Check documentation [Error paragraph][error] for additional information.
 

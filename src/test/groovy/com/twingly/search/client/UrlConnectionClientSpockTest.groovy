@@ -1,6 +1,7 @@
 package com.twingly.search.client
 
 import com.twingly.search.Constants
+import com.twingly.search.QueryBuilder
 import com.twingly.search.domain.Error
 import com.twingly.search.domain.Result
 import com.twingly.search.exception.TwinglySearchClientException
@@ -58,10 +59,31 @@ class UrlConnectionClientSpockTest extends Specification {
         System.properties.remove(Constants.TWINGLY_API_KEY_PROPERTY)
     }
 
+    def "should set compression"() {
+        when:
+        client.setIsCompressionEnabled(false)
+        then:
+        !client.isCompressionEnabled()
+    }
+
+    def "should make request with given Query"() {
+        given:
+        def expectedQueryString = "https://api.twingly.com/blog/search/api/v3/search?apiKey=apiKey&q=searchQuery"
+        def q = QueryBuilder.create("searchQuery").build()
+        when:
+        def result = client.makeRequest(q)
+        then:
+        1 * client.getUrl(expectedQueryString) >> new URL(null, expectedQueryString, urlStreamHandler)
+        1 * client.getJAXBContext() >> jaxbContext
+        1 * jaxbContext.createUnmarshaller() >> unmarschaller
+        1 * unmarschaller.unmarshal(_ as BufferedReader) >> new Result()
+        result != null
+    }
+
     def "should make request with given q"() {
         given:
-        def expectedQueryString = "https://api.twingly.com/blog/search/api/v3/search?apiKey=apiKey&q=searchPattern"
-        def q = "searchPattern"
+        def expectedQueryString = "https://api.twingly.com/blog/search/api/v3/search?apiKey=apiKey&q=searchQuery"
+        def q = "searchQuery"
         when:
         def result = client.makeRequest(q)
         then:
@@ -384,8 +406,8 @@ class UrlConnectionClientSpockTest extends Specification {
 
     def "client should throw JAXB exception that should be wrapped into Twingly Exception"() {
         given:
-        def expectedQueryString = "https://api.twingly.com/blog/search/api/v3/search?apiKey=apiKey&q=searchPattern"
-        def q = "searchPattern"
+        def expectedQueryString = "https://api.twingly.com/blog/search/api/v3/search?apiKey=apiKey&q=searchQuery"
+        def q = "searchQuery"
         when:
         client.makeRequest(q)
         then:
@@ -399,8 +421,8 @@ class UrlConnectionClientSpockTest extends Specification {
 
     def "should process query, return error and throw exception"() {
         given:
-        def expectedQueryString = "https://api.twingly.com/blog/search/api/v3/search?apiKey=apiKey&q=searchPattern"
-        def q = "searchPattern"
+        def expectedQueryString = "https://api.twingly.com/blog/search/api/v3/search?apiKey=apiKey&q=searchQuery"
+        def q = "searchQuery"
         def error = new Error()
         def code = '111'
         def message = 'message'
@@ -420,8 +442,8 @@ class UrlConnectionClientSpockTest extends Specification {
 
     def "should process query and return result instance"() {
         given:
-        def expectedQueryString = "https://api.twingly.com/blog/search/api/v3/search?apiKey=apiKey&q=searchPattern"
-        def q = "searchPattern"
+        def expectedQueryString = "https://api.twingly.com/blog/search/api/v3/search?apiKey=apiKey&q=searchQuery"
+        def q = "searchQuery"
         when:
         def result = client.makeRequest(q)
         then:

@@ -4,6 +4,7 @@ package com.twingly.search.domain;
  * This enum contain all supported by Twingly locations
  *
  * @see <a href="https://developer.twingly.com/resources/search-language/#supported-locations">Supported locations</a>
+ * @since 3.0.0
  */
 public enum Location {
     Andorra("ad"),

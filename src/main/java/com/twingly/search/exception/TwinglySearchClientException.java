@@ -9,6 +9,8 @@ public class TwinglySearchClientException extends TwinglySearchErrorException {
 
     /**
      * Instantiates a new Client exception.
+     *
+     * @param error Error from API response
      */
     public TwinglySearchClientException(Error error) {
         super(error);
