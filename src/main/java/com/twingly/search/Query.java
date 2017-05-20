@@ -148,13 +148,13 @@ public class Query {
     public String toStringRepresentation() {
         StringBuilder result = new StringBuilder(searchQuery);
         if (lang != null) {
-            result.append(" lang: ").append(lang);
+            result.append(" lang:").append(lang);
         }
         if (startTime != null) {
-            result.append(" start-date: ").append(QUERY_DATE_FORMAT.format(startTime));
+            result.append(" start-date:").append(QUERY_DATE_FORMAT.format(startTime));
         }
         if (endTime != null) {
-            result.append(" end-date: ").append(QUERY_DATE_FORMAT.format(endTime));
+            result.append(" end-date:").append(QUERY_DATE_FORMAT.format(endTime));
         }
         return result.toString();
     }
