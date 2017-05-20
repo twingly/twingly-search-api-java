@@ -15,7 +15,7 @@ public class Test{
         String apiKey = "API_KEY";
         // create Client object using your API key
         Client client = new UrlConnectionClient(apiKey);
-        Query q = "spotify";
+        String q = "spotify";
         Result result = client.makeRequest(q);
         // Get the total number of matches returned
         int numberOfMatchesReturned = result.getNumberOfMatchesReturned();
