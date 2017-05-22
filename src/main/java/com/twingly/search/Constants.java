@@ -15,10 +15,6 @@ public final class Constants {
     public static final String DATE_FORMAT = "yyyy-MM-dd'T'HH:mm:ssX";
 
     /**
-     * The constant DATE_FORMAT.
-     */
-    public static final String SEARCH_QUERY_DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
-    /**
      * The constant TWINGLY_API_KEY_PROPERTY
      */
     public static final String TWINGLY_API_KEY_PROPERTY = "TWINGLY_SEARCH_KEY";
