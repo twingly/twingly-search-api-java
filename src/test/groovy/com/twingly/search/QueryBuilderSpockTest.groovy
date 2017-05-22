@@ -27,15 +27,15 @@ class QueryBuilderSpockTest extends Specification {
         query != null
         query.toStringRepresentation() == expectedQueryString
         where:
-        sq   | loc              | lang               | st                                | et                                || expectedQueryString
-        "sq" | "ua"             | "uk"               | sdf.parse("2017-05-10T01:26:53Z") | sdf.parse("2017-05-11T01:26:53Z") || "sq lang:uk start-date:2017-05-10T04:26:53+03 end-date:2017-05-11T04:26:53+03 location:ua"
-        "sq" | "ua"             | "uk"               | sdf.parse("2017-05-10T01:26:53Z") | null                              || "sq lang:uk start-date:2017-05-10T04:26:53+03 location:ua"
-        "sq" | "ua"             | "uk"               | null                              | sdf.parse("2017-05-11T01:26:53Z") || "sq lang:uk end-date:2017-05-11T04:26:53+03 location:ua"
-        "sq" | "ua"             | "uk"               | null                              | null                              || "sq lang:uk location:ua"
-        "sq" | "ua"             | null               | null                              | null                              || "sq location:ua"
-        "sq" | null             | null               | null                              | null                              || "sq"
-        "sq" | "NO_SUCH_LOC"    | "NO_SUCH_LANG"     | null                              | null                              || "sq"
-        "sq" | Location.Ukraine | Language.Ukrainian | sdf.parse("2017-07-10T01:26:53Z") | sdf.parse("2017-05-11T01:26:53Z") || "sq lang:uk start-date:2017-07-10T04:26:53+03 location:ua"
+        sq   | loc              | lang               | st                                  | et                                  || expectedQueryString
+        "sq" | "ua"             | "uk"               | sdf.parse("2017-05-10T01:26:53+03") | sdf.parse("2017-05-11T01:26:53+03") || "sq lang:uk start-date:2017-05-10T01:26:53+03 end-date:2017-05-11T01:26:53+03 location:ua"
+        "sq" | "ua"             | "uk"               | sdf.parse("2017-05-10T01:26:53+03") | null                                || "sq lang:uk start-date:2017-05-10T01:26:53+03 location:ua"
+        "sq" | "ua"             | "uk"               | null                                | sdf.parse("2017-05-11T01:26:53+03") || "sq lang:uk end-date:2017-05-11T01:26:53+03 location:ua"
+        "sq" | "ua"             | "uk"               | null                                | null                                || "sq lang:uk location:ua"
+        "sq" | "ua"             | null               | null                                | null                                || "sq location:ua"
+        "sq" | null             | null               | null                                | null                                || "sq"
+        "sq" | "NO_SUCH_LOC"    | "NO_SUCH_LANG"     | null                                | null                                || "sq"
+        "sq" | Location.Ukraine | Language.Ukrainian | sdf.parse("2017-07-10T01:26:53+03") | sdf.parse("2017-05-11T01:26:53+03") || "sq lang:uk start-date:2017-07-10T01:26:53+03 location:ua"
     }
 
     @Unroll
