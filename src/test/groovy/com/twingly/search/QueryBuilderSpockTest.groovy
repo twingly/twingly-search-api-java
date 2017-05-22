@@ -14,6 +14,10 @@ import static com.twingly.search.Constants.DATE_FORMAT
 class QueryBuilderSpockTest extends Specification {
     private static final SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT)
 
+    def setupSpec() {
+        sdf.setTimeZone(TimeZone.getTimeZone("GMT"))
+    }
+
     @Unroll
     def "should create #expectedQueryString for searchQuery=#sq, location=#loc, lang=#lang, startTime=#st and endTime=#et"() {
         when:
