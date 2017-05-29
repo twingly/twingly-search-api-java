@@ -1,4 +1,3 @@
-import com.twingly.search.Query;
 import com.twingly.search.QueryBuilder;
 import com.twingly.search.client.Client;
 import com.twingly.search.client.UrlConnectionClient;
@@ -9,12 +8,12 @@ import java.util.Date;
 
 public class SearchPostsStream {
     private static final String USER_AGENT = "MyCompany/1.0";
-    private Query q;
+    private QueryBuilder queryBuilder;
     private Client client;
     private int counter;
 
     public SearchPostsStream(String keyword) {
-        q = QueryBuilder.create(String.format("sort-order:asc sort:published %s", keyword)).build();
+        queryBuilder = QueryBuilder.create(String.format("sort-order:asc sort:published %s", keyword));
         client = new UrlConnectionClient();
         client.setUserAgent(USER_AGENT);
     }
@@ -27,7 +26,7 @@ public class SearchPostsStream {
     }
 
     public void each() {
-        Result result = client.makeRequest(q);
+        Result result = client.makeRequest(queryBuilder.build());
         iterateAllPosts(result);
     }
 
@@ -45,8 +44,8 @@ public class SearchPostsStream {
         }
         Post lastPost = result.getPosts().get(result.getPosts().size() - 1);
         Date lastPublishedAt = lastPost.getPublishedAt();
-        q = q.toBuilder().startTime(lastPublishedAt).build();
-        Result newResult = client.makeRequest(q);
+        queryBuilder = queryBuilder.startTime(lastPublishedAt);
+        Result newResult = client.makeRequest(queryBuilder.build());
         iterateAllPosts(newResult);
     }
 }
