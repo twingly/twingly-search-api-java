@@ -5,6 +5,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * A class representing a search result
@@ -37,6 +38,7 @@ public class Result {
 
     /**
      * Defined whether result is complete or not
+     *
      * @since 3.0.0
      */
     @XmlAttribute(name = "incompleteResult")
@@ -164,5 +166,34 @@ public class Result {
      */
     public void setSecondsElapsed(double secondsElapsed) {
         this.secondsElapsed = secondsElapsed;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Result)) return false;
+        Result result = (Result) o;
+        return numberOfMatchesReturned == result.numberOfMatchesReturned &&
+                numberOfMatchesTotal == result.numberOfMatchesTotal &&
+                Double.compare(result.secondsElapsed, secondsElapsed) == 0 &&
+                incompleteResult == result.incompleteResult &&
+                Objects.equals(posts, result.posts);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(numberOfMatchesReturned, numberOfMatchesTotal, secondsElapsed, posts, incompleteResult);
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Result{");
+        sb.append("numberOfMatchesReturned=").append(numberOfMatchesReturned);
+        sb.append(", numberOfMatchesTotal=").append(numberOfMatchesTotal);
+        sb.append(", secondsElapsed=").append(secondsElapsed);
+        sb.append(", posts=").append(posts);
+        sb.append(", incompleteResult=").append(incompleteResult);
+        sb.append('}');
+        return sb.toString();
     }
 }

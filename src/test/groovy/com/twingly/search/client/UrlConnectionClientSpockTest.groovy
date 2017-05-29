@@ -2,6 +2,7 @@ package com.twingly.search.client
 
 import com.twingly.search.Constants
 import com.twingly.search.QueryBuilder
+import com.twingly.search.domain.Coordinate
 import com.twingly.search.domain.Error
 import com.twingly.search.domain.Result
 import com.twingly.search.exception.TwinglySearchClientException
@@ -163,7 +164,7 @@ class UrlConnectionClientSpockTest extends Specification {
                 "        "
         result.posts[0].languageCode == "sv"
         result.posts[0].locationCode == "se"
-        result.posts[0].coordinates == ""
+        result.posts[0].coordinates == new Coordinate()
         result.posts[0].links == [
                 "\n" +
                         "                https://1.bp.blogspot.com/-4uNjjiNQiug/WKguo1sBxwI/AAAAAAAAqKE/_eR7cY8Ft3cd2fYCx-2yXK8AwSHE_A2GgCLcB/s1600/aaea427ee3eaaf8f47d650f48fdf1242.jpg\n" +
@@ -293,7 +294,7 @@ class UrlConnectionClientSpockTest extends Specification {
                 "        "
         result.posts[0].languageCode == "sv"
         result.posts[0].locationCode == "se"
-        result.posts[0].coordinates == ""
+        result.posts[0].coordinates == new Coordinate("49.1", "10.75")
         result.posts[0].links == []
         result.posts[0].tags == ["Ätas & drickas", "Universitet & studentlivet", "Träning", "To to list"]
         result.posts[0].images == []
@@ -324,7 +325,7 @@ class UrlConnectionClientSpockTest extends Specification {
                 "        "
         result.posts[1].languageCode == "sv"
         result.posts[1].locationCode == "se"
-        result.posts[1].coordinates == ""
+        result.posts[1].coordinates == new Coordinate()
         result.posts[1].links == ["http://www.mtpc.se/tags/link/1008098", "http://www.mtpc.se/tags/link/1008099"]
         result.posts[1].tags == ["Inspiration", "Mode", "Vardag"]
         result.posts[1].images == []
@@ -367,7 +368,7 @@ class UrlConnectionClientSpockTest extends Specification {
                 "        "
         result.posts[2].languageCode == "sv"
         result.posts[2].locationCode == "se"
-        result.posts[2].coordinates == ""
+        result.posts[2].coordinates == new Coordinate()
         result.posts[2].links == []
         result.posts[2].tags == []
         result.posts[2].images == []

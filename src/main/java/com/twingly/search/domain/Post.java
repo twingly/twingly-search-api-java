@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * This class represents Post entity from TwinglySearch API response.
@@ -141,7 +142,8 @@ public class Post {
      *
      * @since 3.0.0
      */
-    private String coordinates;
+    @XmlElement
+    private Coordinate coordinates;
     /**
      * Content type of post. The only supported now is "Blog"
      *
@@ -535,7 +537,7 @@ public class Post {
      *
      * @return the coordinates
      */
-    public String getCoordinates() {
+    public Coordinate getCoordinates() {
         return coordinates;
     }
 
@@ -544,7 +546,7 @@ public class Post {
      *
      * @param coordinates the coordinates
      */
-    public void setCoordinates(String coordinates) {
+    public void setCoordinates(Coordinate coordinates) {
         this.coordinates = coordinates;
     }
 
@@ -613,5 +615,66 @@ public class Post {
     @Deprecated
     public void setIndexed(Date indexed) {
         setIndexedAt(indexed);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Post)) return false;
+        Post post = (Post) o;
+        return authority == post.authority &&
+                blogRank == post.blogRank &&
+                inlinksCount == post.inlinksCount &&
+                Objects.equals(url, post.url) &&
+                Objects.equals(title, post.title) &&
+                Objects.equals(text, post.text) &&
+                Objects.equals(languageCode, post.languageCode) &&
+                Objects.equals(publishedAt, post.publishedAt) &&
+                Objects.equals(indexedAt, post.indexedAt) &&
+                Objects.equals(blogUrl, post.blogUrl) &&
+                Objects.equals(blogName, post.blogName) &&
+                Objects.equals(blogId, post.blogId) &&
+                Objects.equals(tags, post.tags) &&
+                Objects.equals(id, post.id) &&
+                Objects.equals(author, post.author) &&
+                Objects.equals(locationCode, post.locationCode) &&
+                Objects.equals(reindexedAt, post.reindexedAt) &&
+                Objects.equals(links, post.links) &&
+                Objects.equals(images, post.images) &&
+                Objects.equals(coordinates, post.coordinates) &&
+                contentType == post.contentType;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(url, title, text, languageCode, publishedAt, indexedAt, blogUrl, blogName, blogId, authority, blogRank, tags, id, author, locationCode, inlinksCount, reindexedAt, links, images, coordinates, contentType);
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Post{");
+        sb.append("url='").append(url).append('\'');
+        sb.append(", title='").append(title).append('\'');
+        sb.append(", text='").append(text).append('\'');
+        sb.append(", languageCode='").append(languageCode).append('\'');
+        sb.append(", publishedAt=").append(publishedAt);
+        sb.append(", indexedAt=").append(indexedAt);
+        sb.append(", blogUrl='").append(blogUrl).append('\'');
+        sb.append(", blogName='").append(blogName).append('\'');
+        sb.append(", blogId='").append(blogId).append('\'');
+        sb.append(", authority=").append(authority);
+        sb.append(", blogRank=").append(blogRank);
+        sb.append(", tags=").append(tags);
+        sb.append(", id='").append(id).append('\'');
+        sb.append(", author='").append(author).append('\'');
+        sb.append(", locationCode='").append(locationCode).append('\'');
+        sb.append(", inlinksCount=").append(inlinksCount);
+        sb.append(", reindexedAt=").append(reindexedAt);
+        sb.append(", links=").append(links);
+        sb.append(", images=").append(images);
+        sb.append(", coordinates=").append(coordinates);
+        sb.append(", contentType=").append(contentType);
+        sb.append('}');
+        return sb.toString();
     }
 }

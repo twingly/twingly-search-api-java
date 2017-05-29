@@ -13,7 +13,10 @@
         </text>
         <languageCode>sv</languageCode>
         <locationCode>se</locationCode>
-        <coordinates/>
+        <coordinates>
+            <latitude>49.1</latitude>
+            <longitude>10.75</longitude>
+        </coordinates>
         <links/>
         <tags>
             <tag>Ätas &amp; drickas</tag>

@@ -1,5 +1,7 @@
 package com.twingly.search.client
 
+import com.twingly.search.QueryBuilder
+import com.twingly.search.domain.Coordinate
 import com.twingly.search.domain.Language
 import com.twingly.search.domain.Location
 import com.twingly.search.exception.TwinglySearchClientException
@@ -18,7 +20,22 @@ class UrlConnectionClientFunctionSpockTest extends Specification {
     @Rule
     RecorderRule recorder = new RecorderRule(configuration)
 
-    @Betamax(tape = "search for spotify", mode = TapeMode.READ_WRITE)
+    @Betamax(tape = "search with filled coordinates", mode = TapeMode.READ_ONLY)
+    def "search with filled coordinates"() {
+        given:
+        def apiKey = "API_KEY"
+        def client = new UrlConnectionClient(apiKey)
+        def q = QueryBuilder.create("id:7533026945919130930").build()
+        when:
+        def result = client.makeRequest(q)
+        then:
+        result != null
+        result.getNumberOfMatchesReturned() == 1
+        result.posts[0].coordinates == new Coordinate("49.1", "10.75")
+        result.posts[0].id == "7533026945919130930"
+    }
+
+    @Betamax(tape = "search for spotify", mode = TapeMode.READ_ONLY)
     def "search for spotify in English"() {
         given:
         def apiKey = "API_KEY"
@@ -31,7 +48,7 @@ class UrlConnectionClientFunctionSpockTest extends Specification {
         result.getNumberOfMatchesReturned() == 10
     }
 
-    @Betamax(tape = "search for google", mode = TapeMode.READ_WRITE)
+    @Betamax(tape = "search for google", mode = TapeMode.READ_ONLY)
     def "search for google without compression in Ukraine and Belarus"() {
         given:
         def apiKey = "API_KEY"
@@ -45,7 +62,7 @@ class UrlConnectionClientFunctionSpockTest extends Specification {
         result.getNumberOfMatchesReturned() == 100
     }
 
-    @Betamax(tape = "search without valid API key", mode = TapeMode.READ_WRITE)
+    @Betamax(tape = "search without valid API key", mode = TapeMode.READ_ONLY)
     def "search without valid api key"() {
         given:
         def apiKey = "API_KEY"
