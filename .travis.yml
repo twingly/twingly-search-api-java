@@ -5,3 +5,14 @@ jdk:
 before_script:
   sudo keytool -importcert -keystore $JAVA_HOME/jre/lib/security/cacerts -file betamax.pem -storepass changeit -noprompt
 sudo: required
+notifications:
+  email: false
+  hipchat:
+    on_success: never
+    on_failure: change
+    template:
+    - '%{repository}#%{build_number} (%{branch} - %{commit} : %{author}): %{message}
+      (<a href="%{build_url}">Details</a>/<a href="%{compare_url}">Change view</a>)'
+    format: html
+    rooms:
+      secure: SlHYF5fCJOkWl5bgAbD2tD7HRuI+S0VpJQypL5sXIpXda7k2DWQcYOqfRERuBs9ZJAJ+4wy4CMFWQT7D0mh2HYaW+SvFcvD2UrRDzPcORNTndRQ1PcoZn52YAvPE8681KVgXaFggJc+LY9zpvFpnuDIwHV9qR53D84Sw8pDkkWU=
