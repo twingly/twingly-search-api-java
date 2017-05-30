@@ -6,8 +6,6 @@ import spock.lang.Specification
 import spock.lang.Unroll
 
 class CoordinateSpockTest extends Specification {
-    def coordinates = new Coordinate()
-
     @Unroll
     def "should robustly parse coordinates"() {
         when:
