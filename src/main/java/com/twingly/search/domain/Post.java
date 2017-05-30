@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.math.BigDecimal;
 
 /**
  * This class represents Post entity from TwinglySearch API response.
@@ -533,23 +534,40 @@ public class Post {
     }
 
     /**
-     * Gets coordinates
+     * Gets latitude
      *
-     * @return the coordinates
+     * @return the latitude
      */
-    public Coordinate getCoordinates() {
-        return coordinates;
+    public BigDecimal getLatitude() {
+        return coordinates.getLatitude();
     }
 
     /**
-     * Sets coordinates
+     * Sets latitude
      *
-     * @param coordinates the coordinates
+     * @param latitude the latitude
      */
-    public void setCoordinates(Coordinate coordinates) {
-        this.coordinates = coordinates;
+    public void setLatitude(BigDecimal latitude) {
+        this.coordinates.setLatitude(latitude);
     }
 
+    /**
+     * Gets longitude
+     *
+     * @return the longitude
+     */
+    public BigDecimal getLongitude() {
+        return coordinates.getLongitude();
+    }
+
+    /**
+     * Sets longitude
+     *
+     * @param longitude the longitude
+     */
+    public void setLongitude(BigDecimal longitude) {
+        this.coordinates.setLongitude(longitude);
+    }
 
     /**
      * Gets summary.
@@ -641,7 +659,8 @@ public class Post {
                 Objects.equals(reindexedAt, post.reindexedAt) &&
                 Objects.equals(links, post.links) &&
                 Objects.equals(images, post.images) &&
-                Objects.equals(coordinates, post.coordinates) &&
+                Objects.equals(getLatitude(), post.getLatitude()) &&
+                Objects.equals(getLongitude(), post.getLongitude()) &&
                 contentType == post.contentType;
     }
 
@@ -672,7 +691,8 @@ public class Post {
         sb.append(", reindexedAt=").append(reindexedAt);
         sb.append(", links=").append(links);
         sb.append(", images=").append(images);
-        sb.append(", coordinates=").append(coordinates);
+        sb.append(", latitude=").append(getLatitude());
+        sb.append(", longitude=").append(getLongitude());
         sb.append(", contentType=").append(contentType);
         sb.append('}');
         return sb.toString();
