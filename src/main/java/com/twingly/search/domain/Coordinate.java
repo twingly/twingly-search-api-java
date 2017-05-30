@@ -2,6 +2,7 @@ package com.twingly.search.domain;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Objects;
+import java.math.BigDecimal;
 
 /**
  * Geographical coordinates from blog post
@@ -13,41 +14,46 @@ public class Coordinate {
     /**
      * Latitude value
      */
-    private String latitude;
+    private BigDecimal latitude;
     /**
      * Longitude value
      */
-    private String longitude;
+    private BigDecimal longitude;
 
     public Coordinate() {
     }
 
     public Coordinate(String latitude, String longitude) {
-        this.latitude = latitude;
-        this.longitude = longitude;
+        try {
+            this.latitude = new BigDecimal(latitude);
+            this.longitude = new BigDecimal(longitude);
+        } catch (NumberFormatException e) {
+            this.latitude = null;
+            this.longitude = null;
+        }
     }
 
-    public String getLatitude() {
+    public BigDecimal getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(String latitude) {
+    public void setLatitude(BigDecimal latitude) {
         this.latitude = latitude;
     }
 
-    public String getLongitude() {
+    public BigDecimal getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(String longitude) {
+    public void setLongitude(BigDecimal longitude) {
         this.longitude = longitude;
     }
 
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Coordinate{");
-        sb.append("latitude='").append(latitude).append('\'');
-        sb.append(", longitude='").append(longitude).append('\'');
+        sb.append("latitude=").append(latitude);
+        sb.append(", longitude=").append(longitude);
         sb.append('}');
         return sb.toString();
     }
