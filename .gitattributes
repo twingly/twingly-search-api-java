@@ -1,0 +1,14 @@
+* text=auto
+
+*.bat      text eol=crlf
+*.java       text
+*.gradle     text
+*.groovy     text
+*.md         text
+*.properties text
+
+.gitattributes text
+.gitignore     text
+*.yml          text
+*.yaml          text
+*.xml          text

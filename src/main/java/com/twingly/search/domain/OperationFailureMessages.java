@@ -2,7 +2,10 @@ package com.twingly.search.domain;
 
 /**
  * The type Operation failure messages.
+ *
+ * @deprecated since 3.0.0
  */
+@Deprecated
 public final class OperationFailureMessages {
     /**
      * The constant API_KEY_DOES_NOT_EXIST.

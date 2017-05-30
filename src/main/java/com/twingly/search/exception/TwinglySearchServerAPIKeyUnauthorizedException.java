@@ -4,7 +4,10 @@ import com.twingly.search.domain.BlogStream;
 
 /**
  * The type Twingly search server api key unauthorized exception.
+ *
+ * @deprecated since 3.0.0
  */
+@Deprecated
 public class TwinglySearchServerAPIKeyUnauthorizedException extends TwinglySearchException {
     /**
      * Instantiates a new Twingly search server api key unauthorized exception.

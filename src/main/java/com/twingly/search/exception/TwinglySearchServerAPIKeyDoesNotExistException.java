@@ -4,7 +4,10 @@ import com.twingly.search.domain.BlogStream;
 
 /**
  * The type Twingly search server api key does not exist exception.
+ *
+ * @deprecated since 3.0.0
  */
+@Deprecated
 public class TwinglySearchServerAPIKeyDoesNotExistException extends TwinglySearchServerException {
     /**
      * Instantiates a new Twingly search server api key does not exist exception.

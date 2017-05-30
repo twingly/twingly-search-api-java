@@ -5,7 +5,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 /**
  * The type Blog stream.
+ *
+ * @deprecated since 3.0.0
  */
+@Deprecated
 @XmlRootElement(name = "blogstream", namespace = "http://www.twingly.com")
 public class BlogStream {
     @XmlElement(name = "operationResult")

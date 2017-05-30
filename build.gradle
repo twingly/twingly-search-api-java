@@ -10,11 +10,11 @@ ext {
     versionProperties.load(file("src/main/resources/version.properties").newReader())
     projectVersion = versionProperties["version"]
     sourceEncoding = "UTF-8"
-    spockVersion = "1.0-groovy-2.3"
-    groovyVersion = "2.3.3"
+    spockVersion = "1.1-groovy-2.4"
+    groovyVersion = "2.4.11"
     junitVersion = "4.12"
-    cglibVersion = "3.2.0"
-    objenesisVersion = "2.2"
+    cglibVersion = "3.2.5"
+    objenesisVersion = "2.5.1"
     jaxbVersion = "2.2.11"
     betamaxVersion = "2.0.1"
     libs = [
@@ -42,7 +42,7 @@ sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
 def isReleaseBuild
-if(hasProperty("release")) {
+if (hasProperty("release")) {
     isReleaseBuild = true
 } else {
     isReleaseBuild = false
@@ -65,7 +65,7 @@ dependencies {
 }
 
 jacoco {
-    toolVersion = "0.7.1.201405082137"
+    toolVersion = "0.7.9"
 }
 
 test {
@@ -76,7 +76,7 @@ test {
     jacoco {
         append = false
         destinationFile = file("$buildDir/jacoco/jacocoTest.exec")
-        classDumpFile = file("$buildDir/jacoco/classpathdumps")
+        classDumpDir = file("$buildDir/jacoco/classpathdumps")
     }
 }
 
@@ -129,7 +129,7 @@ artifacts {
     archives sourcesJar
 }
 
-if(isReleaseBuild) {
+if (isReleaseBuild) {
     signing {
         sign configurations.archives
     }
@@ -143,44 +143,47 @@ uploadArchives {
     repositories {
         if (!isReleaseBuild) {
             mavenLocal()
-        }
-        else {
+        } else {
             mavenDeployer {
                 beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 
                 repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                  authentication(userName: sonatypeUsername, password: sonatypePassword)
+                    authentication(userName: sonatypeUsername, password: sonatypePassword)
                 }
 
                 pom.project {
-                   name "twingly-search"
-                   packaging "jar"
-                   description "Client for Twingly Search API."
-                   url "https://developer.twingly.com/resources/search/"
+                    name "twingly-search"
+                    packaging "jar"
+                    description "Client for Twingly Search API."
+                    url "https://developer.twingly.com/resources/search/"
 
-                   scm {
-                       connection "scm:git@github.com:twingly/twingly-search-api-java.git"
-                       developerConnection "scm:git@github.com:twingly/twingly-search-api-java.git"
-                       url "scm:git@github.com:twingly/twingly-search-api-java.git"
-                   }
+                    scm {
+                        connection "scm:git@github.com:twingly/twingly-search-api-java.git"
+                        developerConnection "scm:git@github.com:twingly/twingly-search-api-java.git"
+                        url "scm:git@github.com:twingly/twingly-search-api-java.git"
+                    }
 
-                   licenses {
-                       license {
-                           name "MIT License"
-                           url "http://www.opensource.org/licenses/mit-license.php"
-                           distribution "repo"
-                       }
-                   }
+                    licenses {
+                        license {
+                            name "MIT License"
+                            url "http://www.opensource.org/licenses/mit-license.php"
+                            distribution "repo"
+                        }
+                    }
 
-                   developers {
-                       developer {
-                           id "twingly"
-                           name "Twingly AB"
-                           email "support@twingly.com"
-                       }
-                   }
-               }
+                    developers {
+                        developer {
+                            id "twingly"
+                            name "Twingly AB"
+                            email "support@twingly.com"
+                        }
+                    }
+                }
             }
         }
     }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '3.5'
 }

@@ -5,6 +5,7 @@ import com.twingly.search.domain.BlogStream;
 /**
  * The type Query exception.
  */
+@Deprecated
 public class QueryException extends TwinglySearchException {
     /**
      * Instantiates a new Query exception.

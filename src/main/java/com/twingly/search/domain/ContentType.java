@@ -6,9 +6,12 @@ import javax.xml.bind.annotation.XmlType;
 
 /**
  * Represents currently supported content types.
+ *
+ * @deprecated since 3.0.0
  */
 @XmlType
 @XmlEnum(String.class)
+@Deprecated
 public enum ContentType {
     /**
      * Blog content type.

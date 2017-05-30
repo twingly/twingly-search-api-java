@@ -1,27 +1,83 @@
 package com.twingly.search
 
 import com.twingly.search.domain.Language
+import com.twingly.search.domain.Location
 import com.twingly.search.exception.QueryException
+import com.twingly.search.exception.TwinglySearchQueryException
 import spock.lang.Specification
+import spock.lang.Unroll
 
 import java.text.SimpleDateFormat
 
-class QueryBuilderSpockTest extends Specification {
-    private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat(Constants.DATE_FORMAT);
+import static com.twingly.search.Constants.DATE_FORMAT
 
-    def "should throw QueryException for empty search pattern"() {
+class QueryBuilderSpockTest extends Specification {
+    private static SDF = new SimpleDateFormat(DATE_FORMAT)
+
+    @Unroll
+    def "should create #expectedQueryString for searchQuery=#sq, location=#loc, lang=#lang, startTime=#st and endTime=#et"() {
+        when:
+        def query = QueryBuilder.create(sq)
+                .location(loc)
+                .lang(lang)
+                .startTime(st)
+                .endTime(et)
+                .build()
+        then:
+        query != null
+        query.toStringRepresentation() == expectedQueryString
+        where:
+        sq   | loc              | lang               | st                                | et                                || expectedQueryString
+        "sq" | "ua"             | "uk"               | SDF.parse("2017-05-10T01:26:53Z") | SDF.parse("2017-05-11T01:26:53Z") || String.format("sq lang:uk start-date:%s end-date:%s location:ua", SDF.format(st), SDF.format(et))
+        "sq" | "ua"             | "uk"               | SDF.parse("2017-05-10T01:26:53Z") | null                              || String.format("sq lang:uk start-date:%s location:ua", SDF.format(st))
+        "sq" | "ua"             | "uk"               | null                              | SDF.parse("2017-05-11T01:26:53Z") || String.format("sq lang:uk end-date:%s location:ua", SDF.format(et))
+        "sq" | "ua"             | "uk"               | null                              | null                              || "sq lang:uk location:ua"
+        "sq" | "ua"             | null               | null                              | null                              || "sq location:ua"
+        "sq" | null             | null               | null                              | null                              || "sq"
+        "sq" | "NO_SUCH_LOC"    | "NO_SUCH_LANG"     | null                              | null                              || "sq"
+        "sq" | Location.Ukraine | Language.Ukrainian | SDF.parse("2017-07-10T01:26:53Z") | SDF.parse("2017-05-11T01:26:53Z") || String.format("sq lang:uk start-date:%s location:ua", SDF.format(st))
+    }
+
+    @Unroll
+    def "query location should be '#expectedQueryLocation' for '#location'"() {
+        when:
+        def query = QueryBuilder.create("q").location(location).build()
+        then:
+        query.location == expectedQueryLocation
+        where:
+        location           || expectedQueryLocation
+        "ua"               || location
+        Location.Ukraine   || Location.Ukraine.isoCode
+        "NO_SUCH_LOCATION" || null
+        ""                 || null
+        "       "          || null
+    }
+
+    def "should convert Query to QueryBuilder and back"() {
+        given:
+        def startTime = SDF.parse("2016-03-03T15:30:45Z")
+        def endTime = SDF.parse("2016-05-03T15:30:45Z")
+        def searchQuery = "searchQuery"
+        def lang = "ua"
+        def location = "uk"
+        def query = new Query(startTime, endTime, searchQuery, lang, location)
+        expect:
+        query.toBuilder() == QueryBuilder.fromQuery(query)
+    }
+
+    def "should throw TwinglySearchQueryException for empty search pattern"() {
         when:
         QueryBuilder.create("")
         then:
-        thrown(QueryException)
+        thrown(TwinglySearchQueryException)
     }
 
     def "should create valid query object with only search pattern"() {
         when:
         def query = QueryBuilder.create("searchPattern").build()
         then:
-        query.searchPattern == "searchPattern"
-        query.documentLanguage == null
+        query.searchQuery == "searchPattern"
+        query.lang == null
         query.endTime == null
         query.startTime == null
     }
@@ -32,7 +88,7 @@ class QueryBuilderSpockTest extends Specification {
         when:
         def query = QueryBuilder.create("pattern").documentLanguage(language).build()
         then:
-        query.documentLanguage == Language.English.isoCode
+        query.lang == Language.English.isoCode
     }
 
     def "should throw QueryException on invalid search pattern set"() {
@@ -46,9 +102,19 @@ class QueryBuilderSpockTest extends Specification {
         thrown(QueryException)
     }
 
+    def "should set search query with search pattern set"() {
+        given:
+        def validSearchPattern = "searchPattern"
+        def queryBuilder = QueryBuilder.create(validSearchPattern)
+        when:
+        queryBuilder.searchPattern(validSearchPattern)
+        then:
+        queryBuilder.build().searchQuery == validSearchPattern
+    }
+
     def "should create new Query object"() {
         given:
-        def queryBuilder = QueryBuilder.create("pattern")
+        def queryBuilder = QueryBuilder.create("pattern").lang("en")
         def firstQuery = queryBuilder.build()
         when:
         def secondQuery = queryBuilder.createNewQuery().build()
@@ -58,8 +124,8 @@ class QueryBuilderSpockTest extends Specification {
 
     def "should set start time if it is before end time"() {
         given:
-        def startTime = simpleDateFormat.parse("2016-03-03 15:30:45");
-        def endTime = simpleDateFormat.parse("2016-05-03 15:30:45");
+        def startTime = SDF.parse("2016-03-03T15:30:45Z")
+        def endTime = SDF.parse("2016-05-03T15:30:45Z")
         when:
         def query = QueryBuilder.create("pattern").startTime(startTime).endTime(endTime).build()
         then:
@@ -69,8 +135,8 @@ class QueryBuilderSpockTest extends Specification {
 
     def "should not set end time if it's before start time"() {
         given:
-        def startTime = simpleDateFormat.parse("2016-05-03 15:30:45");
-        def endTime = simpleDateFormat.parse("2016-03-03 15:30:45");
+        def startTime = SDF.parse("2016-05-03T15:30:45Z")
+        def endTime = SDF.parse("2016-03-03T15:30:45Z")
         when:
         def query = QueryBuilder.create("pattern").startTime(startTime).endTime(endTime).build()
         then:
@@ -80,8 +146,8 @@ class QueryBuilderSpockTest extends Specification {
 
     def "should not set start time if it's after end time"() {
         given:
-        def startTime = simpleDateFormat.parse("2016-05-03 15:30:45");
-        def endTime = simpleDateFormat.parse("2016-03-03 15:30:45");
+        def startTime = SDF.parse("2016-05-03T15:30:45Z")
+        def endTime = SDF.parse("2016-03-03T15:30:45Z")
         when:
         def query = QueryBuilder.create("pattern").endTime(endTime).startTime(startTime).build()
         then:
@@ -89,32 +155,40 @@ class QueryBuilderSpockTest extends Specification {
         query.startTime == null
     }
 
+    @Unroll
+    def "language should be '#expectedLanguage' for '#language'"() {
+        when:
+        def query = QueryBuilder.create("q").lang(language).build()
+        then:
+        query.lang == expectedLanguage
+        where:
+        language           || expectedLanguage
+        "uk"               || language
+        Language.Ukrainian || Language.Ukrainian.isoCode
+        "NO_SUCH_LANGUAGE" || null
+        ""                 || null
+        "          "       || null
+    }
+
     def "should not set language from null Language enum"() {
         when:
         def query = QueryBuilder.create("pattern").documentLanguage(null).build()
         then:
-        query.documentLanguage == null
-    }
-
-    def "should not set empty language"() {
-        when:
-        def query = QueryBuilder.create("pattern").documentLanguage("").build()
-        then:
-        query.documentLanguage == null
+        query.lang == null
     }
 
     def "should create valid query object with all fields set"() {
         given:
         def searchPattern = "searchPattern"
         def language = "en"
-        def startTime = simpleDateFormat.parse("2016-04-03 15:30:45");
-        def endTime = simpleDateFormat.parse("2016-05-03 15:30:45");
+        def startTime = SDF.parse("2016-04-03T15:30:45Z")
+        def endTime = SDF.parse("2016-05-03T15:30:45Z")
         when:
         def query = QueryBuilder.create(searchPattern).startTime(startTime).
-                endTime(endTime).documentLanguage(language).build()
+                endTime(endTime).lang(language).build()
         then:
-        query.searchPattern == "searchPattern"
-        query.documentLanguage == language
+        query.searchQuery == "searchPattern"
+        query.lang == language
         query.endTime == endTime
         query.startTime == startTime
     }

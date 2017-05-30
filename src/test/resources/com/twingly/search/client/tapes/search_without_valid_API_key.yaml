@@ -1,24 +1,26 @@
 !tape
 name: search without valid API key
 interactions:
-- recorded: 2016-03-12T12:24:38.299Z
+- recorded: 2017-05-12T20:34:26.092Z
   request:
     method: GET
-    uri: https://api.twingly.com/analytics/Analytics.ashx?key=API_KEY&xmloutputversion=2&searchpattern=some+pattern
+    uri: https://api.twingly.com/blog/search/api/v3/search?apiKey=API_KEY&q=some+pattern
     headers:
       Accept: text/html, image/gif, image/jpeg, *; q=.2, */*; q=.2
+      Accept-Encoding: gzip;q=1.0,deflate;q=0.6,identity;q=0.3
       Connection: keep-alive
       Content-Length: '0'
       Host: api.twingly.com
-      User-Agent: Twingly Search Java Client/1.0.0
+      User-Agent: Twingly Search Java Client/3.0.0-SNAPSHOT
   response:
-    status: 200
+    status: 401
     headers:
-      Cache-Control: private
+      Cache-Control: no-cache
       Connection: keep-alive
-      Content-Length: '183'
-      Content-Type: text/xml; charset=utf-8
-      Date: Sat, 12 Mar 2016 12:24:58 GMT
+      Content-Length: '97'
+      Content-Type: application/xml; charset=utf-8
+      Date: Fri, 12 May 2017 20:34:27 GMT
+      Expires: '-1'
+      Pragma: no-cache
       Server: nginx
-      Set-Cookie: SERVERID=web03; path=/
-    body: "<?xml version=\"1.0\" encoding=\"UTF-8\"?><blogstream xmlns=\"http://www.twingly.com\">\r\n  <operationResult resultType=\"failure\">The API key does not exist.</operationResult>\r\n</blogstream>"
+    body: <?xml version="1.0" encoding="utf-8"?><error code="40101"><message>Unauthorized</message></error>

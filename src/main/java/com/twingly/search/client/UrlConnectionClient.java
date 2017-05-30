@@ -2,26 +2,25 @@ package com.twingly.search.client;
 
 import com.twingly.search.Constants;
 import com.twingly.search.Query;
-import com.twingly.search.domain.*;
-import com.twingly.search.exception.*;
+import com.twingly.search.domain.Error;
+import com.twingly.search.domain.Post;
+import com.twingly.search.domain.Result;
+import com.twingly.search.exception.TwinglySearchException;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 import java.io.*;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
-import java.util.Iterator;
+import java.net.*;
+import java.util.zip.DeflaterInputStream;
+import java.util.zip.GZIPInputStream;
 
 /**
  * This client uses URLConnection to perform network interactions.
+ * <p>
+ * Compression is enabled for this client by default.
  *
  * @see Client
- * @see com.twingly.search.Query
- * @see com.twingly.search.QueryBuilder
  * @see URLConnection
  */
 public class UrlConnectionClient implements Client {
@@ -30,16 +29,29 @@ public class UrlConnectionClient implements Client {
      */
     private static final String USER_AGENT_PROPERTY = "User-Agent";
     /**
-     * Default User-agent that will be used if no other is given
+     * The constant ACCEPT_ENCODING_PROPERTY
      */
-    private static final String DEFAULT_USER_AGENT = "Twingly Search Java Client/" + Constants.VERSION;
-    private static final String BASE_URL = "https://api.twingly.com";
-    private static final String SEARCH_PATH = "/analytics/Analytics.ashx";
+    private static final String ACCEPT_ENCODING_PROPERTY = "Accept-Encoding";
+    /**
+     * The constant Gzip content compression
+     */
+    private static final String GZIP = "gzip";
+
+    /**
+     * The constant for deflate content compression
+     */
+    private static final String DEFLATE = "deflate";
+
+    /**
+     * The constant for the accepted by current client encodings
+     */
+    private static final String ACCEPTED_ENCODINGS = "gzip;q=1.0,deflate;q=0.6,identity;q=0.3";
+
     private static final char AND = '&';
-    private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat(Constants.DATE_FORMAT);
     private final String apiKey;
     private String userAgent = DEFAULT_USER_AGENT;
     private JAXBContext jaxbContext;
+    private boolean isCompressionsEnabled = true;
 
     /**
      * Constructor that uses given apiKey
@@ -81,28 +93,39 @@ public class UrlConnectionClient implements Client {
      * {@inheritDoc}
      */
     @Override
-    public Result makeRequest(Query query) {
-        String queryString = buildQueryString(query);
-        return makeRequest(queryString);
+    public Result makeRequest(String q) {
+        String queryString = buildQueryString(q);
+        return makeRequestInternal(queryString);
     }
 
-    private String buildQueryString(Query query) {
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setIsCompressionEnabled(boolean value) {
+        isCompressionsEnabled = value;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public boolean isCompressionEnabled() {
+        return isCompressionsEnabled;
+    }
+
+    @Override
+    public Result makeRequest(Query query) {
+        return makeRequest(query.toStringRepresentation());
+    }
+
+    private String buildQueryString(String q) {
         StringBuilder sb = new StringBuilder();
-        sb.append(BASE_URL);
-        sb.append(SEARCH_PATH);
-        sb.append("?key=").append(apiKey);
-        sb.append(AND).append("xmloutputversion=2");
-        sb.append(AND).append("searchpattern=").append(urlEncode(query.getSearchPattern()));
-        if (query.getStartTime() != null) {
-            sb.append(AND).append("ts=").append(urlEncode(simpleDateFormat.format(query.getStartTime())));
-        }
-        if (query.getEndTime() != null) {
-            sb.append(AND).append("tsTo=").append(urlEncode(simpleDateFormat.format(query.getEndTime())));
-        }
-        if (query.getDocumentLanguage() != null) {
-            sb.append(AND).append("documentlang=").append(query.getDocumentLanguage());
-        }
-        return sb.toString();
+        sb.append(API_URL);
+        sb.append("?apiKey=").append(apiKey);
+        sb.append(AND).append("q=").append(urlEncode(q));
+        String result = sb.toString();
+        return result;
     }
 
     private String urlEncode(String s) {
@@ -122,7 +145,7 @@ public class UrlConnectionClient implements Client {
     JAXBContext getJAXBContext() {
         if (jaxbContext == null) {
             try {
-                jaxbContext = JAXBContext.newInstance(Result.class, Post.class, OperationResult.class, BlogStream.class);
+                jaxbContext = JAXBContext.newInstance(Result.class, Post.class, Error.class);
             } catch (JAXBException e) {
                 throw new TwinglySearchException("Cannot initialize JAXBContext for Result", e);
             }
@@ -141,9 +164,9 @@ public class UrlConnectionClient implements Client {
             Unmarshaller jaxbUnmarshaller = getJAXBContext().createUnmarshaller();
             Object result = jaxbUnmarshaller.unmarshal(reader);
             if (result instanceof Result) {
-                return filterResultsWithEmptyContentTypes((Result) result);
-            } else if (result instanceof BlogStream) {
-                handleException((BlogStream) result);
+                return (Result) result;
+            } else if (result instanceof Error) {
+                throw TwinglySearchException.fromError((Error) result);
             }
             throw new TwinglySearchException("Unprocessed exception");
         } catch (JAXBException e) {
@@ -151,45 +174,44 @@ public class UrlConnectionClient implements Client {
         }
     }
 
-    private Result filterResultsWithEmptyContentTypes(Result result) {
-        Iterator<Post> iterator = result.getPosts().iterator();
-        while (iterator.hasNext()) {
-            Post post = iterator.next();
-            if (post.getContentType() == null) {
-                iterator.remove();
-            }
-        }
-        return result;
-    }
 
-    private void handleException(BlogStream blogStream) {
-        if (blogStream.getOperationResult() != null && blogStream.getOperationResult().getResultType() == OperationResultType.FAILURE) {
-            String message = blogStream.getOperationResult().getMessage();
-            if (OperationFailureMessages.API_KEY_DOES_NOT_EXIST.equalsIgnoreCase(message)) {
-                throw new TwinglySearchServerAPIKeyDoesNotExistException(blogStream);
-            }
-            if (OperationFailureMessages.UNAUTHORIZED_API_KEY.equalsIgnoreCase(message)) {
-                throw new TwinglySearchServerAPIKeyUnauthorizedException(blogStream);
-            }
-            if (OperationFailureMessages.SERVICE_UNAVAILABLE.equalsIgnoreCase(message)) {
-                throw new TwinglySearchServerServiceUnavailableException(blogStream);
-            }
-            throw new TwinglySearchServerException(blogStream);
-        }
-    }
-
-
-    private Result makeRequest(String query) {
+    private Result makeRequestInternal(String query) {
         try {
             URL url = getUrl(query);
-            URLConnection connection = url.openConnection();
-            connection.setRequestProperty(USER_AGENT_PROPERTY, getUserAgent());
-            try (BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+            HttpURLConnection connection = prepareConnection(url);
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(getConnectionStream(connection)))) {
                 return unmarshalXmlForResult(br);
             }
         } catch (IOException e) {
             throw new TwinglySearchException("IO exception", e);
         }
+    }
+
+    private HttpURLConnection prepareConnection(URL url) throws IOException {
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        if (isCompressionsEnabled) {
+            connection.setRequestProperty(ACCEPT_ENCODING_PROPERTY, ACCEPTED_ENCODINGS);
+        }
+        connection.setRequestProperty(USER_AGENT_PROPERTY, getUserAgent());
+        return connection;
+    }
+
+    private InputStream getConnectionStream(HttpURLConnection connection) throws IOException {
+        int responseSerie = connection.getResponseCode() / 100;
+        InputStream connectionStream;
+        if (responseSerie == 4) {
+            connectionStream = connection.getErrorStream();
+        } else {
+            connectionStream = connection.getInputStream();
+        }
+        String contentEncoding = connection.getContentEncoding();
+        if (GZIP.equalsIgnoreCase(contentEncoding)) {
+            return new GZIPInputStream(connectionStream);
+        }
+        if (DEFLATE.equalsIgnoreCase(contentEncoding)) {
+            return new DeflaterInputStream(connectionStream);
+        }
+        return connectionStream;
     }
 
     /**
