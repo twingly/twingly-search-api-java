@@ -150,14 +150,23 @@ This will save JAR file with all needed dependencies in `build/libs/` with `-all
 
 ### Release
 
-Before you start, ensure that you have a properly setup `~/.gradle/gradle.properties` ([see the example](http://central.sonatype.org/pages/gradle.html#credentials)) and [GPG](https://www.gnupg.org/) keyring (`brew install gpg`, get the secret key from our secret stash, `gpg --import <path to key>`).
+Before you start:
+
+* Ensure that you have a properly setup
+    * `~/.gradle/gradle.properties` ([see the example](http://central.sonatype.org/pages/gradle.html#credentials))
+    * [GPG](https://www.gnupg.org/) keyring
+        * `brew install gpg`
+        * get the secret key from our secret stash
+        * `gpg --import <path to key>`
+
+How to make the release:
 
 1. Ensure you are using Java 7
-1. Bump the version in [version.properties](./src/main/resources/version.properties)
+1. Bump the version in [`version.properties`](./src/main/resources/version.properties)
 1. Commit the changes
 1. Tag the current commit with the same version number and push it
 1. Run `gradlew uploadArchives -Prelease` to release to the staging repository
-1. Log into [Nexus Repository Manager](https://oss.sonatype.org/) and find the archive
+1. Log into [Nexus Repository Manager](https://oss.sonatype.org/) and [find the archive](http://central.sonatype.org/pages/releasing-the-deployment.html#locate-and-examine-your-staging-repository)
 1. Read [Releasing the Deployment](http://central.sonatype.org/pages/releasing-the-deployment.html)
 1. Release to Central Repository using [Nexus Repository Manager](https://oss.sonatype.org/)
 
