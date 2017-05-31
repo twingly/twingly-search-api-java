@@ -150,7 +150,7 @@ This will save JAR file with all needed dependencies in `build/libs/` with `-all
 
 ### Release
 
-Before you start:
+#### Before you start
 
 * Ensure that you have a properly setup
     * `~/.gradle/gradle.properties` ([see the example](http://central.sonatype.org/pages/gradle.html#credentials))
@@ -159,7 +159,7 @@ Before you start:
         * get the secret key from our secret stash
         * `gpg --import <path to key>`
 
-How to make the release:
+#### Make the release
 
 1. Ensure you are using Java 7
 1. Bump the version in [`version.properties`](./src/main/resources/version.properties)
@@ -169,6 +169,14 @@ How to make the release:
 1. Log into [Nexus Repository Manager](https://oss.sonatype.org/) and [find the archive](http://central.sonatype.org/pages/releasing-the-deployment.html#locate-and-examine-your-staging-repository)
 1. Read [Releasing the Deployment](http://central.sonatype.org/pages/releasing-the-deployment.html)
 1. Release to Central Repository using [Nexus Repository Manager](https://oss.sonatype.org/)
+
+#### Update the changelog
+
+* Install [GitHub Changelog Generator](https://github.com/skywinder/github-changelog-generator/) if you don't have it
+    * `gem install github_changelog_generator`
+* Set `CHANGELOG_GITHUB_TOKEN` to a personal access token to increase your GitHub API rate limit
+* Generate the changelog
+    * `github_changelog_generator`
 
 ## License
 
