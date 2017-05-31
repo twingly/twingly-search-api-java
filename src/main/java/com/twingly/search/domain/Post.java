@@ -31,7 +31,7 @@ public class Post {
     /**
      * the blog post text
      *
-     * @since 3.0.0
+     * @since 1.1.0
      */
     private String text;
     /**
@@ -41,14 +41,14 @@ public class Post {
     /**
      * the time, in UTC, when the post was published at
      *
-     * @since 3.0.0
+     * @since 1.1.0
      */
     @XmlJavaTypeAdapter(DateAdapter.class)
     private Date publishedAt;
     /**
      * the time, in UTC, when the post was indexed at by Twingly
      *
-     * @since 3.0.0
+     * @since 1.1.0
      */
     @XmlJavaTypeAdapter(DateAdapter.class)
     private Date indexedAt;
@@ -64,7 +64,7 @@ public class Post {
     /**
      * The ID of the blog
      *
-     * @since 3.0.0
+     * @since 1.1.0
      */
     private String blogId;
     /**
@@ -89,41 +89,41 @@ public class Post {
     /**
      * The blog post ID
      *
-     * @since 3.0.0
+     * @since 1.1.0
      */
     private String id;
 
     /**
      * The blog post author
      *
-     * @since 3.0.0
+     * @since 1.1.0
      */
     private String author;
 
     /**
      * ISO two letter location code for the language that the post was written in.
      *
-     * @since 3.0.0
+     * @since 1.1.0
      */
     private String locationCode;
 
     /**
      * Number of links found in other blog posts
      *
-     * @since 3.0.0
+     * @since 1.1.0
      */
     private int inlinksCount;
     /**
      * the time, in UTC, when the post was reindexed at by Twingly
      *
-     * @since 3.0.0
+     * @since 1.1.0
      */
     @XmlJavaTypeAdapter(DateAdapter.class)
     private Date reindexedAt;
     /**
      * All links from the blog post to other resources
      *
-     * @since 3.0.0
+     * @since 1.1.0
      */
     @XmlElementWrapper(name = "links")
     @XmlElement(name = "link")
@@ -132,7 +132,7 @@ public class Post {
     /**
      * Image URLs from the posts
      *
-     * @since 3.0.0
+     * @since 1.1.0
      */
     @XmlElementWrapper(name = "images")
     @XmlElement(name = "image")
@@ -141,14 +141,14 @@ public class Post {
     /**
      * Geographical coordinates from blog post
      *
-     * @since 3.0.0
+     * @since 1.1.0
      */
     @XmlElement
     private Coordinate coordinates;
     /**
      * Content type of post. The only supported now is "Blog"
      *
-     * @deprecated since 3.0.0
+     * @deprecated since 1.1.0
      */
     @XmlAttribute(name = "contentType")
     @Deprecated
@@ -164,7 +164,7 @@ public class Post {
      * Gets content type.
      *
      * @return the content type
-     * @deprecated since 3.0.0
+     * @deprecated since 1.1.0
      */
     @Deprecated
     public ContentType getContentType() {
@@ -175,7 +175,7 @@ public class Post {
      * Sets content type.
      *
      * @param contentType the content type
-     * @deprecated since 3.0.0
+     * @deprecated since 1.1.0
      */
     @Deprecated
     public void setContentType(ContentType contentType) {

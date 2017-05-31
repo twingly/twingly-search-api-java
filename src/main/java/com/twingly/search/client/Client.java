@@ -41,7 +41,7 @@ public interface Client {
      * @param q query to perform request with
      * @return Result object
      * @throws TwinglySearchException if any exception happens
-     * @since 3.0.0
+     * @since 1.1.0
      */
     Result makeRequest(String q);
 
@@ -49,7 +49,7 @@ public interface Client {
      * Enables or disables compression
      *
      * @param value true in order to enable compressions or false in order to disable compressions
-     * @since 3.0.0
+     * @since 1.1.0
      */
     void setIsCompressionEnabled(boolean value);
 
@@ -57,7 +57,7 @@ public interface Client {
      * Checks whether compressions is enabled
      *
      * @return true if compressions is enabled - false otherwise
-     * @since 3.0.0
+     * @since 1.1.0
      */
     boolean isCompressionEnabled();
 

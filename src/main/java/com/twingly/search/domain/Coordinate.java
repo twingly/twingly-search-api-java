@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 /**
  * Geographical coordinates from blog post
  *
- * @since 3.0.0
+ * @since 1.1.0
  */
 @XmlRootElement(name = "coordinates")
 public class Coordinate {

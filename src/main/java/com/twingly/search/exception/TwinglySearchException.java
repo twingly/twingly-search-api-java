@@ -27,7 +27,7 @@ public class TwinglySearchException extends RuntimeException {
      * Instantiates a new Twingly exception.
      *
      * @param blogStream the blog stream
-     * @deprecated since 3.0.0
+     * @deprecated since 1.1.0
      */
     @Deprecated
     public TwinglySearchException(BlogStream blogStream) {

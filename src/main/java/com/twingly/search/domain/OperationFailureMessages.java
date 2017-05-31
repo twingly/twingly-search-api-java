@@ -3,7 +3,7 @@ package com.twingly.search.domain;
 /**
  * The type Operation failure messages.
  *
- * @deprecated since 3.0.0
+ * @deprecated since 1.1.0
  */
 @Deprecated
 public final class OperationFailureMessages {

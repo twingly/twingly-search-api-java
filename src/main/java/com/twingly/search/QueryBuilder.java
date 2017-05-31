@@ -45,7 +45,7 @@ public class QueryBuilder {
      *
      * @param query Query object to initialize builder with
      * @return QueryBuilder with fields initialized from given query
-     * @since 3.0.0
+     * @since 1.1.0
      */
     public static QueryBuilder fromQuery(Query query) {
         return new QueryBuilder(query);
@@ -71,7 +71,7 @@ public class QueryBuilder {
      *
      * @param searchPattern the search pattern
      * @return the query builder
-     * @deprecated since 3.0.0 use {@link #searchQuery(String)} instead
+     * @deprecated since 1.1.0 use {@link #searchQuery(String)} instead
      */
     @Deprecated
     public QueryBuilder searchPattern(String searchPattern) {
@@ -87,7 +87,7 @@ public class QueryBuilder {
      *
      * @param startTime the start time
      * @return the query builder
-     * @since 3.0.0
+     * @since 1.1.0
      */
     public QueryBuilder startTime(Date startTime) {
         if (startTime != null) {
@@ -107,7 +107,7 @@ public class QueryBuilder {
      *
      * @param endTime the end time
      * @return the query builder
-     * @since 3.0.0
+     * @since 1.1.0
      */
     public QueryBuilder endTime(Date endTime) {
         if (endTime != null) {
@@ -130,7 +130,7 @@ public class QueryBuilder {
      *
      * @param lang the language
      * @return the query builder
-     * @since 3.0.0
+     * @since 1.1.0
      */
     public QueryBuilder lang(Language lang) {
         if (lang != null) {
@@ -146,7 +146,7 @@ public class QueryBuilder {
      *
      * @param language the language
      * @return the query builder
-     * @deprecated since 3.0.0 - use {@link #lang(Language)} instead
+     * @deprecated since 1.1.0 - use {@link #lang(Language)} instead
      */
     @Deprecated
     public QueryBuilder documentLanguage(Language language) {
@@ -162,7 +162,7 @@ public class QueryBuilder {
      *
      * @param lang the language
      * @return the query builder
-     * @since 3.0.0
+     * @since 1.1.0
      */
     public QueryBuilder lang(String lang) {
         if (isNotEmpty(lang) && Language.fromIsoCode(lang) != null) {
@@ -178,7 +178,7 @@ public class QueryBuilder {
      *
      * @param documentLanguage the document language
      * @return the query builder
-     * @deprecated since 3.0.0 - use {@link #lang(String)} instead
+     * @deprecated since 1.1.0 - use {@link #lang(String)} instead
      */
     @Deprecated
     public QueryBuilder documentLanguage(String documentLanguage) {
@@ -193,7 +193,7 @@ public class QueryBuilder {
      *
      * @param location the language
      * @return the query builder
-     * @since 3.0.0
+     * @since 1.1.0
      */
     public QueryBuilder location(Location location) {
         if (location != null) {
@@ -213,7 +213,7 @@ public class QueryBuilder {
      *
      * @param location the language
      * @return the query builder
-     * @since 3.0.0
+     * @since 1.1.0
      */
     public QueryBuilder location(String location) {
         if (isNotEmpty(location) && Location.fromIsoCode(location) != null) {
@@ -228,7 +228,7 @@ public class QueryBuilder {
      * Create new query.
      *
      * @return the query builder
-     * @deprecated since 3.0.0 - use new QueryBuilder each time as current method can lead to empty {@link #searchQuery}
+     * @deprecated since 1.1.0 - use new QueryBuilder each time as current method can lead to empty {@link #searchQuery}
      */
     @Deprecated
     public QueryBuilder createNewQuery() {

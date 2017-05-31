@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * Represents currently supported content types.
  *
- * @deprecated since 3.0.0
+ * @deprecated since 1.1.0
  */
 @XmlType
 @XmlEnum(String.class)

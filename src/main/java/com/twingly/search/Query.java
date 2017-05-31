@@ -21,7 +21,7 @@ public class Query {
      * Package-level constructor for API usage only. API users should use QueryBuilder instead.
      *
      * @see QueryBuilder
-     * @deprecated since 3.0.0 - use {@link #Query(Date, Date, String, String, String)} instead
+     * @deprecated since 1.1.0 - use {@link #Query(Date, Date, String, String, String)} instead
      */
     @Deprecated
     Query() {
@@ -40,7 +40,7 @@ public class Query {
      * Gets language
      *
      * @return language
-     * @since 3.0.0
+     * @since 1.1.0
      */
     public String getLang() {
         return lang;
@@ -50,7 +50,7 @@ public class Query {
      * Sets language
      *
      * @param lang language
-     * @since 3.0.0
+     * @since 1.1.0
      */
     public void setLang(String lang) {
         this.lang = lang;
@@ -60,7 +60,7 @@ public class Query {
      * Convert current query object to #QueryBuilder.
      *
      * @return QueryBuilder object from current Query
-     * @since 3.0.0
+     * @since 1.1.0
      */
     public QueryBuilder toBuilder() {
         return QueryBuilder.fromQuery(this);
@@ -70,7 +70,7 @@ public class Query {
      * Gets location
      *
      * @return the location
-     * @since 3.0.0
+     * @since 1.1.0
      */
     public String getLocation() {
         return location;
@@ -80,7 +80,7 @@ public class Query {
      * Sets location
      *
      * @param location the location
-     * @since 3.0.0
+     * @since 1.1.0
      */
     public void setLocation(String location) {
         this.location = location;
@@ -166,7 +166,7 @@ public class Query {
      * Gets search pattern.
      *
      * @return the search pattern
-     * @deprecated since 3.0.0 - use {@link #getSearchQuery()} instead
+     * @deprecated since 1.1.0 - use {@link #getSearchQuery()} instead
      */
     @Deprecated
     public String getSearchPattern() {
@@ -177,7 +177,7 @@ public class Query {
      * Sets search pattern.
      *
      * @param searchPattern the search pattern
-     * @deprecated since 3.0.0 - use {@link #setSearchQuery(String)} instead
+     * @deprecated since 1.1.0 - use {@link #setSearchQuery(String)} instead
      */
     @Deprecated
     public void setSearchPattern(String searchPattern) {
@@ -189,7 +189,7 @@ public class Query {
      * Gets document language.
      *
      * @return the document language
-     * @deprecated since 3.0.0 - use {@link #getLang()} instead
+     * @deprecated since 1.1.0 - use {@link #getLang()} instead
      */
     @Deprecated
     public String getDocumentLanguage() {
@@ -200,7 +200,7 @@ public class Query {
      * Sets document language.
      *
      * @param documentLanguage the document language
-     * @deprecated since 3.0.0 - use {@link #setLang(String)} instead
+     * @deprecated since 1.1.0 - use {@link #setLang(String)} instead
      */
     @Deprecated
     public void setDocumentLanguage(String documentLanguage) {
