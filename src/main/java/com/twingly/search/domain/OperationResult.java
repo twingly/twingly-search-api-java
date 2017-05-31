@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlValue;
 /**
  * The type Operation result.
  *
- * @deprecated since 3.0.0
+ * @deprecated since 1.1.0
  */
 @Deprecated
 @XmlRootElement(name = "operationResult")

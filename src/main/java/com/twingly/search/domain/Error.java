@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 /**
  * The type Error.
  *
- * @since 3.0.0
+ * @since 1.1.0
  */
 @XmlRootElement(name = "error")
 public class Error {

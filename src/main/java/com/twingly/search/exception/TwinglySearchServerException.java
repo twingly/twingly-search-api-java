@@ -36,7 +36,7 @@ public class TwinglySearchServerException extends TwinglySearchErrorException {
      * Instantiates a new Twingly search server exception.
      *
      * @param message the message
-     * @deprecated since 3.0.0
+     * @deprecated since 1.1.0
      */
     @Deprecated
     public TwinglySearchServerException(String message) {
@@ -48,7 +48,7 @@ public class TwinglySearchServerException extends TwinglySearchErrorException {
      *
      * @param message the message
      * @param cause   the cause
-     * @deprecated since 3.0.0
+     * @deprecated since 1.1.0
      */
     @Deprecated
     public TwinglySearchServerException(String message, Throwable cause) {
@@ -59,7 +59,7 @@ public class TwinglySearchServerException extends TwinglySearchErrorException {
      * Instantiates a new Twingly search server exception.
      *
      * @param cause the cause
-     * @deprecated since 3.0.0
+     * @deprecated since 1.1.0
      */
     @Deprecated
     public TwinglySearchServerException(Throwable cause) {
@@ -73,7 +73,7 @@ public class TwinglySearchServerException extends TwinglySearchErrorException {
      * @param cause              the cause
      * @param enableSuppression  the enable suppression
      * @param writableStackTrace the writable stack trace
-     * @deprecated since 3.0.0
+     * @deprecated since 1.1.0
      */
     @Deprecated
     protected TwinglySearchServerException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
