@@ -4,13 +4,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
-import static com.twingly.search.Constants.DATE_FORMAT;
+import com.twingly.search.Constants;
 
 /**
  * The type Query.
  */
 public class Query {
-    private static final SimpleDateFormat QUERY_DATE_FORMAT = new SimpleDateFormat(DATE_FORMAT);
+    private static final SimpleDateFormat QUERY_DATE_FORMAT = new SimpleDateFormat(Constants.QUERY_DATE_FORMAT);
     private Date startTime;
     private Date endTime;
     private String searchQuery;
