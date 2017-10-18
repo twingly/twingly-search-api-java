@@ -1,7 +1,7 @@
 !tape
 name: search with filled coordinates
 interactions:
-- recorded: 2017-05-29T20:13:33.710Z
+- recorded: 2017-10-16T08:11:18.627Z
   request:
     method: GET
     uri: https://api.twingly.com/blog/search/api/v3/search?apiKey=API_KEY&q=id%3A7533026945919130930
@@ -19,12 +19,12 @@ interactions:
       Connection: keep-alive
       Content-Encoding: gzip
       Content-Type: application/xml; charset=utf-8
-      Date: Mon, 29 May 2017 20:13:36 GMT
+      Date: Mon, 16 Oct 2017 08:11:18 GMT
       Expires: '-1'
       Pragma: no-cache
       Server: nginx
       Transfer-Encoding: chunked
-    body: "<?xml version=\"1.0\" encoding=\"utf-8\"?><twinglydata numberOfMatchesReturned=\"1\" secondsElapsed=\"0.239\" numberOfMatchesTotal=\"1\" incompleteResult=\"false\"><post><id>7533026945919130930</id><author /><url>http://odoo-community.org/blog/oca-news-1/post/code-sprint-in-louvain-la-neuve-oct-3-and-4-2016-64</url><title>Code\
+    body: "<?xml version=\"1.0\" encoding=\"utf-8\"?><twinglydata numberOfMatchesReturned=\"1\" secondsElapsed=\"0.25\" numberOfMatchesTotal=\"1\" incompleteResult=\"false\"><post><id>7533026945919130930</id><author /><url>http://odoo-community.org/blog/oca-news-1/post/code-sprint-in-louvain-la-neuve-oct-3-and-4-2016-64</url><title>Code\
       \ Sprint in Louvain la Neuve (Oct 3 and 4, 2016)</title><text>All you wanted to know about the OCA code sprint\r\n\r\nbut were afraid to ask\r\n\r\n\r\n\r\n\r\n\r\n\r\nWhen?\r\n\r\n\r\n\r\n\r\n\r\n \r\nThe sprint starts on monday Oct 3, 9:00 and ends on\
       \ tuesday Oct 4, 18:00.\_ \r\n\r\n\r\n\r\n\r\n\r\n\r\nWhere?\r\n\r\n\r\n\r\n \r\nThe sprint will be hosted at the Ibis Hotel in Louvain la Neuve. The hotel is at a 15 min walk from the Louvain la Neuve railway station, and about the same distance from\
       \ the Aula Magna where the Odoo Experience is being held later that week. If you want to drive there, the GPS coordinates are\_ 50.673359, 4.607381. \_ \r\n\r\nWe booked the same room as for last year's sprint. \r\n\r\n\r\n\r\nWhat to bring?\r\n\r\n\r\n\
@@ -48,4 +48,4 @@ interactions:
       \ ?\r\n\tOdoo_Instances a toolset to setup and deoploy Odoo using docker\r\n\tdocument_sftp\r\n\tInventory Revaluation module\r\n\tIf I get the coffeescript toolchain working, then I'd love to present it in 5 minutes :)\r\n\tE-commerce alternative based\
       \ on odoo and locootivecms.\_\r\n\tVoodoo a tool to develop and deploy easily odoo\r\n\tDevops Used at Vauxoo\r\n\tAbout new addons social/mail_tracking*\r\n\tUnit test odoo report\r\n\tbase_custom_info and base_multi_image generic mixins\r\n\tweb_timeline\r\
       \n\t\r\n\r\n\r\n\r\n\r\n\r\n\r\nAny other question?\r\n\r\nask it on the contributors mailing list !\r\n\r\n\r\nI'm looking forward to seeing you all in Louvain la Neuve!</text><languageCode>en</languageCode><locationCode>ru</locationCode><coordinates><latitude>49.1</latitude><longitude>10.75</longitude></coordinates><links><link>http://www.accorhotels.com/gb/hotel-2200-ibis-styles-meeting-center-louvain-la-neuve</link><link>http://www.openstreetmap.org/node/356183421#map=17/50.67292/4.61226</link><link>http://www.ahstatic.com/photos/2200_sm_02_p_1024x768.jpg</link><link>http://www.power-plugs-sockets.com/belgium</link><link>https://www.github.com/odoo/odoo</link><link>https://www.github.com/OCA/OCB</link><link>https://www.github.com/OCA/maintainer-tools</link><link>https://www.github.com/OCA/knowledge/tree/8.0/document_sftp</link><link>http://www.mackma-project.eu/</link></links><tags><tag>OCA\
-      \ News</tag></tags><images /><indexedAt>2016-09-23T05:30:02Z</indexedAt><publishedAt>2017-05-28T15:01:48Z</publishedAt><reindexedAt>2017-05-29T07:14:58Z</reindexedAt><inlinksCount>0</inlinksCount><blogId>18224846301333517008</blogId><blogName>OCA News</blogName><blogUrl>https://odoo-community.org</blogUrl><blogRank>1</blogRank><authority>2</authority></post></twinglydata>"
+      \ News</tag></tags><images /><indexedAt>2016-09-23T07:30:02Z</indexedAt><publishedAt>2017-09-26T15:11:11Z</publishedAt><reindexedAt>2017-09-27T03:50:20Z</reindexedAt><inlinksCount>0</inlinksCount><blogId>18224846301333517008</blogId><blogName>OCA News</blogName><blogUrl>https://odoo-community.org</blogUrl><blogRank>1</blogRank><authority>2</authority></post></twinglydata>"

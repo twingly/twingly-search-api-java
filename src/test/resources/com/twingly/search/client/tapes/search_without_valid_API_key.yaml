@@ -1,7 +1,7 @@
 !tape
 name: search without valid API key
 interactions:
-- recorded: 2017-05-12T20:34:26.092Z
+- recorded: 2017-10-16T08:11:27.798Z
   request:
     method: GET
     uri: https://api.twingly.com/blog/search/api/v3/search?apiKey=API_KEY&q=some+pattern
@@ -19,7 +19,7 @@ interactions:
       Connection: keep-alive
       Content-Length: '97'
       Content-Type: application/xml; charset=utf-8
-      Date: Fri, 12 May 2017 20:34:27 GMT
+      Date: Mon, 16 Oct 2017 08:11:27 GMT
       Expires: '-1'
       Pragma: no-cache
       Server: nginx
