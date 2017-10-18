@@ -4,9 +4,10 @@ import com.twingly.search.Constants
 import com.twingly.search.QueryBuilder
 import com.twingly.search.domain.Error
 import com.twingly.search.domain.Result
-import com.twingly.search.exception.TwinglySearchClientException
+import com.twingly.search.exception.TwinglySearchAuthenticationException
 import com.twingly.search.exception.TwinglySearchErrorException
 import com.twingly.search.exception.TwinglySearchException
+import com.twingly.search.exception.TwinglySearchQueryException
 import com.twingly.search.exception.TwinglySearchServerException
 import spock.lang.Specification
 
@@ -225,7 +226,7 @@ class UrlConnectionClientSpockTest extends Specification {
             r -> return client.unmarshalXmlForResult(r)
         })
         then:
-        def ex = thrown(TwinglySearchClientException)
+        def ex = thrown(TwinglySearchAuthenticationException)
         ex?.error?.code == "40101"
         ex?.error?.message == "Unauthorized"
     }
@@ -251,7 +252,7 @@ class UrlConnectionClientSpockTest extends Specification {
             r -> return client.unmarshalXmlForResult(r)
         })
         then:
-        def ex = thrown(TwinglySearchClientException)
+        def ex = thrown(TwinglySearchQueryException)
         ex?.error?.code == "40001"
         ex?.error?.message == "Parameter apikey may not be empty"
     }
