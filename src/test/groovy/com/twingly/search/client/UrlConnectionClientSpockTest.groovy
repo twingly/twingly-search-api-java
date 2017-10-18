@@ -22,7 +22,7 @@ import java.text.SimpleDateFormat
 class UrlConnectionClientSpockTest extends Specification {
     private static final String API_KEY = "apiKey"
     def packagePath = Paths.get("com", "twingly", "search", "client")
-    def sdf = new SimpleDateFormat(Constants.DATE_FORMAT)
+    def sdf = new SimpleDateFormat(Constants.POST_DATE_FORMAT)
     def jaxbContext = Mock(JAXBContext)
     def unmarschaller = Mock(Unmarshaller)
     def urlStreamHandler

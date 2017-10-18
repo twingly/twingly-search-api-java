@@ -9,10 +9,10 @@ import spock.lang.Unroll
 
 import java.text.SimpleDateFormat
 
-import static com.twingly.search.Constants.DATE_FORMAT
+import static com.twingly.search.Constants.QUERY_DATE_FORMAT
 
 class QueryBuilderSpockTest extends Specification {
-    private static SDF = new SimpleDateFormat(DATE_FORMAT)
+    private static SDF = new SimpleDateFormat(QUERY_DATE_FORMAT)
 
     @Unroll
     def "should create #expectedQueryString for searchQuery=#sq, location=#loc, lang=#lang, startTime=#st and endTime=#et"() {
@@ -28,14 +28,14 @@ class QueryBuilderSpockTest extends Specification {
         query.toStringRepresentation() == expectedQueryString
         where:
         sq   | loc              | lang               | st                                | et                                || expectedQueryString
-        "sq" | "ua"             | "uk"               | SDF.parse("2017-05-10T01:26:53Z") | SDF.parse("2017-05-11T01:26:53Z") || String.format("sq lang:uk start-date:%s end-date:%s location:ua", SDF.format(st), SDF.format(et))
-        "sq" | "ua"             | "uk"               | SDF.parse("2017-05-10T01:26:53Z") | null                              || String.format("sq lang:uk start-date:%s location:ua", SDF.format(st))
-        "sq" | "ua"             | "uk"               | null                              | SDF.parse("2017-05-11T01:26:53Z") || String.format("sq lang:uk end-date:%s location:ua", SDF.format(et))
+        "sq" | "ua"             | "uk"               | SDF.parse("2017-05-10T01:26:53")  | SDF.parse("2017-05-11T01:26:53")  || String.format("sq lang:uk start-date:%s end-date:%s location:ua", SDF.format(st), SDF.format(et))
+        "sq" | "ua"             | "uk"               | SDF.parse("2017-05-10T01:26:53")  | null                              || String.format("sq lang:uk start-date:%s location:ua", SDF.format(st))
+        "sq" | "ua"             | "uk"               | null                              | SDF.parse("2017-05-11T01:26:53")  || String.format("sq lang:uk end-date:%s location:ua", SDF.format(et))
         "sq" | "ua"             | "uk"               | null                              | null                              || "sq lang:uk location:ua"
         "sq" | "ua"             | null               | null                              | null                              || "sq location:ua"
         "sq" | null             | null               | null                              | null                              || "sq"
         "sq" | "NO_SUCH_LOC"    | "NO_SUCH_LANG"     | null                              | null                              || "sq"
-        "sq" | Location.Ukraine | Language.Ukrainian | SDF.parse("2017-07-10T01:26:53Z") | SDF.parse("2017-05-11T01:26:53Z") || String.format("sq lang:uk start-date:%s location:ua", SDF.format(st))
+        "sq" | Location.Ukraine | Language.Ukrainian | SDF.parse("2017-07-10T01:26:53") | SDF.parse("2017-05-11T01:26:53")   || String.format("sq lang:uk start-date:%s location:ua", SDF.format(st))
     }
 
     @Unroll
@@ -55,8 +55,8 @@ class QueryBuilderSpockTest extends Specification {
 
     def "should convert Query to QueryBuilder and back"() {
         given:
-        def startTime = SDF.parse("2016-03-03T15:30:45Z")
-        def endTime = SDF.parse("2016-05-03T15:30:45Z")
+        def startTime = SDF.parse("2016-03-03T15:30:45")
+        def endTime = SDF.parse("2016-05-03T15:30:45")
         def searchQuery = "searchQuery"
         def lang = "ua"
         def location = "uk"
@@ -124,8 +124,8 @@ class QueryBuilderSpockTest extends Specification {
 
     def "should set start time if it is before end time"() {
         given:
-        def startTime = SDF.parse("2016-03-03T15:30:45Z")
-        def endTime = SDF.parse("2016-05-03T15:30:45Z")
+        def startTime = SDF.parse("2016-03-03T15:30:45")
+        def endTime = SDF.parse("2016-05-03T15:30:45")
         when:
         def query = QueryBuilder.create("pattern").startTime(startTime).endTime(endTime).build()
         then:
@@ -135,8 +135,8 @@ class QueryBuilderSpockTest extends Specification {
 
     def "should not set end time if it's before start time"() {
         given:
-        def startTime = SDF.parse("2016-05-03T15:30:45Z")
-        def endTime = SDF.parse("2016-03-03T15:30:45Z")
+        def startTime = SDF.parse("2016-05-03T15:30:45")
+        def endTime = SDF.parse("2016-03-03T15:30:45")
         when:
         def query = QueryBuilder.create("pattern").startTime(startTime).endTime(endTime).build()
         then:
@@ -146,8 +146,8 @@ class QueryBuilderSpockTest extends Specification {
 
     def "should not set start time if it's after end time"() {
         given:
-        def startTime = SDF.parse("2016-05-03T15:30:45Z")
-        def endTime = SDF.parse("2016-03-03T15:30:45Z")
+        def startTime = SDF.parse("2016-05-03T15:30:45")
+        def endTime = SDF.parse("2016-03-03T15:30:45")
         when:
         def query = QueryBuilder.create("pattern").endTime(endTime).startTime(startTime).build()
         then:
@@ -181,8 +181,8 @@ class QueryBuilderSpockTest extends Specification {
         given:
         def searchPattern = "searchPattern"
         def language = "en"
-        def startTime = SDF.parse("2016-04-03T15:30:45Z")
-        def endTime = SDF.parse("2016-05-03T15:30:45Z")
+        def startTime = SDF.parse("2016-04-03T15:30:45")
+        def endTime = SDF.parse("2016-05-03T15:30:45")
         when:
         def query = QueryBuilder.create(searchPattern).startTime(startTime).
                 endTime(endTime).lang(language).build()

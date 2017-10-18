@@ -7,10 +7,10 @@ import java.util.Date;
 /**
  * Custom XMLAdapter that processes XML String date to java.util.Date in correct format.
  *
- * @see Constants#DATE_FORMAT
+ * @see Constants#POST_DATE_FORMAT
  */
 public class DateAdapter extends XmlAdapter<String, Date> {
-    private final SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.DATE_FORMAT);
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat(Constants.POST_DATE_FORMAT);
 
     /**
      * {@inheritDoc}
