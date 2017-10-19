@@ -76,12 +76,13 @@ public class TwinglySearchException extends RuntimeException {
 
     public static TwinglySearchException fromError(Error error) {
         if (error.getCode() != null) {
-            if (error.getCode().startsWith("4")) {
-                if (error.getCode().startsWith("400") || error.getCode().startsWith("404")) {
-                    throw new TwinglySearchAuthenticationException(error);
-                }
-                if (error.getCode().startsWith("401") || error.getCode().startsWith("402")) {
+            String errorCode = error.getCode();
+            if (errorCode.startsWith("4")) {
+                if (errorCode.startsWith("400") || errorCode.startsWith("404")) {
                     throw new TwinglySearchQueryException(error);
+                }
+                if (errorCode.startsWith("401") || errorCode.startsWith("402")) {
+                    throw new TwinglySearchAuthenticationException(error);
                 }
                 throw new TwinglySearchClientException(error);
             }
