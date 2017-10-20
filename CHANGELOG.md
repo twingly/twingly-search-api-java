@@ -1,5 +1,17 @@
 # Change Log
 
+## [v1.1.1](https://github.com/twingly/twingly-search-api-java/tree/v1.1.1) (2017-10-20)
+[Full Changelog](https://github.com/twingly/twingly-search-api-java/compare/v1.1.0...v1.1.1)
+
+**Implemented enhancements:**
+
+- Release new version v1.1.0 [\#33](https://github.com/twingly/twingly-search-api-java/issues/33)
+
+**Merged pull requests:**
+
+- Throw the appropriate exceptions [\#36](https://github.com/twingly/twingly-search-api-java/pull/36) ([walro](https://github.com/walro))
+- Do not pass timezone information in queries [\#35](https://github.com/twingly/twingly-search-api-java/pull/35) ([walro](https://github.com/walro))
+
 ## [v1.1.0](https://github.com/twingly/twingly-search-api-java/tree/v1.1.0) (2017-05-31)
 [Full Changelog](https://github.com/twingly/twingly-search-api-java/compare/v1.0.0...v1.1.0)
 
