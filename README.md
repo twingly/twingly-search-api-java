@@ -158,6 +158,7 @@ This will save JAR file with all needed dependencies in `build/libs/` with `-all
         * `brew install gpg`
         * get the secret key from our secret stash
         * `gpg --import <path to key>`
+            * Note: if you use gpg2 you may need to [export the key](https://stackoverflow.com/a/33129703) to the older format
 
 #### Make the release
 
