@@ -1,8 +1,9 @@
 language: java
-dist: precise
-jdk:
-  - oraclejdk7
-  - oraclejdk8
+matrix:
+  include:
+    - jdk: oraclejdk8
+    - jdk: oraclejdk7
+      dist: precise
 before_script:
   sudo keytool -importcert -keystore $JAVA_HOME/jre/lib/security/cacerts -file betamax.pem -storepass changeit -noprompt
 sudo: required
