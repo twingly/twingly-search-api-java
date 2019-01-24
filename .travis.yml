@@ -4,6 +4,8 @@ matrix:
     - jdk: oraclejdk8
     - jdk: oraclejdk7
       dist: precise
+      env:
+        - MAVEN_OPTS=-Dhttps.protocols=TLSv1.2
 before_script:
   sudo keytool -importcert -keystore $JAVA_HOME/jre/lib/security/cacerts -file betamax.pem -storepass changeit -noprompt
 sudo: required
