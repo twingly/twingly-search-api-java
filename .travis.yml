@@ -1,6 +1,6 @@
 language: java
 jdk:
-  - oraclejdk8
+  - openjdk8
   - oraclejdk11
 before_script:
   sudo keytool -importcert -keystore $JAVA_HOME/jre/lib/security/cacerts -file betamax.pem -storepass changeit -noprompt
