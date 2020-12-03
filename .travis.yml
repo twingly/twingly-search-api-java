@@ -1,8 +1,0 @@
-language: java
-jdk:
-  - openjdk8
-before_script:
-  sudo keytool -importcert -keystore $JAVA_HOME/jre/lib/security/cacerts -file betamax.pem -storepass changeit -noprompt
-sudo: required
-notifications:
-  email: false
