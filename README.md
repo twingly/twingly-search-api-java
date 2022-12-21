@@ -1,6 +1,6 @@
 # Twingly Search API Java [![GitHub Build Status](https://github.com/twingly/twingly-search-api-java/workflows/CI/badge.svg?branch=master)](https://github.com/twingly/twingly-search-api-java/actions)
 
-Java client for Twingly Search API (previously known as Twingly Analytics API). Twingly is a blog search service that provides a searchable API known as [Twingly Search API](https://developer.twingly.com/resources/search/).
+Java client for Twingly Search API (previously known as Twingly Analytics API). Twingly is a blog search service that provides a searchable API known as [Twingly Search API][Twingly Search API documentation].
 
 ## Installation
 
@@ -35,8 +35,6 @@ To learn more about the features of this client, check out the example code that
 
 To learn more about the capabilities of the API, please read the [Twingly Search API documentation].
 
-[Twingly Search API documentation]: https://developer.twingly.com/resources/search/
-
 ### API key from Java system properties
 
 Additionally, you can create Client object with API key from Java system properties (property name is `TWINGLY_SEARCH_KEY`):
@@ -66,9 +64,7 @@ Given exception hierarchy is now available:
           * TwinglySearchAuthenticationException - exception that happened due to Client Authentication problems
           * TwinglySEarchQueryException - exception that happened due to problems with Query
 
-Check documentation [Error paragraph][error] for additional information.
-
-[error]: https://developer.twingly.com/resources/search/#error
+Check [Twingly Search API documentation] for additional information about error codes.
 
 ## Requirements
 
@@ -178,6 +174,8 @@ This will save JAR file with all needed dependencies in `build/libs/` with `-all
 * Set `CHANGELOG_GITHUB_TOKEN` to a personal access token to increase your GitHub API rate limit
 * Generate the changelog
     * `github_changelog_generator`
+
+[Twingly Search API documentation]: https://app.twingly.com/blog_search?tab=documentation
 
 ## License
 

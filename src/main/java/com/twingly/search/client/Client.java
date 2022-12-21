@@ -8,7 +8,7 @@ import com.twingly.search.exception.TwinglySearchException;
 /**
  * Performs all network operations related to using Twingly Search API
  *
- * @see <a href="https://developer.twingly.com/resources/search-language/">Search Langunage</a>
+ * @see <a href="https://app.twingly.com/blog_search?tab=documentation">Search Langunage</a>
  * @see Query
  */
 public interface Client {

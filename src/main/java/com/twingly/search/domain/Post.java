@@ -16,7 +16,7 @@ import java.math.BigDecimal;
 /**
  * This class represents Post entity from TwinglySearch API response.
  *
- * @see <a href="https://developer.twingly.com/resources/search/#response">Response documentation</a>
+ * @see <a href="https://app.twingly.com/blog_search?tab=documentation">Response documentation</a>
  */
 @XmlRootElement(name = "post")
 public class Post {
@@ -70,13 +70,13 @@ public class Post {
     /**
      * the blog's authority/influence.
      *
-     * @see <a href="https://developer.twingly.com/resources/ranking/#authority">Authority</a>
+     * @see <a href="https://app.twingly.com/blog_search?tab=documentation">Authority</a>
      */
     private int authority;
     /**
      * the rank of the blog, based on authority and language.
      *
-     * @see <a href="https://developer.twingly.com/resources/ranking/#blogrank">Blogrank</a>
+     * @see <a href="https://app.twingly.com/blog_search?tab=documentation">Blogrank</a>
      */
     private int blogRank;
     /**
