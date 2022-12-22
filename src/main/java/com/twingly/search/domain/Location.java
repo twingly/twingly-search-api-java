@@ -3,7 +3,7 @@ package com.twingly.search.domain;
 /**
  * This enum contain all supported by Twingly locations
  *
- * @see <a href="https://developer.twingly.com/resources/search-language/#supported-locations">Supported locations</a>
+ * @see <a href="https://app.twingly.com/blog_search?tab=documentation">Supported locations</a>
  * @since 1.1.0
  */
 public enum Location {

@@ -3,7 +3,7 @@ package com.twingly.search.domain;
 /**
  * This enum contain all supported by Twingly languages
  *
- * @see <a href="https://developer.twingly.com/resources/search-language/#supported-languages">Supported languages</a>
+ * @see <a href="https://app.twingly.com/blog_search?tab=documentation">Supported languages</a>
  */
 public enum Language {
     /**

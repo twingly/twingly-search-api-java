@@ -155,7 +155,7 @@ uploadArchives {
                     name "twingly-search"
                     packaging "jar"
                     description "Client for Twingly Search API."
-                    url "https://developer.twingly.com/resources/search/"
+                    url "https://app.twingly.com/blog_search?tab=documentation"
 
                     scm {
                         connection "scm:git@github.com:twingly/twingly-search-api-java.git"
